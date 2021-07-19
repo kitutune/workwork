@@ -1,14 +1,25 @@
 import { supabase } from 'utils/supabaseClient';
 import { Auth, Button } from '@supabase/ui';
+import { useEffect, useState } from 'react';
 import { Profile } from 'components/Profile';
 
 export default function IndexPage() {
   const { user } = Auth.useUser();
+  const [prof, setProf] = useState({});
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) console.log('Error logging out:', error.message);
   };
 
+  useEffect(() => {
+    supabase
+      .from('ユーザー')
+      .select('*')
+      .then((DB) => {
+        setProf(DB.data[0]);
+      });
+  }, [user]);
+  console.log(prof);
   return (
     <div className="w-full h-full bg-gray-300  ">
       {!user ? (
