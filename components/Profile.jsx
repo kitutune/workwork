@@ -1,36 +1,42 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react';
-import { Auth, Button } from '@supabase/ui';
+import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 
 export const Profile = (props) => {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [icon, setIcon] = useState('');
-  const [memo, setMemo] = useState('');
   const [user, setUser] = useState({});
+  const name = useRef(null);
+  const age = useRef(null);
+  const icon = useRef(null);
+  const memo = useRef(null);
+
   const uuid = props.uuid;
   console.log(user);
   const handleAdd = useCallback(
     async (uuid) => {
-      if (name == '') {
+      if (name.current.value == '') {
         alert('名前を入力してください!');
         return;
       }
 
-      const { data, error } = await supabase
-        .from('ユーザー')
-        .insert(
-          [{ id: uuid, 名前: name, アイコン: icon, 年齢: age, 備考: memo }],
-          { upsert: true }
-        );
+      const { data, error } = await supabase.from('ユーザー').insert(
+        [
+          {
+            id: uuid,
+            名前: name.current.value,
+            アイコン: icon.current.value,
+            年齢: age.current.value,
+            備考: memo.current.value,
+          },
+        ],
+        { upsert: true }
+      );
       alert('登録完了');
       alert(uuid);
-      alert(name);
-      alert(icon);
-      alert(age);
-      alert(memo);
+      alert(name.current.value);
+      alert(icon.current.value);
+      alert(age.current.value);
+      alert(memo.current.value);
     },
     [name, age, icon, memo]
   );
@@ -41,13 +47,15 @@ export const Profile = (props) => {
       .eq('id', uuid)
       .then((DB) => setUser(DB.data[0] || {}));
   }, []);
+  useEffect(() => {
+    name.current.value = user['名前'];
+    icon.current.value = user['アイコン'];
+    age.current.value = user['年齢'];
+    memo.current.value = user['備考'];
+  }, [user]);
   return (
     <div>
-      <div
-        as="div"
-        className="fixed inset-0 z-10 overflow-y-auto"
-        // onClose={closeModal}
-      >
+      <div as="div" className="fixed inset-0 z-10 overflow-y-auto">
         <div className="min-h-screen px-4 text-center border-2">
           <span
             className="inline-block h-screen align-middle"
@@ -71,40 +79,28 @@ export const Profile = (props) => {
               <div className="col-span-1 text-xl text-center">名前</div>
               <input
                 className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                value={name}
-                onChange={(e) => {
-                  return setName(e.target.value);
-                }}
+                ref={name}
               />
             </div>
             <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">アイコン</div>
               <input
                 className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                value={icon}
-                onChange={(e) => {
-                  return setIcon(e.target.value);
-                }}
+                ref={icon}
               />
             </div>
             <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">年齢</div>
               <input
                 className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                value={age}
-                onChange={(e) => {
-                  return setAge(e.target.value);
-                }}
+                ref={age}
               />
             </div>
             <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">備考</div>
               <textarea
                 className="w-full h-60 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                value={memo}
-                onChange={(e) => {
-                  return setMemo(e.target.value);
-                }}
+                ref={memo}
               />
             </div>
             <div className="flex justify-center mt-4">
@@ -113,29 +109,18 @@ export const Profile = (props) => {
                   block
                   type="default"
                   size="large"
-                  // icon={<IconX />}
-                  // onClick={closeModal}
                   onClick={props.logout}
                 >
                   Cancel
                 </Button>
               </div>
               <div className="w-32 p-2">
-                <Button
-                  block
-                  size="large"
-                  // icon={<IconPlus />}
-                  onClick={
-                    () => handleAdd(uuid)
-                    // props.uuid
-                  }
-                >
+                <Button block size="large" onClick={() => handleAdd(uuid)}>
                   {user['名前'] ? '更新' : '新規登録'}
                 </Button>
               </div>
             </div>
           </div>
-          {/* </Transition.Child> */}
         </div>
       </div>
     </div>
