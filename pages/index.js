@@ -2,6 +2,8 @@ import { supabase } from 'utils/supabaseClient';
 import { Auth, Button } from '@supabase/ui';
 import { useEffect, useState } from 'react';
 import { Profile } from 'components/Profile';
+import { CompanyEdit } from 'components/CompanyEdit';
+import { LayoutWrapper } from 'components/layoutWrapper';
 
 export default function IndexPage() {
   const { user } = Auth.useUser();
@@ -19,29 +21,33 @@ export default function IndexPage() {
         setProf(DB.data[0]);
       });
   }, [user]);
-  console.log(prof);
+  // console.log(prof);
+  console.log(Auth.useUser());
   return (
-    <div className="w-full h-full bg-gray-300  ">
-      {!user ? (
-        <div className="w-full h-full flex justify-center items-center p-4">
-          <Auth
-            supabaseClient={supabase}
-            providers={['google', 'github']}
-            socialLayout="horizontal"
-            socialButtonSize="xlarge"
-          />
-        </div>
-      ) : (
-        <div
-          className="w-full h-full flex flex-col justify-center items-center p-4"
-          style={{ minWidth: 250, maxWidth: 600, margin: 'auto' }}
-        >
-          <Profile logout={logout} uuid={user.id} />
-          <Button className="btn-black w-full mt-12" onClick={logout}>
-            Logout
-          </Button>
-        </div>
-      )}
-    </div>
+    <LayoutWrapper>
+      <div className="w-full h-full bg-gray-300  ">
+        {!user ? (
+          <div className="w-full h-full flex justify-center items-center p-4">
+            <Auth
+              supabaseClient={supabase}
+              providers={['google', 'github']}
+              socialLayout="horizontal"
+              socialButtonSize="xlarge"
+            />
+          </div>
+        ) : (
+          <div
+            className="w-full h-full flex flex-col justify-center items-center p-4"
+            style={{ minWidth: 250, maxWidth: 600, margin: 'auto' }}
+          >
+            {/* <Profile logout={logout} uuid={user.id} /> */}
+            <Button className="btn-black w-full mt-12" onClick={logout}>
+              Logout
+            </Button>
+          </div>
+        )}
+        {/* <CompanyEdit /> */}
+      </div>
+    </LayoutWrapper>
   );
 }
