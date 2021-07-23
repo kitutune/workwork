@@ -13,7 +13,7 @@ export const CompanyEdit = (props) => {
   const companyCapital = useRef(null);
   const companyEmployees = useRef(null);
   const companyDate = useRef(null);
-  const copanyMap = useRef(null);
+  const companyMap = useRef(null);
   const nearestStation = useRef(null);
   const access = useRef(null);
   const typicalApp = useRef(null);
@@ -33,51 +33,48 @@ export const CompanyEdit = (props) => {
   // }, [user]);
   // uuid={user.id}
   // // console.log(user);
-  const companyInfo = useCallback(
-    async (uuid) => {
-      if (companyName.current.value == '') {
-        alert('名前を入力してください!');
-        return;
-      }
+  const companyInfo = useCallback(async () => {
+    if (companyName.current.value == '') {
+      alert('名前を入力してください!');
+      return;
+    }
 
-      const { data, error } = await supabase.from('企業情報').insert(
-        [
-          {
-            id: uuid,
-            会社名: companyName.current.value,
-            URL: companyUrl.current.value,
-            電話番号: companyPhone.current.value,
-            住所: companyAddress.current.value,
-            地図: copanyMap.current.value,
-            資本金: companyCapital.current.value,
-            社員数: companyEmployees.current.value,
-            設立日: companyDate.current.value,
-          },
-        ],
-        { upsert: true }
-      );
-      alert('登録完了');
-      alert(uuid);
-      alert(companyName.current.value);
-      alert(companyUrl.current.value);
-      alert(companyPhone.current.value);
-      alert(companyAddress.current.value);
-      alert(copanyMap.current.value);
-      alert(companyCapital.current.value);
-      alert(companyEmployees.current.value);
-      alert(companyDate.current.value);
-    },
-    [
-      companyName,
-      companyUrl,
-      companyPhone,
-      companyAddress,
-      copanyMap,
-      companyCapital,
-      companyEmployees,
-      companyDate,
-    ]
-  );
+    const { data, error } = await supabase.from('企業情報').insert(
+      [
+        {
+          // id: uuid,
+          会社名: companyName.current.value,
+          URL: companyUrl.current.value,
+          電話番号: companyPhone.current.value,
+          住所: companyAddress.current.value,
+          地図: companyMap.current.value,
+          資本金: companyCapital.current.value,
+          社員数: companyEmployees.current.value,
+          設立日: companyDate.current.value,
+        },
+      ],
+      { upsert: true }
+    );
+    alert('登録完了');
+    // alert(uuid);
+    alert(companyName.current.value);
+    alert(companyUrl.current.value);
+    alert(companyPhone.current.value);
+    alert(companyAddress.current.value);
+    alert(companyMap.current.value);
+    alert(companyCapital.current.value);
+    alert(companyEmployees.current.value);
+    alert(companyDate.current.value);
+  }, [
+    companyName,
+    companyUrl,
+    companyPhone,
+    companyAddress,
+    companyMap,
+    companyCapital,
+    companyEmployees,
+    companyDate,
+  ]);
   // ここから企業情報補助
 
   const companyInfosub = useCallback(
@@ -285,6 +282,7 @@ export const CompanyEdit = (props) => {
                         電話番号 <abbr title="required">*</abbr>
                       </label>
                       <input
+                        ref={companyPhone}
                         placeholder="電話番号「必須」-int2"
                         className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                         required="required"
@@ -305,6 +303,7 @@ export const CompanyEdit = (props) => {
                         資本金 <abbr title="required">*</abbr>
                       </label>
                       <input
+                        ref={companyCapital}
                         placeholder="住所「必須」-text"
                         className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                         required="required"
@@ -321,6 +320,7 @@ export const CompanyEdit = (props) => {
                         社員数 <abbr title="required">*</abbr>
                       </label>
                       <input
+                        ref={companyEmployees}
                         placeholder="資本金-int2"
                         className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                         required="required"
@@ -341,6 +341,7 @@ export const CompanyEdit = (props) => {
                         設立日<abbr title="required">*</abbr>
                       </label>
                       <input
+                        ref={companyDate}
                         placeholder="社員数-int2"
                         className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                         required="required"
@@ -357,6 +358,7 @@ export const CompanyEdit = (props) => {
                         地図 <abbr title="required">*</abbr>
                       </label>
                       <input
+                        ref={companyMap}
                         placeholder="設立日-date"
                         className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                         required="required"
@@ -557,7 +559,10 @@ export const CompanyEdit = (props) => {
                     <button className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100">
                       Cancel
                     </button>
-                    <button className="mb-2 md:mb-0 bg-green-400 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-500">
+                    <button
+                      onClick={companyInfo}
+                      className="mb-2 md:mb-0 bg-green-400 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-500"
+                    >
                       Save
                     </button>
                   </div>

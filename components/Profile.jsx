@@ -11,7 +11,7 @@ export const Profile = (props) => {
   const memo = useRef(null);
 
   const uuid = props.uuid;
-  console.log(user);
+  // console.log(user);
   const handleAdd = useCallback(
     async (uuid) => {
       if (name.current.value == '') {
@@ -40,12 +40,15 @@ export const Profile = (props) => {
     },
     [name, age, icon, memo]
   );
-  useEffect(() => {
-    supabase
+  useEffect(async () => {
+    const { data, error } = await supabase
       .from('ユーザー')
       .select('*')
       .eq('id', uuid)
-      .then((DB) => setUser(DB.data[0] || {}));
+      .single();
+    // console.log(data);
+    setUser(data);
+    // setUser(data[0] || {});
   }, []);
   useEffect(() => {
     name.current.value = user['名前'];
@@ -53,6 +56,7 @@ export const Profile = (props) => {
     age.current.value = user['年齢'];
     memo.current.value = user['備考'];
   }, [user]);
+  // console.log(!!{});
   return (
     <div>
       <div as="div" className="fixed inset-0 z-10 overflow-y-auto">
