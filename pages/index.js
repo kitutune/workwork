@@ -1,53 +1,85 @@
+import { Auth, Button, IconLogOut } from '@supabase/ui';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { LayoutWrapper } from '../components/layoutWrapper';
 import { supabase } from 'utils/supabaseClient';
-import { Auth, Button } from '@supabase/ui';
-import { useEffect, useState } from 'react';
-import { Profile } from 'components/Profile';
-import { CompanyEdit } from 'components/CompanyEdit';
-import { LayoutWrapper } from 'components/layoutWrapper';
+import { CompanyList } from 'components/companyList';
 
-export default function IndexPage() {
+const getCompany = async () => {
+  const { data, error } = await supabase
+    .from('企業情報')
+    .select('*')
+    .order('会社名');
+  if (!error && data) {
+    return data;
+  }
+  return [];
+};
+
+const Container = (props) => {
   const { user } = Auth.useUser();
-  const [prof, setProf] = useState({});
-  const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) console.log('Error logging out:', error.message);
-  };
+
+  const [text, setText] = useState('');
+  const [companyNames, setCompanyNames] = useState([]);
+
+  const getCompanyList = useCallback(async () => {
+    const data = await getCompany();
+    setCompanyNames(data);
+  }, []);
 
   useEffect(() => {
-    supabase
-      .from('ユーザー')
-      .select('*')
-      .then((DB) => {
-        setProf(DB.data[0]);
-      });
-  }, [user]);
-  // console.log(prof);
-  console.log(Auth.useUser());
+    getCompanyList();
+  }, [user, getCompanyList]);
+
+  if (user) {
+    return (
+      <div>
+        <div className="flex justify-center gap-2 p-4">
+          <input
+            className="w-full h-12 px-4 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
+            placeholder="Filtering text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+        </div>
+        <CompanyList
+          companyNames={companyNames}
+          uuid={user.id}
+          getCompanyList={getCompanyList}
+          filterText={text}
+        />
+        <div className="flex justify-end mx-2 my-4">
+          <Button
+            size="medium"
+            icon={<IconLogOut />}
+            onClick={() => supabase.auth.signOut()}
+          >
+            Sign out
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  return <>{props.children}</>;
+};
+
+const Home = () => {
   return (
     <LayoutWrapper>
-      <div className="w-full h-full bg-gray-300  ">
-        {!user ? (
-          <div className="w-full h-full flex justify-center items-center p-4">
-            <Auth
-              supabaseClient={supabase}
-              providers={['google', 'github']}
-              socialLayout="horizontal"
-              socialButtonSize="xlarge"
-            />
+      <Auth.UserContextProvider supabaseClient={supabase}>
+        <Container>
+          <div className="flex justify-center pt-8">
+            <div className="w-full sm:w-96">
+              <Auth
+                supabaseClient={supabase}
+                providers={['github']}
+                socialColors={true}
+              />
+            </div>
           </div>
-        ) : (
-          <div
-            className="w-full h-full flex flex-col justify-center items-center p-4"
-            style={{ minWidth: 250, maxWidth: 600, margin: 'auto' }}
-          >
-            {/* <Profile logout={logout} uuid={user.id} /> */}
-            <Button className="btn-black w-full mt-12" onClick={logout}>
-              Logout
-            </Button>
-          </div>
-        )}
-        {/* <CompanyEdit /> */}
-      </div>
+        </Container>
+      </Auth.UserContextProvider>
     </LayoutWrapper>
   );
-}
+};
+
+export default Home;
