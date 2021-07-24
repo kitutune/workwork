@@ -6,17 +6,6 @@ import { supabase } from 'utils/supabaseClient';
 // import { EditTitle } from '../components/editTitle';
 import { LayoutWrapper } from '../components/layoutWrapper';
 // import { SubtitleList } from '../components/subtitleList';
-// import { Title as TitleType } from '../components/titleList';
-// import { supabase } from '../libs/supabase';
-// export type subtitle = {
-//   id: number;
-//   user_id: string;
-//   title_id: number;
-//   volume: number;
-//   isbn: number;
-//   image_url: string;
-//   possession: boolean;
-// };
 
 const getCompanyInfo = async (id) => {
   let { data, error } = await supabase
@@ -33,12 +22,13 @@ const getCompanyInfo = async (id) => {
       .select('*')
       //   .order('volume', { ascending: true }) //{小さい方から大き方へ:true}
       .eq('企業情報', id)); //title_idはmanga_titleのid
-    // console.log(info);
-    // console.log(data);
+    console.log(info);
+    console.log(data);
     if (!error && data) {
-      return { 会社名: data[0].会社名 || null, 最寄駅: 最寄駅 };
+      // console.log(data);
+      return { 会社名: data.会社名 || null, 最寄駅: data.最寄駅 };
     } else {
-      return { 会社名: data[0].会社名 || null, 最寄駅: null };
+      return { 会社名: data.会社名 || null, 最寄駅: null };
     }
   }
   return { 会社名: null, 最寄駅: null };
@@ -52,19 +42,20 @@ const companyInfo = () => {
     const [title, setTitle] = useState();
 
     const router = useRouter();
-    console.log(router);
+    // console.log(router);
     let { id } = router.query;
-    console.log(router.query);
+    // console.log(router.query);
     const getCompanyList = useCallback(async () => {
       if (id) {
         const { title, subtitles } = await getCompanyInfo(id.toString());
-        console.log(title);
-        console.log(subtitles);
+        // console.log(title);
+        // console.log(subtitles);
         if (title) {
           setTitle(title);
-        } else {
-          router.push('/');
         }
+        // else {
+        //   router.push('/');
+        // }
         // ここから　追加したファイル表示（①がないと読みこれまない）
         if (subtitles) {
           setSubtitles(subtitles);
@@ -78,7 +69,12 @@ const companyInfo = () => {
         router.push('/');
       }
       getCompanyList();
-    }, [user, getCompanyList, id, router]);
+    }, [
+      user,
+      //  getCompanyList,
+      id,
+      router,
+    ]);
     // ここまで　ファイルの表示①
     if (user) {
       return (
@@ -115,14 +111,7 @@ const companyInfo = () => {
             </>
           )} */}
           {/* このページフォルダのタイトル表示　ここまで */}
-          {/* {title && (
-            <SubtitleList
-              subtitles={subtitles}
-              title={title}
-              uuid={user.id}
-              getCompanyList={getCompanyList}
-            />
-          )} */}
+
           <h1>aaaaa</h1>
           {/* ここから追加 */}
           <div className="font-mono bg-gray-400">
@@ -135,7 +124,10 @@ const companyInfo = () => {
                   <div
                     className="w-full h-auto bg-gray-400 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
                     //  style="background-image: url('https://source.unsplash.com/Mv9hjnEUHR4/600x800')"
-                    // style={{"backgroundImage: url('https://source.unsplash.com/Mv9hjnEUHR4/600x800')"}}
+                    style={{
+                      backgroundImage:
+                        'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
+                    }}
                   ></div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
