@@ -3,6 +3,10 @@ import Image from 'next/image';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 
+// const { user } = Auth.useUser();
+// <Profile uuid={user.id} />
+// これらを入れる必要あり
+
 export const Profile = (props) => {
   const [user, setUser] = useState({});
   const name = useRef(null);
