@@ -1,5 +1,6 @@
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
-import Link from 'next/link';
+import { Back } from 'components/back';
+
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
 import { supabase } from 'utils/supabaseClient';
@@ -91,11 +92,11 @@ const companyInfo = () => {
             {/* Editボタン表示　ここまで */}
             {/* Backボタン表示　ここから */}
             <div className="w-24">
-              <Link href="/" passHref>
+              <Back>
                 <Button block size="medium" icon={<IconCornerDownLeft />}>
                   BACK
                 </Button>
-              </Link>
+              </Back>
             </div>
             {/* Backボタン表示　ここまで */}
           </div>
