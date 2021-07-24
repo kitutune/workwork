@@ -31,7 +31,7 @@ export const CompanyList = (props) => {
       <Addcompany uuid={props.uuid} getCompanyList={props.getCompanyList} />
       {filteredTitle.map((title) => {
         return (
-          <Link key={title.id} href={`/title?id=${title.id}`} passHref>
+          <Link key={title.id} href={`/companyInfo?id=${title.id}`} passHref>
             <div className="p-2 border cursor-pointer">
               <div className="flex justify-center">
                 {/* {title.image_url ? (

@@ -3,6 +3,8 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { LayoutWrapper } from '../components/layoutWrapper';
 import { supabase } from 'utils/supabaseClient';
 import { CompanyList } from 'components/companyList';
+import { CompanyEdit } from 'components/CompanyEdit';
+import { Profile } from 'components/Profile';
 
 const getCompany = async () => {
   const { data, error } = await supabase
@@ -40,6 +42,8 @@ const Container = (props) => {
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
+          {/* <CompanyEdit /> */}
+          {/* <Profile /> */}
         </div>
         <CompanyList
           companyNames={companyNames}
