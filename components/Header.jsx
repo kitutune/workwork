@@ -1,6 +1,11 @@
 import { Back } from './back';
-
+import { Profile } from './Profile';
+import { ToolModal } from './ToolModal';
+import { Auth } from '@supabase/ui';
 export const Header = () => {
+  const { user } = Auth.useUser();
+  console.log(user);
+  console.log('かかってるよ！');
   return (
     <header className="text-gray-600 bg-gray-200">
       <nav className="flex items-center justify-between flex-wrap bg-teal p-6">
@@ -40,6 +45,7 @@ export const Header = () => {
             >
               Docs
             </a>
+
             <a
               href="#responsive-header"
               className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
@@ -60,6 +66,20 @@ export const Header = () => {
             >
               Download
             </a>
+
+            {!user ? (
+              <div></div>
+            ) : (
+              <ToolModal>
+                <Profile
+                  // button1osita={() => {
+                  //   alert('cancel');
+                  // }}
+                  // button1="sugoi"
+                  uuid={user.id}
+                />
+              </ToolModal>
+            )}
           </div>
         </div>
       </nav>
