@@ -8,14 +8,15 @@ import { supabase } from 'utils/supabaseClient';
 // これらを入れる必要あり
 
 export const Profile = (props) => {
-  const [user, setUser] = useState({});
+  const [userProf, setUserProf] = useState({});
   const name = useRef(null);
   const age = useRef(null);
   const icon = useRef(null);
   const memo = useRef(null);
 
   const uuid = props.uuid;
-  // console.log(user);
+  console.log(userProf);
+
   const handleAdd = useCallback(
     async (uuid) => {
       if (name.current.value == '') {
@@ -51,15 +52,15 @@ export const Profile = (props) => {
       .eq('id', uuid)
       .single();
     // console.log(data);
-    setUser(data);
-    // setUser(data[0] || {});
+    setUserProf(data);
+    // setUserProf(data[0] || {});
   }, []);
   useEffect(() => {
-    name.current.value = user['名前'];
-    icon.current.value = user['アイコン'];
-    age.current.value = user['年齢'];
-    memo.current.value = user['備考'];
-  }, [user]);
+    name.current.value = userProf['名前'];
+    icon.current.value = userProf['アイコン'];
+    age.current.value = userProf['年齢'];
+    memo.current.value = userProf['備考'];
+  }, [userProf]);
   // console.log(!!{});
   return (
     <div>
@@ -114,11 +115,11 @@ export const Profile = (props) => {
             <div className="flex justify-center mt-4">
               {/* 自由に機能をつけれるボタンを作成 */}
               {/* {props.button1 && (
-              <div className="w-32 p-2">
-                <Button
-                  block
-                  type="default"
-                  size="large"
+                <div className="w-32 p-2">
+                  <Button
+                    block
+                    type="default"
+                    size="large"
                     onClick={props.button1osita}
                   >
                     {props.button1}
@@ -139,7 +140,7 @@ export const Profile = (props) => {
               </div>
               <div className="w-32 p-2">
                 <Button block size="large" onClick={() => handleAdd(uuid)}>
-                  {user['名前'] ? '更新' : '新規登録'}
+                  {userProf['名前'] ? '更新' : '新規登録'}
                 </Button>
               </div>
             </div>
