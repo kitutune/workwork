@@ -112,15 +112,30 @@ export const Profile = (props) => {
               />
             </div>
             <div className="flex justify-center mt-4">
+              {/* 自由に機能をつけれるボタンを作成 */}
+              {/* {props.button1 && (
               <div className="w-32 p-2">
                 <Button
                   block
                   type="default"
                   size="large"
-                  onClick={props.logout}
+                    onClick={props.button1osita}
+                  >
+                    {props.button1}
+                  </Button>
+                </div>
+              )} */}
+              <div className="w-32 p-2">
+                {/* <CloseModal> */}
+                {/* <Button
+                  block
+                  type="default"
+                  size="large"
+                  // onClick={props.close}
                 >
                   Cancel
-                </Button>
+                </Button> */}
+                {/* </CloseModal> */}
               </div>
               <div className="w-32 p-2">
                 <Button block size="large" onClick={() => handleAdd(uuid)}>
