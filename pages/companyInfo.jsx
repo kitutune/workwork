@@ -19,31 +19,7 @@ const companyInfo = () => {
     console.log(companyProf);
     console.log('companyProfのログ');
     console.log(companyName);
-    // console.log(user);
-    // console.log('companyinfoのuser');
 
-    // console.log(router);
-
-    // console.log(id);
-    // console.log('ここまで');
-
-    // -----------------A
-    // const sample = async () => {
-    //   let { data, error } = await supabase
-    //     .from('企業情報')
-    //     .select('*')
-    //     .eq('id', id);
-    //   // .single();
-    //   // console.log(data);
-    //   return data;
-    // };
-
-    // const data = useCallback(async () => await sample(), []);
-    // console.log(sample());
-    // console.log('別バージョンのsample');
-    // console.log(sample);
-    // -------------------AA
-    // ------------------B
     useEffect(async () => {
       console.log('マウントされた時');
       const { data, error } = await supabase
@@ -51,10 +27,9 @@ const companyInfo = () => {
         .select('*')
         .eq('id', id)
         .single();
-      // console.log(data);
+
       setCompanyProf(data);
-      // setCompanyProf(data[0] || {});
-      // console.log(setCompanyProf(data));
+
       return () => {
         console.log('アンマウントされた時');
       };
@@ -64,14 +39,6 @@ const companyInfo = () => {
     if (user) {
       return (
         <div>
-          {/* {console.log(sample())} */}
-          {/* {console.log({ data })} */}
-          {/* {console.log(user)}
-          {console.log('companyinfoのuser')}
-         
-          {console.log('sampleの中身')} */}
-          {/* {console.log(data.最寄駅)} */}
-          {/* {console.log('companyinfoのinfo　次にdata')} */}
           <div className="flex justify-end gap-2 my-2 mr-2">
             {/* 右端寄席のCSS */}
 
@@ -85,8 +52,6 @@ const companyInfo = () => {
             </div>
             {/* Backボタン表示　ここまで */}
           </div>
-
-          <h1>aaaaa</h1>
           {/* ここから追加 */}
           <div className="font-mono bg-gray-400">
             {/* <!-- Container --> */}
@@ -161,7 +126,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.資本金}
+                            {companyProf.資本金}万円
                           </div>
                         </div>
                       </div>
@@ -177,7 +142,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.社員数}
+                            {companyProf.社員数}人
                           </div>
                         </div>
                       </div>
@@ -199,28 +164,6 @@ const companyInfo = () => {
                         </div>
                       </div>
                       {/* 　項目ここまで */}
-
-                      {/* 長い奴　ここから */}
-                      {/* <div className="mb-4">
-                        <label
-                          className="block mb-2 text-sm font-bold text-gray-700"
-                          // for="email"
-                        >
-                          Email{companyProf.電話番号}
-                        </label>
-                        <input
-                          className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                          id="email"
-                          type="email"
-                          placeholder="Email"
-                        />
-                      </div> */}
-                      {/* 長い奴　ここまで */}
-                      {/* ーーーーー */}
-                      {/* <Link href={companyProf.URL}>
-                        <a target="_blank">HPに飛ぶ</a>
-                      </Link> */}
-
                       <button
                         className="w-full px-4 py-2 font-bold text-white
                          bg-blue-500 rounded-full hover:bg-blue-700 
@@ -232,9 +175,8 @@ const companyInfo = () => {
                           Webサイトへ
                         </a>
                       </button>
-
                       <hr className="mb-6 border-t" />
-                      <div className="text-center">
+                      {/* <div className="text-center">
                         <a
                           className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
                           href="#"
@@ -249,7 +191,7 @@ const companyInfo = () => {
                         >
                           Already have an account? Login!
                         </a>
-                      </div>
+                      </div> */}
                     </form>
                   </div>
                 </div>
