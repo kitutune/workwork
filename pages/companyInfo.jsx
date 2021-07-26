@@ -1,6 +1,6 @@
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { Back } from 'components/back';
-
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
 import { supabase } from 'utils/supabaseClient';
@@ -105,7 +105,14 @@ const companyInfo = () => {
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                     <h3 className="pt-4 text-2xl text-center">
-                      {/* Create an Account! */}
+                      <Image
+                        width={40}
+                        height={40}
+                        layout={'intrinsic'}
+                        alt="companyicon"
+                        src="/company2.png"
+                        className="z-1"
+                      />
                       {companyProf.会社名}
                     </h3>
                     <form className="px-8 pt-6 pb-8 mb-4　 bg-white rounded">
