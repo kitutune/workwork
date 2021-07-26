@@ -108,74 +108,86 @@ const companyInfo = () => {
                       {/* Create an Account! */}
                       {companyProf.会社名}
                     </h3>
-                    <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                    <form className="px-8 pt-6 pb-8 mb-4　 bg-white rounded">
                       {/* 　項目ここから */}
                       <div className="mb-4　">
-                        <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                          住所
-                        </label>
-                        <div
-                          className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                          id="email"
-                          type="email"
-                        >
-                          {companyProf.住所}
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            住所
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="email"
+                            type="email"
+                          >
+                            {companyProf.住所}
+                          </div>
                         </div>
                       </div>
                       {/* 　項目ここまで */}
                       {/* 　項目ここから */}
                       <div className="mb-4　">
-                        <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                          電話番号
-                        </label>
-                        <div
-                          className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                          id="email"
-                          type="email"
-                        >
-                          {companyProf.電話番号}
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            電話番号
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="email"
+                            type="email"
+                          >
+                            {companyProf.電話番号}
+                          </div>
                         </div>
                       </div>
                       {/* 　項目ここまで */}
                       {/* 　項目ここから */}
                       <div className="mb-4　">
-                        <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                          資本金
-                        </label>
-                        <div
-                          className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                          id="email"
-                          type="email"
-                        >
-                          {companyProf.資本金}
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            資本金
+                          </label>
+
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="email"
+                            type="email"
+                          >
+                            {companyProf.資本金}
+                          </div>
                         </div>
                       </div>
                       {/* 　項目ここまで */}
                       {/* 　項目ここから */}
                       <div className="mb-4　">
-                        <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                          社員数
-                        </label>
-                        <div
-                          className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                          id="email"
-                          type="email"
-                        >
-                          {companyProf.社員数}
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            社員数
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="email"
+                            type="email"
+                          >
+                            {companyProf.社員数}
+                          </div>
                         </div>
                       </div>
                       {/* 　項目ここまで */}
                       {/* 　項目ここから */}
                       <div className="mb-4　">
-                        <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                          設立日
-                        </label>
-                        <div
-                          className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                          id="email"
-                          type="email"
-                        >
-                          {companyProf.設立日}
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            設立日
+                          </label>
+
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="email"
+                            type="email"
+                          >
+                            {companyProf.設立日}
+                          </div>
                         </div>
                       </div>
                       {/* 　項目ここまで */}
@@ -196,16 +208,23 @@ const companyInfo = () => {
                         />
                       </div> */}
                       {/* 長い奴　ここまで */}
+                      {/* ーーーーー */}
+                      {/* <Link href={companyProf.URL}>
+                        <a target="_blank">HPに飛ぶ</a>
+                      </Link> */}
 
-                      <div className="mb-6 text-center">
-                        <button
-                          className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                          type="button"
-                        >
-                          Register Account
-                          {/* {companyProf.地図} */}
-                        </button>
-                      </div>
+                      <button
+                        className="w-full px-4 py-2 font-bold text-white
+                         bg-blue-500 rounded-full hover:bg-blue-700 
+                         focus:outline-none focus:shadow-outline
+                         "
+                        type="button"
+                      >
+                        <a href={companyProf.URL} target="_blank">
+                          Webサイトへ
+                        </a>
+                      </button>
+
                       <hr className="mb-6 border-t" />
                       <div className="text-center">
                         <a
