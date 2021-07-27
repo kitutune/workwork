@@ -1,6 +1,8 @@
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { Back } from 'components/back';
 import { Map } from 'components/map';
+import { useMapGeocode } from 'components/useMapGeocode';
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
@@ -16,10 +18,17 @@ const companyInfo = () => {
     const router = useRouter();
     let { id } = router.query;
     const companyName = companyProf.会社名;
-    console.log(companyProf);
-    console.log('companyProfのログ');
-    console.log(companyName);
+    const address = companyProf.住所;
 
+    // console.log(companyProf);
+    // console.log('companyProfのログ');
+    // console.log(companyName);
+    // const sample = useMapGeocode('東京都渋谷区渋谷1-11-8 渋谷パークプラザ5F');
+    // console.log(UseMapGeocode('東京都渋谷区渋谷1-11-8 渋谷パークプラザ5F'));
+    // console.log('sample');
+    {
+      /* <useMapGeocode/> */
+    }
     useEffect(async () => {
       console.log('マウントされた時');
       const { data, error } = await supabase
@@ -29,7 +38,9 @@ const companyInfo = () => {
         .single();
 
       setCompanyProf(data);
+      // --------------
 
+      // ^^^^^^^^^^^^^^^^
       return () => {
         console.log('アンマウントされた時');
       };
@@ -199,11 +210,16 @@ const companyInfo = () => {
             </div>
           </div>
           {/* ここまで追加 */}
+
           <div className="container mx-auto">
             <div className="flex justify-center px-6 my-12">
               {/* <!-- Row --> */}
               <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                <Map />
+                {/* <Map
+                // address={address}
+                /> */}
+                {(console.log(address), console.log('住所'))}
+                <useMapGeocode address={address} />
               </div>
             </div>
           </div>
