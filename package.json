@@ -12,6 +12,8 @@
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@supabase/supabase-js": "^1.19.0",
     "@supabase/ui": "^0.29.2",
     "axios": "^0.21.1",
