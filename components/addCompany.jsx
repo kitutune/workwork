@@ -15,6 +15,7 @@ export const Addcompany = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
+  const [companyAddress, setCompanyAddress] = useState('');
   // ダイアログを開く
   const openModal = useCallback(() => {
     setIsOpen(true);
@@ -23,6 +24,7 @@ export const Addcompany = (props) => {
   const closeModal = useCallback(() => {
     setCompanyName('');
     setCompanyUrl('');
+    setCompanyAddress('');
     setIsOpen(false);
   }, []);
   // 漫画タイトルの追加
@@ -37,6 +39,7 @@ export const Addcompany = (props) => {
           // 企業_id: uuid,
           会社名: companyName,
           URL: companyUrl,
+          住所: companyAddress,
         },
       ]);
       if (error) {
@@ -48,7 +51,7 @@ export const Addcompany = (props) => {
         }
       }
     },
-    [companyName, companyUrl, props, closeModal]
+    [companyName, companyUrl, companyAddress, props, closeModal]
   );
 
   return (
@@ -106,6 +109,16 @@ export const Addcompany = (props) => {
                     value={companyUrl}
                     onChange={(e) => {
                       return setCompanyUrl(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="grid grid-cols-4 gap-2 mt-4">
+                  <div className="col-span-1 text-xl text-center">所在地</div>
+                  <input
+                    className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
+                    value={companyAddress}
+                    onChange={(e) => {
+                      return setCompanyAddress(e.target.value);
                     }}
                   />
                 </div>
