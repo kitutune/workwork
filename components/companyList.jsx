@@ -8,49 +8,45 @@ import { Addcompany } from '../components/addCompany';
 // export type Title = {
 //   id: number;
 //   user_id: string;
-//   title: string;
+//   company: string;
 //   author: string;
 //   image_url: string;
 // };
 
 // type TitlesProps = {
-//   titles: Title[];
+//   companys: Title[];
 //   uuid: string;
 //   getCompanyList: VoidFunction;
 //   filterText: string;
 // };
 
 export const CompanyList = (props) => {
-  const filteredTitle = props.companyNames.filter((title) => {
-    let searchContent = title['会社名'] + ' ' + title.URL;
+  const filteredTitle = props.companyNames.filter((company) => {
+    let searchContent = company['会社名'] + ' ' + company.URL;
     return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
   });
-
+  console.log(props.uuid);
+  console.log('companyListのuuid');
   return (
     <div className="grid grid-cols-3 gap-2 m-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
       <Addcompany uuid={props.uuid} getCompanyList={props.getCompanyList} />
-      {filteredTitle.map((title) => {
+      {filteredTitle.map((company) => {
         return (
-          <Link key={title.id} href={`/companyInfo?id=${title.id}`} passHref>
+          <Link
+            key={company.id}
+            href={`/companyInfo?id=${company.id}`}
+            passHref
+          >
             <div className="p-2 border cursor-pointer">
               <div className="flex justify-center">
-                {/* {title.image_url ? (
-                  <Image
-                    src={title.image_url}
-                    alt="thumbnail"
-                    width={126}
-                    height={200}
-                  />
-                ) : ( */}
                 <Image
                   src={companyIcon}
                   alt="thumbnail"
                   width={126}
                   height={200}
                 />
-                {/* )} */}
               </div>
-              <div className="mt-2 text-center">{title['会社名']}</div>
+              <div className="mt-2 text-center">{company['会社名']}</div>
             </div>
           </Link>
         );

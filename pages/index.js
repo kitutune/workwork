@@ -19,7 +19,8 @@ const getCompany = async () => {
 
 const Container = (props) => {
   const { user } = Auth.useUser();
-
+  console.log(user);
+  console.log('indexのuser');
   const [text, setText] = useState('');
   const [companyNames, setCompanyNames] = useState([]);
 

@@ -32,9 +32,13 @@ export const Addcompany = (props) => {
         alert('Input companyName.');
         return;
       }
-      const { data, error } = await supabase
-        .from('企業情報')
-        .insert([{ 企業_id: uuid, 会社名: companyName, URL: companyUrl }]);
+      const { data, error } = await supabase.from('企業情報').insert([
+        {
+          // 企業_id: uuid,
+          会社名: companyName,
+          URL: companyUrl,
+        },
+      ]);
       if (error) {
         alert(error);
       } else {

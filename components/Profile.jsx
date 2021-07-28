@@ -16,7 +16,7 @@ export const Profile = (props) => {
 
   const uuid = props.uuid;
   console.log(userProf);
-
+  console.log('useProfのログ');
   const handleAdd = useCallback(
     async (uuid) => {
       if (name.current.value == '') {

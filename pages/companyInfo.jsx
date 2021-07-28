@@ -2,7 +2,7 @@ import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { Back } from 'components/back';
 import { Map } from 'components/map';
 import { useMapGeocode } from 'components/useMapGeocode';
-
+// import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
@@ -17,9 +17,9 @@ const companyInfo = () => {
     const [companyProf, setCompanyProf] = useState({});
     const router = useRouter();
     let { id } = router.query;
-    const companyName = companyProf.会社名;
-    const address = companyProf.住所;
 
+    // const companyName = companyProf.会社名;
+    const address = companyProf.住所;
     // console.log(companyProf);
     // console.log('companyProfのログ');
     // console.log(companyName);
@@ -78,7 +78,9 @@ const companyInfo = () => {
                       backgroundImage:
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
-                  ></div>
+                  >
+                    {/* <CommentBoard /> */}
+                  </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                     <h3 className="pt-4 text-2xl text-center">
@@ -218,8 +220,8 @@ const companyInfo = () => {
                 {/* <Map
                 // address={address}
                 /> */}
-                {(console.log(address), console.log('住所'))}
-                <useMapGeocode address={address} />
+                {/* {(console.log(address), console.log('住所'))}
+                <Map address={address} /> */}
               </div>
             </div>
           </div>
