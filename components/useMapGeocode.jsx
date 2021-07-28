@@ -1,11 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Map } from './map';
-
-// axios.defaults.baseURL = 'http://localhost:3000';
-// axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
-// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-// axios.defaults.withCredentials = true;
+// import { Map } from './map';
 
 export const useMapGeocode = async (address) => {
   const [lat, setLat] = useState(null);
@@ -33,25 +28,12 @@ export const useMapGeocode = async (address) => {
           // console.log('この上２個');
         }
       });
-      // console.log(response.json);
-
-      // return response.data;
     };
-    return mapData(address);
+    // return mapData(address);
+    return mapData;
   }, []);
 
-  // axios.get(
-  //   `/api/yahooGeocode?address=${address}`
-
-  //   {
-  //     withCredentials: true,
-  //   }
-  return;
-  <div>
-    <Map lat={lat} lon={lon} />
-  </div>;
-  // );
-
+  return { lat, lon };
   // console.log(axios);
 };
 // useEffect(() => {
