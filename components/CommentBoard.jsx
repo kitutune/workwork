@@ -2,8 +2,10 @@ import { supabase } from 'utils/supabaseClient';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
-
+import { Auth } from '@supabase/ui';
 export const CommentBoard = (props) => {
+  const { user } = Auth.useUser();
+  const user_id = user.id;
   const id = props.id;
   const messageEl = useRef(null);
   const [userDb, setUserDb] = useState({});
@@ -18,14 +20,18 @@ export const CommentBoard = (props) => {
     console.log(messageEl.current.value);
     console.log('messageEl.current.value');
     console.log('送信しました');
+    console.log(id);
+    console.log(user_id);
+    console.log('user_id');
+
       return await supabase.from('企業コメント').insert([
         {
           企業情報_id: id,
-          ユーザー_id: userDb.id,
+        user_id: user_id,
           コメント欄: messageEl.current.value,
         },
       ]);
-    }
+  }, []);
   const addMessage = useCallback(() => {
     insertDB();
     messageEl.current.value = '';
