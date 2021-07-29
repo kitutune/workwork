@@ -3,12 +3,13 @@ import { Profile } from './Profile';
 import { ToolModal } from './ToolModal';
 import { Auth } from '@supabase/ui';
 import { useState } from 'react';
+import cc from 'classcat';
 export const Header = () => {
   const { user } = Auth.useUser();
-  // console.log(user);
-  // console.log('headerのuser');
+  console.log(user);
+  console.log('headerのuser');
   const [open, setOpen] = useState(false);
-
+  console.log(open);
   const toggle = () => {
     setOpen((prevState) => !prevState);
   };
@@ -32,7 +33,6 @@ export const Header = () => {
               </span>
             </Back>
           </div>
-          <h1>ccccc</h1>
 
           {/* menu */}
           <div className="block lg:hidden">
@@ -50,12 +50,29 @@ export const Header = () => {
               </svg>
             </button>
           </div>
-          <h1>bbbbb</h1>
-          {/* menu */}
 
-          <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-            {open ? (
-              <div className="text-sm lg:flex-grow">
+          {/* menu */}
+          {!user ? (
+            <div></div>
+          ) : (
+            <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+              {/* {open ? <div className={cc([
+                      'text-sm lg:flex-grow md:block',
+                      {
+                        'hidden': !open,
+                       
+                      },
+                    ])}></div> : <div></div>} */}
+
+              {/* <div className="text-sm lg:flex-grow md:block"> */}
+              <div
+                className={cc([
+                  'text-sm lg:flex-grow  md:block',
+                  {
+                    hidden: !open,
+                  },
+                ])}
+              >
                 <a
                   href="#responsive-header"
                   className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
@@ -76,26 +93,23 @@ export const Header = () => {
                   Blog
                 </a>
               </div>
-            ) : (
-              <div></div>
-            )}
-
-            <div>
-              {!user ? (
+              <div>
+                {/* {!user ? (
                 <div></div>
-              ) : (
+              ) : ( */}
                 <ToolModal>
                   <Profile
-                    // button1osita={() => {
-                    //   alert('cancel');
-                    // }}
-                    // button1="sugoi"
-                    uuid={user.id}
+                  // button1osita={() => {
+                  //   alert('cancel');
+                  // }}
+                  // button1="sugoi"
+                  // uuid={user.id}
                   />
                 </ToolModal>
-              )}
+                {/* // )} */}
+              </div>
             </div>
-          </div>
+          )}
         </nav>
       </header>
     </>
