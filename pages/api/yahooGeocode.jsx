@@ -3,7 +3,6 @@ export default async (req, res) => {
   const url = `https://map.yahooapis.jp/geocode/V1/geoCoder?appid=dj0zaiZpPUh0ak1Ra2FTM2FQaSZzPWNvbnN1bWVyc2VjcmV0Jng9NTc-&query=${encodeURIComponent(
     req.query.address
   )}&output=json`;
-  //   const url = `https://map.yahooapis.jp/geocode/V1/geoCoder?appid=dj0zaiZpPUh0ak1Ra2FTM2FQaSZzPWNvbnN1bWVyc2VjcmV0Jng9NTc-&query=${req.query.address}&output=json`;
   console.log(url);
   console.log('URLここ');
   return await axios

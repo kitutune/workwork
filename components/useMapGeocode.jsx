@@ -42,8 +42,8 @@ export const useMapGeocode = (address) => {
     console.log({ lat, lon });
     console.log('手前の奴です');
 
-    return { lat, lon };
-  }, [address, lat, lon]);
+    return { lat: Number(lat), lng: Number(lon) };
+  }, [address, lat, lon])();
 };
 // console.log(axios);
 
