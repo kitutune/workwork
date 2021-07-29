@@ -2,6 +2,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
 
 export const CommentBoard = (props) => {
+  const messageEl = useRef(null);
+  const insertDB = useCallback(async () => {
+    if (!messageEl.current.value) {
+      alert('コメントを投稿するには値を入力して下さい！');
+      return null;
+    }
+    console.log(messageEl.current.value);
+    console.log('messageEl.current.value');
+    console.log('送信しました');
+    return await supabase
+      .from('企業コメント')
+      .insert([{ コメント欄: messageEl.current.value }]);
+  const addMessage = useCallback(() => {
+    insertDB();
+    messageEl.current.value = '';
+  }, []);
   return (
     <>
       <div
@@ -10,11 +26,15 @@ export const CommentBoard = (props) => {
         <div className="w-full flex flex-col">
           <div className="w-full">
             <textarea
+              ref={messageEl}
               className="w-full h-16 p-2 rounded shadow-inner"
-            ></textarea>
+            >
+              aaaaaa
+            </textarea>
           </div>
           <div className="p-1">
             <button
+              onClick={addMessage}
               className="w-full py-2 bg-gray-100 border border-gray-300 rounded shadow"
             >
               送信
