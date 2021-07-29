@@ -1,23 +1,64 @@
+import { supabase } from 'utils/supabaseClient';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
 
 export const CommentBoard = (props) => {
+  const id = props.id;
   const messageEl = useRef(null);
+  const [userDb, setUserDb] = useState({});
   const insertDB = useCallback(async () => {
+    if (userDb) {
     if (!messageEl.current.value) {
       alert('コメントを投稿するには値を入力して下さい！');
       return null;
     }
+      console.log(userDb.id);
+      console.log('userDb');
     console.log(messageEl.current.value);
     console.log('messageEl.current.value');
     console.log('送信しました');
-    return await supabase
-      .from('企業コメント')
-      .insert([{ コメント欄: messageEl.current.value }]);
+      return await supabase.from('企業コメント').insert([
+        {
+          企業情報_id: id,
+          ユーザー_id: userDb.id,
+          コメント欄: messageEl.current.value,
+        },
+      ]);
+    }
   const addMessage = useCallback(() => {
     insertDB();
     messageEl.current.value = '';
   }, []);
+
+  // 認証関連ーーーーーーーーーーーーーーこれより下
+  //   企業情報のDBからidを取ってくる
+  //   useEffect(async () => {
+  //     console.log('マウントされた時');
+  //     const { data, error } = await supabase
+  //       .from('企業情報')
+  //       .select('id')
+  //       .eq('id', id)
+  //       .single();
+
+  //     setCompanyProf(data);
+  //     return;
+  //   }, []);
+
+  //   ユーザーのDBからidを取ってくる
+  useEffect(async () => {
+    console.log('マウントされた時');
+    const { data, error } = await supabase
+      .from('ユーザー')
+      .select('id')
+      //   .eq('id', id)
+      .single();
+
+    setUserDb(data);
+    return;
+  }, []);
+
+  // 認証関連ーーーーーーーーーーーーーーーーーーここまで
   return (
     <>
       <div
