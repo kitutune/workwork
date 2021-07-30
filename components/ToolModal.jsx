@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useCallback, useState } from 'react';
-
+import Image from 'next/image';
 export const ToolModal = (props) => {
   let [isOpen, setIsOpen] = useState(false);
   const closeModal = useCallback(() => {
@@ -11,14 +11,14 @@ export const ToolModal = (props) => {
   }, []);
 
   return (
-    <>
+    <div className={props.style}>
       <div>
         <button
           type="button"
           onClick={openModal}
-          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          // className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
-          Open dialog
+          {props.name}
         </button>
       </div>
 
@@ -53,7 +53,12 @@ export const ToolModal = (props) => {
                   className=" justify-center px-4 py-2 text-sm font-medium  font-bold text-whitebg-transparent border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                   onClick={closeModal}
                 >
-                  X
+                  <Image
+                    width={54}
+                    height={54}
+                    alt="batuicon"
+                    src="/batu.png"
+                  />
                 </button>
               </div>
               &#8203;
@@ -87,7 +92,7 @@ export const ToolModal = (props) => {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </div>
   );
 };
 
