@@ -2,7 +2,7 @@ import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { Back } from 'components/back';
 import { Map } from 'components/map';
 import { useMapGeocode } from 'components/useMapGeocode';
-// import { CommentBoard } from 'components/CommentBoard';
+import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
@@ -21,7 +21,8 @@ const companyInfo = () => {
     // const companyName = companyProf.会社名;
     const address = companyProf.住所;
     // console.log(companyProf);
-    // console.log('companyProfのログ');
+    // console.log(id);
+    console.log('companyProfのログ');
     // console.log(companyName);
     // const sample = useMapGeocode('東京都渋谷区渋谷1-11-8 渋谷パークプラザ5F');
     // console.log(UseMapGeocode('東京都渋谷区渋谷1-11-8 渋谷パークプラザ5F'));
@@ -79,7 +80,7 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    {/* <CommentBoard /> */}
+                    <CommentBoard id={id} />
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
@@ -209,22 +210,27 @@ const companyInfo = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          {/* ここまで追加 */}
-
-          <div className="container mx-auto">
-            <div className="flex justify-center px-6 my-12">
-              {/* <!-- Row --> */}
-              <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                {/* <Map
+              {/* ---------------- */}
+              <div className="flex justify-center px-6 my-12　 lg:hidden">
+                {/* <!-- Row --> */}
+                <div className="w-full xl:w-3/4 lg:w-11/12 flex">
+                  <CommentBoard id={id} />
+                </div>
+              </div>
+              {/* -------------------- */}
+              <div className="flex justify-center px-6 my-12">
+                {/* <!-- Row --> */}
+                <div className="w-full xl:w-3/4 lg:w-11/12 flex">
+                  {/* <Map
                 // address={address}
                 /> */}
-                {/* {(console.log(address), console.log('住所'))}
-                <Map address={address} /> */}
+                  {/* {(console.log(address), console.log('住所'))} */}
+                  {/* <Map address={address} /> */}
+                </div>
               </div>
             </div>
           </div>
+          {/* ここまで追加 */}
         </div>
       );
     }
