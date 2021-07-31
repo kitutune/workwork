@@ -4,7 +4,7 @@ import { Map } from 'components/map';
 import { useMapGeocode } from 'components/useMapGeocode';
 import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
 import { supabase } from 'utils/supabaseClient';
 // import { EditTitle } from '../components/editTitle';
@@ -12,22 +12,118 @@ import { LayoutWrapper } from '../components/layoutWrapper';
 import { EditCompany } from 'components/EditCompany';
 // import { SubtitleList } from '../components/subtitleList';
 
+// 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
+const getCompanyDB = async (id) => {
+  let { data, error } = await supabase
+    .from('企業情報')
+    .select('*')
+    .eq('id', id);
+
+  // .single();
+  if (!error && data) {
+    const companyInfoDb = data[0];
+    // console.log(companyInfoDb);
+    // console.log('取ってきたdataだよ');
+    ({ data, error } = await supabase
+      .from('企業情報補助')
+      .select('*')
+      .eq('企業情報_id', id));
+    if (!error && data) {
+      console.log(data);
+      console.log('111111111111111');
+      return { companyInfoDb: companyInfoDb, companySubInfoDb: data }; // 企業情報DBはある企業情報補助DBある
+    } else {
+      console.log('222222222222');
+      return { companyInfoDb: companyInfoDb, companySubInfoDb: null };
+    }
+  }
+  console.log('333333333333333');
+  return { companyInfoDb: null, companySubInfoDb: null };
+};
+
+// 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要ここまでーーーーーーーーーーーーーーーーーーーーここまで
+
+// Company Informationに変更
 const companyInfo = () => {
   const Container = () => {
     const { user } = Auth.useUser();
+    const [companyInfo, setCompanyInfo] = useState([]);
+    const [companySubInfo, setCompanySubInfo] = useState([]);
+
     const [companyProf, setCompanyProf] = useState({});
     const router = useRouter();
+
+    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここから
     let { id } = router.query;
+    // console.log(id);
+    // console.log('idだよ');
+    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここまで
+
+    // 企業情報を取ってくる関数をコールバックしておくーーーーーーーーーーーーーーーーーーーーここから
+    // const getCompany = useCallback(async () => {
+    //   const { data, error } = await supabase
+    //     .from('企業情報')
+    //     .select('*')
+    //     .eq('id', id)
+    //     .single();
+    //   if (!error && data) {
+    //     console.log(data.URL);
+    //     console.log('取ってきたdataだよ');
+    //     return data;
+    //   }
+    // }, [id]);
+
+    // 企業情報を取ってくる関数をコールバックしておくーーーーーーーーーーーーーーーーーーーーここまで
+    // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
+    const getCompanyDBsData = useCallback(async () => {
+      if (id) {
+        const { companyInfoDb, companySubInfoDb } = await getCompanyDB(id);
+
+        if (companyInfoDb) {
+          console.log(companyInfoDb);
+          console.log('companyInfoDbeeeeeeeeeeeeeeeee');
+          setCompanyInfo(companyInfo);
+          // console.log(companyInfo);
+          // console.log('companyInfoです');
+        } else {
+          // console.log(companyInfoDb);
+          // console.log('companyInfoDbです');
+          console.log('失敗だダダダだダダダダダダダダd');
+          router.push('/');
+        }
+        if (companySubInfoDb) {
+          console.log(companySubInfoDb);
+          setCompanySubInfo(companySubInfo);
+        }
+
+        console.log('到達点じゃいいいいいいいいいいいいいい');
+      }
+    }, [id, router]);
+
+    // console.log('companySubInfoDbeeeeeeeeeee');
+    // console.log(companyInfo);
+    // console.log(companySubInfo);
+    // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
+    // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
+    useEffect(() => {
+      if (!id) {
+        router.push('/');
+      }
+      getCompanyDBsData();
+      // getCompany();
+    }, [getCompanyDBsData, id, router]);
+    // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
 
     // const companyName = companyProf.会社名;
     const address = companyProf.住所;
-    // console.log(companyProf);
-    // console.log(id);
+    console.log(address);
+    console.log('addresssssssssssssssss');
+    const a = companyInfo.住所;
+    console.log(a);
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaa');
+
     console.log('companyProfのログ');
-    // console.log(companyName);
-    // const sample = useMapGeocode('東京都渋谷区渋谷1-11-8 渋谷パークプラザ5F');
-    // console.log(UseMapGeocode('東京都渋谷区渋谷1-11-8 渋谷パークプラザ5F'));
-    // console.log('sample');
+
     {
       /* <useMapGeocode/> */
     }
@@ -47,8 +143,7 @@ const companyInfo = () => {
         console.log('アンマウントされた時');
       };
     }, []);
-
-    // ----------------------BB
+    const ur = 'https://www.tbs.co.jp/anime/dagashi/';
     if (user) {
       return (
         <div>
@@ -103,6 +198,9 @@ const companyInfo = () => {
                         className="z-1"
                       />
                       {companyProf.会社名}
+                      {companyInfo.会社名}
+                      {console.log(companyInfo)}
+                      {console.log('ここはいい色町一丁目')}
                     </h3>
                     <form className="px-8 pt-6 pb-8 mb-4　 bg-white rounded">
                       {/* 　項目ここから */}
@@ -240,7 +338,26 @@ const companyInfo = () => {
             </div>
           </div>
           {/* ここまで追加 */}
-          <EditCompany data={companyProf} />
+          {/* <EditCompany data={companyProf} /> */}
+          {/* "http://capture.heartrails.com/free?https://www.tbs.co.jp/anime/dagashi/"
+          "https://www.tbs.co.jp/anime/dagashi/" */}
+
+          <img
+            // title="TVアニメ『だがしかし2』公式ホームページ｜TBSテレビ"
+            // src="http://capture.heartrails.com/free?"
+            // src="http://capture.heartrails.com/free?https://www.shogakukan.co.jp/pr/dagashikashi/"
+            src="http://capture.heartrails.com/200x150/cool?https://www.tbs.co.jp/anime/dagashi/"
+            // width="200"
+            // height="300"
+          />
+          <img
+            // この？の先にURL入れる
+            // src="http://capture.heartrails.com/free?"
+            // サイズがフリー
+            // src="http://capture.heartrails.com/free?https://www.shogakukan.co.jp/pr/dagashikashi/"
+            // サイズが200X150
+            src="http://capture.heartrails.com/200x150/cool?https://www.tbs.co.jp/anime/dagashi/"
+          />
         </div>
       );
     }
