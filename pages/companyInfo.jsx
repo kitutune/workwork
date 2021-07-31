@@ -9,6 +9,7 @@ import React, { useCallback, useEffect, useState, VFC } from 'react';
 import { supabase } from 'utils/supabaseClient';
 // import { EditTitle } from '../components/editTitle';
 import { LayoutWrapper } from '../components/layoutWrapper';
+import { EditCompany } from 'components/EditCompany';
 // import { SubtitleList } from '../components/subtitleList';
 
 const companyInfo = () => {
@@ -53,7 +54,15 @@ const companyInfo = () => {
         <div>
           <div className="flex justify-end gap-2 my-2 mr-2">
             {/* 右端寄席のCSS */}
-
+            {/* Backボタン表示　ここから */}
+            <div className="w-24">
+              <Back>
+                <Button block size="medium" icon={<IconCornerDownLeft />}>
+                  EDIT
+                </Button>
+              </Back>
+            </div>
+            {/* Backボタン表示　ここまで */}
             {/* Backボタン表示　ここから */}
             <div className="w-24">
               <Back>
@@ -231,6 +240,7 @@ const companyInfo = () => {
             </div>
           </div>
           {/* ここまで追加 */}
+          <EditCompany data={companyProf} />
         </div>
       );
     }
