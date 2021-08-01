@@ -21,8 +21,8 @@ const getCompanyDB = async (id) => {
 
   // .single();
   if (!error && data) {
-    const companyInfoDb = data[0];
-    // console.log(companyInfoDb);
+    const companyInfo = data[0];
+    // console.log(companyInfo);
     // console.log('取ってきたdataだよ');
     ({ data, error } = await supabase
       .from('企業情報補助')
@@ -31,14 +31,14 @@ const getCompanyDB = async (id) => {
     if (!error && data) {
       console.log(data);
       console.log('111111111111111');
-      return { companyInfoDb: companyInfoDb, companySubInfoDb: data }; // 企業情報DBはある企業情報補助DBある
+      return { companyInfo: companyInfo, companySubInfo: data }; // 企業情報DBはある企業情報補助DBある
     } else {
       console.log('222222222222');
-      return { companyInfoDb: companyInfoDb, companySubInfoDb: null };
+      return { companyInfo: companyInfo, companySubInfo: null };
     }
   }
   console.log('333333333333333');
-  return { companyInfoDb: null, companySubInfoDb: null };
+  return { companyInfo: null, companySubInfo: null };
 };
 
 // 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要ここまでーーーーーーーーーーーーーーーーーーーーここまで
@@ -77,22 +77,22 @@ const companyInfo = () => {
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
     const getCompanyDBsData = useCallback(async () => {
       if (id) {
-        const { companyInfoDb, companySubInfoDb } = await getCompanyDB(id);
+        const { companyInfo, companySubInfo } = await getCompanyDB(id);
 
-        if (companyInfoDb) {
-          console.log(companyInfoDb);
-          console.log('companyInfoDbeeeeeeeeeeeeeeeee');
+        if (companyInfo) {
+          console.log(companyInfo);
+          console.log('companyInfoeeeeeeeeeeeeeeeee');
           setCompanyInfo(companyInfo);
           // console.log(companyInfo);
           // console.log('companyInfoです');
         } else {
-          // console.log(companyInfoDb);
-          // console.log('companyInfoDbです');
+          // console.log(companyInfo);
+          // console.log('companyInfoです');
           console.log('失敗だダダダだダダダダダダダダd');
           router.push('/');
         }
-        if (companySubInfoDb) {
-          console.log(companySubInfoDb);
+        if (companySubInfo) {
+          console.log(companySubInfo);
           setCompanySubInfo(companySubInfo);
         }
 
@@ -100,7 +100,7 @@ const companyInfo = () => {
       }
     }, [id, router]);
 
-    // console.log('companySubInfoDbeeeeeeeeeee');
+    // console.log('companySubInfoeeeeeeeeeee');
     // console.log(companyInfo);
     // console.log(companySubInfo);
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
