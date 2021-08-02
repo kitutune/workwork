@@ -1,87 +1,81 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Button } from '@supabase/ui';
+import { supabase } from 'utils/supabaseClient';
+import { useRouter } from 'next/router';
 export const EditCompany = (props) => {
-  const [companyName, setCompanyName] = useState('');
-  const [companyUrl, setCompanyUrl] = useState('');
-  const [companyAddress, setCompanyAddress] = useState('');
-  const [companyPhone, setCompanyPhone] = useState('');
-  const [companyCapital, setCompanyCapital] = useState('');
-  const [companyEmployees, setCompanyEmployees] = useState('');
-  const [companyDate, setCompanyDate] = useState('');
-  const [companyJobSite, setCompanyJobSite] = useState('');
+  const uuid = props.id;
+  const companyInfo = props.companyInfo;
+  const companySubInfo = props.companySubInfo;
+  console.log(companyInfo);
+  console.log('companyInfoooooooooooooooooooo');
+  const router = useRouter();
 
-  const [companyNearestStation, setCompanyNearestStation] = useState('');
-  const [companyAccess, setCompanyAccess] = useState('');
-  const [companyWork, setCompanyWork] = useState('');
-  const [companyParking, setCompanyParking] = useState('');
-  const [companyMotorcycleParking, setCompanyMotorcycleParking] = useState('');
-  const [companyParkingBicycles, setCompanyParkingBicycles] = useState('');
-  const [companyRemarks, setCompanyRemarks] = useState('');
-  console.log(props);
-  console.log('props');
-  const editCompanyInfo = useMemo(() => {
-    async () => {
-      const { data, error } = await supabase
-        .from('企業情報')
-        .select('*')
-        .eq('id', props.data.id)
-        .insert(
-          [
-            {
-              id: uuid,
-              会社名: companyName,
-              URL: companyUrl,
-              住所: companyAddress,
-              電話番号: companyPhone,
-              資本金: companyCapital,
-              社員数: companyEmployees,
-              設立日: companyDate,
-              求人URL: companyJobSite,
-            },
-          ],
-          then((uuid = props.data.id)),
-          setCompanyName(companyName),
-          setCompanyUrl(companyUrl),
-          setCompanyAddress(companyAddress),
-          setCompanyPhone(companyPhone),
-          setCompanyCapital(companyCapital),
-          setCompanyEmployees(companyEmployees),
-          setCompanyDate(companyDate),
-          setCompanyJobSite(companyJobSite),
-          { upsert: true }
-        );
-    };
-  }, [editButton]);
+  const companyName = useRef(null);
+  const companyUrl = useRef(null);
+  const companyAddress = useRef(null);
+  const companyPhone = useRef(null);
+  const companyCapital = useRef(null);
+  const companyEmployees = useRef(null);
+  const companyDate = useRef(null);
+  const companyJobSite = useRef(null);
 
-  const editCompanyInfosub = useMemo(() => {
-    async () => {
-      const { data, error } = await supabase
-        .from('企業情報補助')
-        .select('*')
-
-        .insert(
-          [
-            {
-              企業情報_id: uuid,
-              最寄駅: companyNearestStation,
-              アクセス: companyAccess,
-              代表的なアプリ名: companyWork,
-              駐輪場: companyParking,
-              バイク置き場: companyMotorcycleParking,
-              駐車場: companyParkingBicycles,
-              備考欄: companyRemarks,
-            },
-          ],
-          then((uuid = props.data.id)),
-          { upsert: true }
-        );
-    };
-  }, [editButton]);
-
-  const editButton = () => {
-    editCompanyInfo();
-    editCompanyInfosub();
-  };
+  const companyNearestStation = useRef(null);
+  const companyAccess = useRef(null);
+  const companyWork = useRef(null);
+  const companyParking = useRef(null);
+  const companyMotorcycleParking = useRef(null);
+  const companyParkingBicycles = useRef(null);
+  const companyRemarks = useRef(null);
+  //   const editButton = useCallback(() => {
+  //     // if (name.current.value == '') {
+  //     //   alert('名前を入力してください!');
+  //     //   return;
+  //     // }
+  //     console.log(uuid);
+  //     console.log('uuiddedededededede');
+  //     supabase
+  //       .from('企業情報')
+  //       .update({
+  //         会社名: companyName.current.value,
+  //         電話番号: companyPhone.current.value,
+  //         住所: companyAddress.current.value,
+  //         資本金: companyCapital.current.value,
+  //         社員数: companyEmployees.current.value,
+  //         設立日: companyDate.current.value,
+  //         URL: companyUrl.current.value,
+  //         求人URL: companyJobSite.current.value,
+  //       })
+  //       .eq('id', uuid)
+  //       .then(() => {
+  //         router.reload();
+  //       });
+  //   }, []);
+  console.log(uuid);
+  console.log('uuiddedededededede');
+  //   const editButton = useCallback(() => {
+  //     // if (name.current.value == '') {
+  //     //   alert('名前を入力してください!');
+  //     //   return;
+  //     // }
+  //     console.log(uuid);
+  //     console.log('uuiddedededededede');
+  //     supabase
+  //       .from('企業情報補助')
+  //       .update({
+  //         最寄駅: companyNearestStation.current.value,
+  //         アクセス: companyAccess.current.value,
+  //         代表的なアプリ: companyWork.current.value,
+  //         駐車場: companyParking.current.value,
+  //         バイク置き場: companyMotorcycleParking.current.value,
+  //         駐輪場: companyParkingBicycles.current.value,
+  //         備考欄: companyRemarks.current.value,
+  //       })
+  //       .eq('企業情報_id', uuid)
+  //       .then(() => {
+  //         router.reload();
+  //       });
+  //   }, []);
+  // ーーーーーーーーーーーーーーーーーーーーーーーーーー
   return (
     <div>
       <div className="min-w-screen min-h-screen bg-gray-100 flex flex-col items-center justify-center">
@@ -89,22 +83,17 @@ export const EditCompany = (props) => {
           <div className="flex flex-col">
             <div
               id="header"
-              className="flex flex-col items-center justify-center text-white py-4 bg-blue-800"
+              className="flex flex-col items-center justify-center  py-4 bg-blue-800"
             >
-              <div className="text-center uppercase text-2xl">
-                会社名{props.data.会社名}
-              </div>
+              <div className="text-center uppercase text-2xl">会社名</div>
               <input
-                type="number"
-                id="weight-kilograms"
+                // type="number"
+
                 className="text-center uppercase text-xl"
-                // placeholder={props.data.会社名}
-                value={companyName}
-                onChange={(e) => {
-                  return setCompanyName(() => e.target.value);
-                }}
+                defaultValue={props.companyInfo.会社名}
+                ref={companyName}
               />
-              <div className="text-sm">
+              {/* <div className="text-sm">
                 <a
                   className="hover:underline"
                   href="https://codepen.io/webgleb/full/GRNdeLv"
@@ -112,239 +101,202 @@ export const EditCompany = (props) => {
                 >
                   Live version with JS
                 </a>
-              </div>
+              </div> */}
             </div>
 
             <div id="converters-area" className="px-4 py-5">
-              <div className="flex flex-col text-white">
+              <div className="flex flex-col text-black">
                 <div className="flex items-center justify-between mb-5">
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="weight-kilograms">
-                      URL{props.data.URL}
-                    </label>
-                    <input
-                      type="number"
-                      id="weight-kilograms"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      //   placeholder={props.data.URL}
-                      value={companyUrl}
-                      onChange={(e) => {
-                        return setCompanyUrl(() => e.target.value);
-                      }}
-                    />
-                  </div>
                   <div className="flex flex-col text-center w-3/6 px-2">
                     <label className="mb-1" for="weight-pounds">
-                      住所{props.data.住所}
+                      住所
                     </label>
                     <input
-                      type="number"
+                      //   type="number"
+                      defaultValue={props.companyInfo.住所}
                       id="weight-pounds"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      //   placeholder={props.data.住所}
-                      value={companyAddress}
-                      onChange={(e) => {
-                        return setCompanyAddress(() => e.target.value);
-                      }}
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyAddress}
                     />
                   </div>
-                </div>
-                {/* <div className="flex items-center justify-between mb-5">
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="height-metres">
-                      電話番号{props.data.電話番号}
-                    </label>
-                    <input
-                      type="number"
-                      id="height-metres"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      //   placeholder={props.data.電話番号}
-                      value={companyPhone}
-                      onChange={(e) => {
-                        return setCompanyPhone(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="height-feet">
-                      資本金{props.data.資本金}
-                    </label>
-                    <input
-                      type="number"
-                      id="height-feet"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      //   placeholder={props.data.資本金}
-                      value={companyCapital}
-                      onChange={(e) => {
-                        return setCompanyCapital(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="height-metres">
-                      社員数{props.data.社員数}
-                    </label>
-                    <input
-                      type="number"
-                      id="distance-kilometres"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      placeholder={props.data.社員数}
-                      value={companyEmployees}
-                      onChange={(e) => {
-                        return setCompanyEmployees(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="height-feet">
-                      設立日{props.data.設立日}
-                    </label>
-                    <input
-                      type="number"
-                      id="distance-miles"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      placeholder={props.data.設立日}
-                      value={companyDate}
-                      onChange={(e) => {
-                        return setCompanyDate(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="height-metres">
-                      最寄駅{props.data.最寄駅}
-                    </label>
-                    <input
-                      type="number"
-                      id="volume-litres"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      placeholder={props.data.最寄駅}
-                      value={companyNearestStation}
-                      onChange={(e) => {
-                        return setCompanyNearestStation(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="height-feet">
-                      アクセス{props.data.アクセス}
-                    </label>
-                    <input
-                      type="number"
-                      id="volume-gallons"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      placeholder={props.data.アクセス}
-                      value={companyAccess}
-                      onChange={(e) => {
-                        return setCompanyAccess(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mb-5">
                   <div className="flex flex-col text-center w-3/6 px-2">
                     <label className="mb-1" for="weight-kilograms">
-                      代表的なアプリ名{props.data.代表的なアプリ名}
+                      電話番号
                     </label>
                     <input
-                      type="number"
-                      id="weight-kilograms"
+                      //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      placeholder={props.data.代表的なアプリ名}
-                      value={companyWork}
-                      onChange={(e) => {
-                        return setCompanyWork(()=>e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="weight-pounds">
-                      駐輪場
-                    </label>
-                    <input
-                      type="number"
-                      id="weight-pounds"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      value={companyParking}
-                      onChange={(e) => {
-                        return setCompanyParking(()=>e.target.value);
-                      }}
+                      defaultValue={props.companyInfo.電話番号}
+                      ref={companyPhone}
                     />
                   </div>
                 </div>{' '}
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="weight-kilograms">
-                      バイク置き場
+                    <label className="mb-1" for="weight-pounds">
+                      資本金
                     </label>
                     <input
-                      type="number"
-                      id="weight-kilograms"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      value={companyMotorcycleParking}
-                      onChange={(e) => {
-                        return setCompanyMotorcycleParking(()=>e.target.value);
-                      }}
+                      //   type="number"
+                      defaultValue={props.companyInfo.資本金}
+                      id="weight-pounds"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyCapital}
                     />
                   </div>
                   <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="weight-pounds">
-                      駐車場
+                    <label className="mb-1" for="weight-kilograms">
+                      社員数
                     </label>
                     <input
-                      type="number"
-                      id="weight-pounds"
+                      //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      value={companyParkingBicycles}
-                      onChange={(e) => {
-                        return setCompanyParkingBicycles(()=>e.target.value);
-                      }}
+                      defaultValue={props.companyInfo.社員数}
+                      ref={companyEmployees}
+                    />
+                  </div>
+                </div>{' '}
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-pounds">
+                      設立日
+                    </label>
+                    <input
+                      //   type="number"
+                      defaultValue={props.companyInfo.設立日}
+                      id="weight-pounds"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyDate}
+                    />
+                  </div>
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-kilograms">
+                      求人ページ
+                    </label>
+                    <input
+                      //   type="number"
+                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
+                      defaultValue={props.companyInfo.求人URL}
+                      ref={companyJobSite}
+                    />
+                  </div>
+                </div>{' '}
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-pounds">
+                      企業URL
+                    </label>
+                    <input
+                      //   type="number"
+                      defaultValue={props.companyInfo.URL}
+                      id="weight-pounds"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyUrl}
+                    />
+                  </div>
+                </div>
+                <div className="border-pink-50 border-2"></div>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-pounds">
+                      最寄駅
+                    </label>
+                    <input
+                      //   type="number"
+                      defaultValue={props.companyInfo.最寄駅}
+                      id="weight-pounds"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyNearestStation}
+                    />
+                  </div>
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-kilograms">
+                      アクセス
+                    </label>
+                    <input
+                      //   type="number"
+                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
+                      defaultValue={props.companyInfo.アクセス}
+                      ref={companyAccess}
                     />
                   </div>
                 </div>
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1" for="weight-kilograms">
-                      求人情報サイト
+                    <label className="mb-1" for="weight-pounds">
+                      代表的なアプリ
                     </label>
                     <input
-                      type="number"
-                      id="weight-kilograms"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      value={companyRemarks}
-                      onChange={(e) => {
-                        return setCompanyRemarks(()=>e.target.value);
-                      }}
+                      //   type="number"
+                      defaultValue={props.companyInfo.代表的なアプリ名}
+                      id="weight-pounds"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyWork}
                     />
                   </div>
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-kilograms">
+                      駐車場
+                    </label>
+                    <input
+                      //   type="number"
+                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
+                      defaultValue={props.companyInfo.駐車場}
+                      ref={companyParking}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-pounds">
+                      バイク置き場
+                    </label>
+                    <input
+                      //   type="number"
+                      defaultValue={props.companyInfo.バイク置き場}
+                      id="weight-pounds"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyMotorcycleParking}
+                    />
+                  </div>
+                  <div className="flex flex-col text-center w-3/6 px-2">
+                    <label className="mb-1" for="weight-kilograms">
+                      駐輪場
+                    </label>
+                    <input
+                      //   type="number"
+                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
+                      defaultValue={props.companyInfo.駐輪場}
+                      ref={companyParkingBicycles}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mb-5">
                   <div className="flex flex-col text-center w-3/6 px-2">
                     <label className="mb-1" for="weight-pounds">
                       備考欄
                     </label>
-                    <input
-                      type="number"
+                    <textarea
+                      //   type="number"
+                      defaultValue={props.companyInfo.備考欄}
                       id="weight-pounds"
-                      className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
+                      className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
+                      ref={companyRemarks}
                     />
                   </div>
-                </div> */}
-                <div className="flex items-center justify-evenly mb-5">
+                </div>
+                {/* ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー */}
+                <div className="flex items-center justify-evenly mb-5　">
                   <Button>
                     <div
-                      className="py-4 px-16 text-lg rounded text-white"
+                      className="py-4 px-8 text-lg rounded "
                       onClick={editButton}
                     >
-                      編集
+                      変更
                     </div>
                   </Button>
                   <Button>
-                    <div className="py-4 px-16 text-lg rounded text-white">
-                      戻る
-                    </div>
+                    <div className="py-4 px-8 text-lg rounded ">戻る</div>
                   </Button>
                 </div>
                 {/* 選択型投稿画面ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー〜 */}
