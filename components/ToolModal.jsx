@@ -45,7 +45,9 @@ export const ToolModal = (props) => {
               className="inline-block h-screen align-middle static"
               aria-hidden="true"
             >
-              <div>{props.children}</div>
+              <div className="fixed inset-0 z-10 overflow-y-auto">
+                {props.children}
+              </div>
               <div className="absolute right-0 z-20 top-0 p-4">
                 <button
                   type="button"
