@@ -64,7 +64,10 @@ export const Profile = (props) => {
   // console.log(!!{});
   return (
     <div>
-      <div as="div" className="fixed inset-0 z-10 overflow-y-auto">
+      <div
+        as="div"
+        // className="fixed inset-0 z-10 overflow-y-auto"
+      >
         <div className="min-h-screen px-4 text-center border-2">
           <span
             className="inline-block h-screen align-middle"
