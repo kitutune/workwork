@@ -10,6 +10,8 @@ import { supabase } from 'utils/supabaseClient';
 // import { EditTitle } from '../components/editTitle';
 import { LayoutWrapper } from '../components/layoutWrapper';
 import { EditCompany } from 'components/EditCompany';
+import { ToolModal } from 'components/ToolModal';
+
 // import { SubtitleList } from '../components/subtitleList';
 
 // 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
@@ -118,13 +120,19 @@ const companyInfo = () => {
         <div>
           <div className="flex justify-end gap-2 my-2 mr-2">
             {/* 右端寄席のCSS */}
+
             {/* Backボタン表示　ここから */}
             <div className="w-24">
-              <Back>
-                <Button block size="medium" icon={<IconCornerDownLeft />}>
-                  EDIT
-                </Button>
-              </Back>
+              <Button block size="medium" icon={<IconCornerDownLeft />}>
+                {/* EDIT */}
+                <ToolModal name="EDIT">
+                  <EditCompany
+                    companyInfo={companyInfo}
+                    companySubInfo={companySubInfo}
+                    id={id}
+                  />
+                </ToolModal>
+              </Button>
             </div>
             {/* Backボタン表示　ここまで */}
             {/* Backボタン表示　ここから */}
@@ -179,8 +187,8 @@ const companyInfo = () => {
                           </label>
                           <div
                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="email"
-                            type="email"
+                            id="address"
+                            type="address"
                           >
                             {companyInfo.住所}
                           </div>
@@ -212,8 +220,8 @@ const companyInfo = () => {
 
                           <div
                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="email"
-                            type="email"
+                            id="capital"
+                            type="capital"
                           >
                             {companyInfo.資本金}
                             万円
@@ -246,8 +254,8 @@ const companyInfo = () => {
 
                           <div
                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="email"
-                            type="email"
+                            id="date"
+                            type="date"
                           >
                             {companyInfo.設立日}
                           </div>
@@ -318,30 +326,6 @@ const companyInfo = () => {
             </div>
           </div>
           {/* ここまで追加 */}
-          <EditCompany
-            companyInfo={companyInfo}
-            companySubInfo={companySubInfo}
-            id={id}
-          />
-          {/* "http://capture.heartrails.com/free?https://www.tbs.co.jp/anime/dagashi/"
-          "https://www.tbs.co.jp/anime/dagashi/" */}
-
-          <img
-            // title="TVアニメ『だがしかし2』公式ホームページ｜TBSテレビ"
-            // src="http://capture.heartrails.com/free?"
-            // src="http://capture.heartrails.com/free?https://www.shogakukan.co.jp/pr/dagashikashi/"
-            src="http://capture.heartrails.com/200x150/cool?https://www.tbs.co.jp/anime/dagashi/"
-            // width="200"
-            // height="300"
-          />
-          <img
-            // この？の先にURL入れる
-            // src="http://capture.heartrails.com/free?"
-            // サイズがフリー
-            // src="http://capture.heartrails.com/free?https://www.shogakukan.co.jp/pr/dagashikashi/"
-            // サイズが200X150
-            src="http://capture.heartrails.com/200x150/cool?https://www.tbs.co.jp/anime/dagashi/"
-          />
         </div>
       );
     }
