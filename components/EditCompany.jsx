@@ -26,7 +26,8 @@ export const EditCompany = (props) => {
   const companyMotorcycleParking = useRef(null);
   const companyParkingBicycles = useRef(null);
   const companyRemarks = useRef(null);
-  const companyInfoEditButton = useCallback(() => {
+  //   const companyInfoEditButton = useCallback(() => {
+  const editButton = useCallback(() => {
     // if (name.current.value == '') {
     //   alert('名前を入力してください!');
     //   return;
@@ -45,10 +46,11 @@ export const EditCompany = (props) => {
         URL: companyUrl.current.value,
         求人URL: companyJobSite.current.value,
       })
-      .eq('id', uuid);
-    //   .then(() => {
-    //     router.reload();
-    //   });
+      .eq('id', uuid)
+      //   .then(() => {
+      //     router.reload();
+      //   });
+      .then(() => router.push(`/companyInfo?id=${uuid}`));
   }, []);
   //   console.log(uuid);
   //   console.log('uuiddedededededede');
@@ -76,10 +78,25 @@ export const EditCompany = (props) => {
     //   });
   }, []);
   // ーーーーーーーーーーーーーーーーーーーーーーーーーー
-  const editButton = () => {
-    companyInfoEditButton();
-    companyInfoSubEditButton();
-  };
+  //   const editButton = () => {
+  //     const edit = () => {
+  //       companyInfoEditButton();
+  //       companyInfoSubEditButton();
+  //       //   router.push(`/companyInfo?id=${uuid}`);
+  //     };
+  //     edit();
+  //     edit().thne(router.push(`/companyInfo?id=${uuid}`));
+  //   };
+  // -----------------------------------------------
+  //   const editButton = () => {
+  //     companyInfoEditButton();
+  //     companyInfoSubEditButton();
+  //     if (uuid) {
+  //       router.reload();
+  //     }
+  //   router.push(`/companyInfo?id=${uuid}`);
+  //   };
+  const backButton = () => {};
   return (
     <div>
       <div className="min-w-screen min-h-screen bg-gray-100 flex flex-col items-center justify-center">
@@ -118,7 +135,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       defaultValue={props.companyInfo.住所}
-                      id="weight-pounds"
+                      id="address"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyAddress}
                     />
@@ -143,7 +160,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       defaultValue={props.companyInfo.資本金}
-                      id="weight-pounds"
+                      id="capital"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyCapital}
                     />
@@ -168,7 +185,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       defaultValue={props.companyInfo.設立日}
-                      id="weight-pounds"
+                      id="date"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyDate}
                     />
@@ -193,7 +210,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       defaultValue={props.companyInfo.URL}
-                      id="weight-pounds"
+                      id="homeurl"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyUrl}
                     />
@@ -233,7 +250,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       defaultValue={props.companySubInfo.代表的なアプリ名}
-                      id="weight-pounds"
+                      id="work"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyWork}
                     />
@@ -258,7 +275,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       defaultValue={props.companySubInfo.バイク置き場}
-                      id="weight-pounds"
+                      id="motorcycleparking"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyMotorcycleParking}
                     />
@@ -283,7 +300,7 @@ export const EditCompany = (props) => {
                     <textarea
                       //   type="number"
                       defaultValue={props.companySubInfo.備考欄}
-                      id="weight-pounds"
+                      id="remarks"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyRemarks}
                     />
@@ -299,7 +316,7 @@ export const EditCompany = (props) => {
                       変更
                     </div>
                   </Button>
-                  <Button>
+                  <Button onClick={backButton}>
                     <div className="py-4 px-8 text-lg rounded ">戻る</div>
                   </Button>
                 </div>
