@@ -20,7 +20,7 @@ export const Header = () => {
         <nav className="flex items-center justify-between flex-wrap bg-teal p-6">
           <div className="flex items-center flex-no-shrink text-white mr-6">
             <Back>
-              <Image width={54} height={54} alt="humanicon" src="/human.png" />
+              <Image width={250} height={64} alt="jobicon" src="/job.png" />
             </Back>
           </div>
           {!user ? (
@@ -34,7 +34,7 @@ export const Header = () => {
                   onClick={toggle}
                   className="flex items-center px-3 py-2 border rounded text-teal-lighter border-teal-light hover:text-white hover:border-white"
                 >
-                  {open ? (
+                  {!open ? (
                     <Image
                       width={20}
                       height={20}
