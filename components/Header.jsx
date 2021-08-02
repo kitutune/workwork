@@ -7,10 +7,9 @@ import Image from 'next/image';
 import cc from 'classcat';
 export const Header = () => {
   const { user } = Auth.useUser();
-  console.log(user);
-  console.log('headerのuser');
+
   const [open, setOpen] = useState(false);
-  // console.log(open);
+
   const toggle = () => {
     setOpen((prevState) => !prevState);
   };
@@ -27,8 +26,6 @@ export const Header = () => {
             <div></div>
           ) : (
             <>
-              {console.log(open)}
-              {console.log('open')}
               <div className="block lg:hidden">
                 <button
                   onClick={toggle}
@@ -49,21 +46,13 @@ export const Header = () => {
                       src="/batu.png"
                     />
                   )}
-                  {/* <svg
-                    className="h-3 w-3"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Menu</title>
-                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                  </svg> */}
                 </button>
               </div>
 
               <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div
                   className={cc([
-                    'text-sm lg:flex-grow  md:block',
+                    'text-sm lg:flex-grow  lg:block',
                     {
                       hidden: !open,
                     },
