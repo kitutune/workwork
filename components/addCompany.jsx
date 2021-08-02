@@ -27,32 +27,37 @@ export const Addcompany = (props) => {
     setCompanyAddress('');
     setIsOpen(false);
   }, []);
-  // 漫画タイトルの追加
-  const handleAdd = useCallback(
-    async (uuid) => {
-      if (companyName == '') {
-        alert('Input companyName.');
-        return;
+  // 企業名の追加
+  const handleAdd = useCallback(async () => {
+    if (companyName == '') {
+      alert('Input companyName.');
+      return;
+    }
+    let { data, error } = await supabase.from('企業情報').insert([
+      {
+        会社名: companyName,
+        URL: companyUrl,
+        住所: companyAddress,
+      },
+    ]);
+    const company_uuid = data[0].id;
+    console.log(company_uuid);
+    console.log('gjsa;baajaiyjap:g:ps:prajth:aht:n');
+    ({ data, error } = await supabase.from('企業情報補助').insert([
+      {
+        企業情報_id: company_uuid,
+      },
+    ]));
+
+    if (error) {
+      alert(error);
+    } else {
+      if (data) {
+        props.getCompanyList();
+        closeModal();
       }
-      const { data, error } = await supabase.from('企業情報').insert([
-        {
-          // 企業_id: uuid,
-          会社名: companyName,
-          URL: companyUrl,
-          住所: companyAddress,
-        },
-      ]);
-      if (error) {
-        alert(error);
-      } else {
-        if (data) {
-          props.getCompanyList();
-          closeModal();
-        }
-      }
-    },
-    [companyName, companyUrl, companyAddress, props, closeModal]
-  );
+    }
+  }, [companyName, companyUrl, companyAddress, props, closeModal]);
 
   return (
     <>

@@ -29,13 +29,16 @@ const getCompanyDB = async (id) => {
       .select('*')
       .eq('企業情報_id', id));
     if (!error && data) {
+      const companySubInfo = data[0];
       console.log(data);
       console.log('111111111111111');
-      return { companyInfo: companyInfo, companySubInfo: data }; // 企業情報DBはある企業情報補助DBある
-    } else {
-      console.log('222222222222');
-      return { companyInfo: companyInfo, companySubInfo: null };
+
+      return { companyInfo: companyInfo, companySubInfo: companySubInfo }; // 企業情報DBはある企業情報補助DBある
     }
+    // else {
+    //   console.log('222222222222');
+    //   return { companyInfo: companyInfo, companySubInfo: null };
+    // }
   }
   console.log('333333333333333');
   return { companyInfo: null, companySubInfo: null };
@@ -50,30 +53,15 @@ const companyInfo = () => {
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
 
-    const [companyProf, setCompanyProf] = useState({});
+    // const [companyProf, setCompanyProf] = useState({});
     const router = useRouter();
-
+    const isReady = router.isReady;
     // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここから
     let { id } = router.query;
     // console.log(id);
     // console.log('idだよ');
     // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここまで
 
-    // 企業情報を取ってくる関数をコールバックしておくーーーーーーーーーーーーーーーーーーーーここから
-    // const getCompany = useCallback(async () => {
-    //   const { data, error } = await supabase
-    //     .from('企業情報')
-    //     .select('*')
-    //     .eq('id', id)
-    //     .single();
-    //   if (!error && data) {
-    //     console.log(data.URL);
-    //     console.log('取ってきたdataだよ');
-    //     return data;
-    //   }
-    // }, [id]);
-
-    // 企業情報を取ってくる関数をコールバックしておくーーーーーーーーーーーーーーーーーーーーここまで
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
     const getCompanyDBsData = useCallback(async () => {
       if (id) {
@@ -106,44 +94,25 @@ const companyInfo = () => {
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
     useEffect(() => {
-      if (!id) {
+      if (!id && isReady) {
         router.push('/');
       }
       getCompanyDBsData();
       // getCompany();
-    }, [getCompanyDBsData, id, router]);
+    }, [getCompanyDBsData, id]);
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
 
-    // const companyName = companyProf.会社名;
-    const address = companyProf.住所;
+    const address = companyInfo.住所;
     console.log(address);
     console.log('addresssssssssssssssss');
     const a = companyInfo.住所;
     console.log(a);
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaa');
 
-    console.log('companyProfのログ');
-
     {
       /* <useMapGeocode/> */
     }
-    useEffect(async () => {
-      console.log('マウントされた時');
-      const { data, error } = await supabase
-        .from('企業情報')
-        .select('*')
-        .eq('id', id)
-        .single();
 
-      setCompanyProf(data);
-      // --------------
-
-      // ^^^^^^^^^^^^^^^^
-      return () => {
-        console.log('アンマウントされた時');
-      };
-    }, []);
-    const ur = 'https://www.tbs.co.jp/anime/dagashi/';
     if (user) {
       return (
         <div>
@@ -197,7 +166,6 @@ const companyInfo = () => {
                         src="/company2.png"
                         className="z-1"
                       />
-                      {companyProf.会社名}
                       {companyInfo.会社名}
                       {console.log(companyInfo)}
                       {console.log('ここはいい色町一丁目')}
@@ -214,7 +182,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.住所}
+                            {companyInfo.住所}
                           </div>
                         </div>
                       </div>
@@ -230,7 +198,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.電話番号}
+                            {companyInfo.電話番号}
                           </div>
                         </div>
                       </div>
@@ -247,7 +215,8 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.資本金}万円
+                            {companyInfo.資本金}
+                            万円
                           </div>
                         </div>
                       </div>
@@ -263,7 +232,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.社員数}人
+                            {companyInfo.社員数}人
                           </div>
                         </div>
                       </div>
@@ -280,11 +249,22 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyProf.設立日}
+                            {companyInfo.設立日}
                           </div>
                         </div>
                       </div>
                       {/* 　項目ここまで */}
+                      <button
+                        className="w-full mb-4 px-4 py-2 font-bold text-white
+                         bg-blue-500 rounded-full hover:bg-blue-700 
+                         focus:outline-none focus:shadow-outline
+                         "
+                        type="button"
+                      >
+                        <a href={companyInfo.URL} target="_blank">
+                          HPへ
+                        </a>
+                      </button>
                       <button
                         className="w-full px-4 py-2 font-bold text-white
                          bg-blue-500 rounded-full hover:bg-blue-700 
@@ -292,8 +272,8 @@ const companyInfo = () => {
                          "
                         type="button"
                       >
-                        <a href={companyProf.URL} target="_blank">
-                          Webサイトへ
+                        <a href={companyInfo.求人URL} target="_blank">
+                          求人サイトへ
                         </a>
                       </button>
                       <hr className="mb-6 border-t" />
@@ -338,7 +318,11 @@ const companyInfo = () => {
             </div>
           </div>
           {/* ここまで追加 */}
-          {/* <EditCompany data={companyProf} /> */}
+          <EditCompany
+            companyInfo={companyInfo}
+            companySubInfo={companySubInfo}
+            id={id}
+          />
           {/* "http://capture.heartrails.com/free?https://www.tbs.co.jp/anime/dagashi/"
           "https://www.tbs.co.jp/anime/dagashi/" */}
 
