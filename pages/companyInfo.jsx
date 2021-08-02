@@ -1,18 +1,13 @@
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { Back } from 'components/back';
-import { Map } from 'components/map';
-import { useMapGeocode } from 'components/useMapGeocode';
 import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
 import router, { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
 import { supabase } from 'utils/supabaseClient';
-// import { EditTitle } from '../components/editTitle';
 import { LayoutWrapper } from '../components/layoutWrapper';
 import { EditCompany } from 'components/EditCompany';
 import { ToolModal } from 'components/ToolModal';
-
-// import { SubtitleList } from '../components/subtitleList';
 
 // 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
@@ -21,19 +16,14 @@ const getCompanyDB = async (id) => {
     .select('*')
     .eq('id', id);
 
-  // .single();
   if (!error && data) {
     const companyInfo = data[0];
-    // console.log(companyInfo);
-    // console.log('取ってきたdataだよ');
     ({ data, error } = await supabase
       .from('企業情報補助')
       .select('*')
       .eq('企業情報_id', id));
     if (!error && data) {
       const companySubInfo = data[0];
-      console.log(data);
-      console.log('111111111111111');
 
       return { companyInfo: companyInfo, companySubInfo: companySubInfo }; // 企業情報DBはある企業情報補助DBある
     }
@@ -55,13 +45,10 @@ const companyInfo = () => {
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
 
-    // const [companyProf, setCompanyProf] = useState({});
     const router = useRouter();
     const isReady = router.isReady;
     // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここから
     let { id } = router.query;
-    // console.log(id);
-    // console.log('idだよ');
     // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここまで
 
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
@@ -70,29 +57,16 @@ const companyInfo = () => {
         const { companyInfo, companySubInfo } = await getCompanyDB(id);
 
         if (companyInfo) {
-          console.log(companyInfo);
-          console.log('companyInfoeeeeeeeeeeeeeeeee');
           setCompanyInfo(companyInfo);
-          // console.log(companyInfo);
-          // console.log('companyInfoです');
         } else {
-          // console.log(companyInfo);
-          // console.log('companyInfoです');
-          console.log('失敗だダダダだダダダダダダダダd');
           router.push('/');
         }
         if (companySubInfo) {
-          console.log(companySubInfo);
           setCompanySubInfo(companySubInfo);
         }
-
-        console.log('到達点じゃいいいいいいいいいいいいいい');
       }
     }, [id, router]);
 
-    // console.log('companySubInfoeeeeeeeeeee');
-    // console.log(companyInfo);
-    // console.log(companySubInfo);
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
     useEffect(() => {
@@ -100,16 +74,10 @@ const companyInfo = () => {
         router.push('/');
       }
       getCompanyDBsData();
-      // getCompany();
     }, [getCompanyDBsData, id]);
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
 
     const address = companyInfo.住所;
-    console.log(address);
-    console.log('addresssssssssssssssss');
-    const a = companyInfo.住所;
-    console.log(a);
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaa');
 
     {
       /* <useMapGeocode/> */
@@ -314,13 +282,20 @@ const companyInfo = () => {
               </div>
               {/* -------------------- */}
               <div className="flex justify-center px-6 my-12">
-                {/* <!-- Row --> */}
-                <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  {/* <Map
-                // address={address}
-                /> */}
-                  {/* {(console.log(address), console.log('住所'))} */}
-                  {/* <Map address={address} /> */}
+                <div className="w-1/5 xl:w-3/4 lg:w-11/12 flex"></div>
+              </div>
+              <div className="flex justify-center px-6 my-12">
+                <div
+                  className="  w-full  
+                  object-contain
+                  justify-center
+                flex"
+                >
+                  <iframe
+                    src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
+                    width="900"
+                    height="900"
+                  ></iframe>
                 </div>
               </div>
             </div>
