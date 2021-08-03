@@ -10,7 +10,7 @@ import { EditCompany } from 'components/EditCompany';
 import { ToolModal } from 'components/ToolModal';
 import { BsCardList } from 'react-icons/bs';
 // import { BsCardList, GrMapLocation, GrMap } from 'react-icons/fa';
-import { GrMapLocation } from 'react-icons/gr';
+import { GrMapLocation, GrLike } from 'react-icons/gr';
 // 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
   let { data, error } = await supabase
@@ -59,11 +59,22 @@ const companyInfo = () => {
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
 
-    const router = useRouter();
-    const isReady = router.isReady;
-    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここから
-    let { id } = router.query;
-    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここまで
+      const { data, error } = await supabase.from('flug').insert(
+        [
+          {
+            ブックマーク: isLike,
+            user_id: user.id,
+            企業情報_id: id,
+          },
+        ],
+        { upsert: true }
+      );
+      if (isLike == true) {
+        alert('お気に入りに登録しました！');
+      } else {
+        alert('お気に入りを解除しました！');
+      }
+    };
 
     // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
     const getCompanyDBsData = useCallback(async () => {
@@ -151,6 +162,9 @@ const companyInfo = () => {
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
+                    <button className="float-right" onClick={likeButton}>
+                      <GrLike type="button" />
+                    </button>
                     <h3 className="pt-4 text-2xl text-center">
                       <Image
                         width={40}
