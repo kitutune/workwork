@@ -78,7 +78,8 @@ const companyInfo = () => {
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
 
     const address = companyInfo.住所;
-
+    const date = companyInfo.更新日;
+    const date2 = companySubInfo.更新日補助;
     {
       /* <useMapGeocode/> */
     }
@@ -112,6 +113,9 @@ const companyInfo = () => {
               </Back>
             </div>
             {/* Backボタン表示　ここまで */}
+          </div>
+          <div className="flex flex-row-reverse">
+            <div>更新日:{date >= date2 ? date : date2}</div>
           </div>
           {/* ここから追加 */}
           <div className="font-mono bg-gray-400">
@@ -282,7 +286,11 @@ const companyInfo = () => {
               </div>
               {/* -------------------- */}
               <div className="flex justify-center px-6 my-12">
-                <div className="w-1/5 xl:w-3/4 lg:w-11/12 flex"></div>
+                <div
+                  className="
+                
+                "
+                ></div>
               </div>
               <div className="flex justify-center px-6 my-12">
                 <div
@@ -293,8 +301,8 @@ const companyInfo = () => {
                 >
                   <iframe
                     src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
-                    width="900"
-                    height="900"
+                    width="700"
+                    height="700"
                   ></iframe>
                 </div>
               </div>
