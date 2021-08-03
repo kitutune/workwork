@@ -41,6 +41,12 @@ const getCompanyDB = async (id) => {
 // Company Informationに変更
 const companyInfo = () => {
   const Container = () => {
+    // map画面のオンオフ
+    const [isOpen, setIsOpen] = useState(false);
+    const toggle = () => {
+      setIsOpen((prevState) => !prevState);
+    };
+    // map画面のオンオフ
     const { user } = Auth.useUser();
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
@@ -379,18 +385,16 @@ const companyInfo = () => {
                           Already have an account? Login!
                         </a>
                       </div> */}
+                      <Button onClick={toggle}>Map</Button>
                     </form>
                   </div>
                 </div>
               </div>
               {/* ---------------- */}
-              <div className="flex justify-center px-6 my-12　 lg:hidden">
-                {/* <!-- Row --> */}
-                <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  <CommentBoard id={id} />
-                </div>
-              </div>
+
               {/* -------------------- */}
+
+              {/* --------------------------- */}
               <div className="flex justify-center px-6 my-12">
                 <div
                   className="
@@ -398,18 +402,31 @@ const companyInfo = () => {
                 "
                 ></div>
               </div>
-              <div className="flex justify-center px-6 my-12">
-                <div
-                  className="  w-full  
+              {/* ---------- */}
+              {isOpen === false ? (
+                <div></div>
+              ) : (
+                <div className="flex justify-center px-6 my-12">
+                  <div
+                    className="  w-full  
                   object-contain
                   justify-center
                 flex"
-                >
-                  <iframe
-                    src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
-                    width="700"
-                    height="700"
-                  ></iframe>
+                  >
+                    <iframe
+                      src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
+                      width="1100"
+                      height="1100"
+                    ></iframe>
+                  </div>
+                </div>
+              )}
+
+              {/* ------------- */}
+              <div className="flex justify-center px-6 my-12　 lg:hidden">
+                {/* <!-- Row --> */}
+                <div className="w-full xl:w-3/4 lg:w-11/12 flex">
+                  <CommentBoard id={id} />
                 </div>
               </div>
             </div>
