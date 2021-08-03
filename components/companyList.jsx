@@ -21,7 +21,7 @@ export const CompanyList = (props) => {
           >
             <div className="p-2 border cursor-pointer">
               <div className="flex justify-center">
-                {company.求人URL ? (
+                {company.URL ? (
                   <div>
                     <img
                       src={`http://capture.heartrails.com/126x200/cool?${company.URL}`}
