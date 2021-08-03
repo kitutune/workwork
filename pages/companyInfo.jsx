@@ -257,6 +257,112 @@ const companyInfo = () => {
                         </a>
                       </button>
                       <hr className="mb-6 border-t" />
+                      {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            最寄駅
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="station"
+                            type="station"
+                          >
+                            {companySubInfo.最寄駅}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */} {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            アクセス
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="access"
+                            type="accses"
+                          >
+                            {companySubInfo.アクセス}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */} {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            WORK
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="address"
+                            type="address"
+                          >
+                            {companySubInfo.代表的なアプリ名}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */} {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            駐輪場
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="address"
+                            type="address"
+                          >
+                            {companySubInfo.駐輪場}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */} {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            バイク置き場
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="address"
+                            type="address"
+                          >
+                            {companySubInfo.バイク置き場}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */} {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            駐車場
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="address"
+                            type="address"
+                          >
+                            {companySubInfo.駐車場}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */} {/* 　項目ここから */}
+                      <div className="mb-4　">
+                        <div className="text-center">
+                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                            備考欄
+                          </label>
+                          <div
+                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="address"
+                            type="address"
+                          >
+                            {companySubInfo.備考欄}
+                          </div>
+                        </div>
+                      </div>
+                      {/* 　項目ここまで */}
                       {/* <div className="text-center">
                         <a
                           className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
