@@ -55,9 +55,8 @@ const companyInfo = () => {
       setCompanyOption((prevState) => !prevState);
     };
     // companyOption画面のオンオフ
-    const { user } = Auth.useUser();
-    const [companyInfo, setCompanyInfo] = useState([]);
-    const [companySubInfo, setCompanySubInfo] = useState([]);
+    const likeButton = async () => {
+      setIsLike((like) => !like);
 
       const { data, error } = await supabase.from('flug').insert(
         [
@@ -162,8 +161,8 @@ const companyInfo = () => {
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
-                    <button className="float-right" onClick={likeButton}>
-                      <GrLike type="button" />
+                    <button className="float-right " onClick={likeButton}>
+                      {!isLike ? <FcLike /> : <FcLikePlaceholder />}
                     </button>
                     <h3 className="pt-4 text-2xl text-center">
                       <Image
