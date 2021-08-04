@@ -1,11 +1,10 @@
 import { Auth, Button, IconLogOut } from '@supabase/ui';
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { LayoutWrapper } from '../components/layoutWrapper';
 import { supabase } from 'utils/supabaseClient';
 import { CompanyList } from 'components/companyList';
-import { CompanyEdit } from 'components/CompanyEdit';
-import { Profile } from 'components/Profile';
 
+// 企業情報テーブルのみ　ここから
 const getCompany = async () => {
   const { data, error } = await supabase
     .from('企業情報')
@@ -16,7 +15,27 @@ const getCompany = async () => {
   }
   return [];
 };
+// 企業情報テーブルのみ　ここまで
+// 企業情報テーブルと flugのを合わせたテーブル　ここから
+// const getCompany = async () => {
+//   const { data, error } = await supabase
+//     .from('企業情報')
+//     .select(
+//       `
+//     id,
+//     flug (
+//       "企業情報_id"
+//     )
+//   `
+//     )
+//     .order('会社名');
+//   if (!error && data) {
+//     return data;
+//   }
+//   return [];
+// };
 
+// 企業情報テーブルと flugのを合わせたテーブル　ここまで
 const Container = (props) => {
   const { user } = Auth.useUser();
   console.log(user);
@@ -36,6 +55,7 @@ const Container = (props) => {
   if (user) {
     return (
       <div>
+        <div>aa</div>
         <div className="flex justify-center gap-2 p-4">
           <input
             className="w-full h-12 px-4 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
@@ -43,9 +63,9 @@ const Container = (props) => {
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          {/* <CompanyEdit /> */}
-          {/* <Profile /> */}
         </div>
+        {console.log(companyNames)}
+        {console.log('companyNames')}
         <CompanyList
           companyNames={companyNames}
           uuid={user.id}
