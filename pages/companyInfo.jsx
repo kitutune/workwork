@@ -9,8 +9,12 @@ import { LayoutWrapper } from '../components/layoutWrapper';
 import { EditCompany } from 'components/EditCompany';
 import { ToolModal } from 'components/ToolModal';
 import { BsCardList } from 'react-icons/bs';
+import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
+
 // import { BsCardList, GrMapLocation, GrMap } from 'react-icons/fa';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
+import cc from 'classcat';
+import { CommentB } from 'components/aaaaaaaaaaaaaaaaa';
 // 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
   let { data, error } = await supabase
@@ -43,16 +47,25 @@ const getCompanyDB = async (id) => {
 // Company Informationに変更
 const companyInfo = () => {
   const Container = () => {
+    const { user } = Auth.useUser();
+    const [companyInfo, setCompanyInfo] = useState([]);
+    const [companySubInfo, setCompanySubInfo] = useState([]);
+    const [isLike, setIsLike] = useState(false);
+    const router = useRouter();
+    const isReady = router.isReady;
+    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここから
+    let { id } = router.query;
+    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここまで
     // map画面のオンオフ
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => {
-      setIsOpen((prevState) => !prevState);
+      setIsOpen((isOpen) => !isOpen);
     };
     // map画面のオンオフ
     // companyOption画面のオンオフ
-    const [companyOption, setCompanyOption] = useState(true);
+    const [companyOption, setCompanyOption] = useState(false);
     const companyOptionButton = () => {
-      setCompanyOption((prevState) => !prevState);
+      setCompanyOption((companyOption) => !companyOption);
     };
     // companyOption画面のオンオフ
     const likeButton = async () => {
@@ -98,6 +111,10 @@ const companyInfo = () => {
         router.push('/');
       }
       getCompanyDBsData();
+      // // clean up関数（Unmount時の処理）
+      // return () => {
+      //   unmounted = true;
+      // };
     }, [getCompanyDBsData, id]);
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
 
@@ -157,7 +174,8 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    <CommentBoard id={id} />
+                    {/* <CommentBoard id={id} /> */}
+                    <CommentB id={id} />
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
@@ -477,7 +495,8 @@ const companyInfo = () => {
               <div className="flex justify-center px-6 my-12　 lg:hidden">
                 {/* <!-- Row --> */}
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  <CommentBoard id={id} />
+                  {/* <CommentBoard id={id} /> */}
+                  <CommentB id={id} />
                 </div>
               </div>
             </div>
