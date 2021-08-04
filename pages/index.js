@@ -4,38 +4,38 @@ import { LayoutWrapper } from '../components/layoutWrapper';
 import { supabase } from 'utils/supabaseClient';
 import { CompanyList } from 'components/companyList';
 
-// 企業情報テーブルのみ　ここから
+// companyテーブルのみ　ここから
 const getCompany = async () => {
   const { data, error } = await supabase
-    .from('企業情報')
+    .from('company')
     .select('*')
-    .order('会社名');
+    .order('company_name');
   if (!error && data) {
     return data;
   }
   return [];
 };
-// 企業情報テーブルのみ　ここまで
-// 企業情報テーブルと flugのを合わせたテーブル　ここから
+// companyテーブルのみ　ここまで
+// companyテーブルと flugのを合わせたテーブル　ここから
 // const getCompany = async () => {
 //   const { data, error } = await supabase
-//     .from('企業情報')
+//     .from('company')
 //     .select(
 //       `
 //     id,
 //     flug (
-//       "企業情報_id"
+//       "company_id"
 //     )
 //   `
 //     )
-//     .order('会社名');
+//     .order('company_name');
 //   if (!error && data) {
 //     return data;
 //   }
 //   return [];
 // };
 
-// 企業情報テーブルと flugのを合わせたテーブル　ここまで
+// companyテーブルと flugのを合わせたテーブル　ここまで
 const Container = (props) => {
   const { user } = Auth.useUser();
   console.log(user);

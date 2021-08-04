@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Auth } from '@supabase/ui';
 
-export const CommentBord = (props) => {
+export const CommentBoard = (props) => {
   //   const { className } = props;
   const comment = useRef(null);
   const [logs, setIlogs] = useState([]);
@@ -17,9 +17,9 @@ export const CommentBord = (props) => {
     const company_id = props.id;
     return (
       supabase
-        .from('企業コメント')
+        .from('company_comment')
         .select('*')
-        .eq('企業情報_id', props.id)
+        .eq('company_id', props.id)
         //   .order('createAt', { ascending: false })
         .then((db) => {
           if (db.data && !db.error) {
@@ -37,7 +37,7 @@ export const CommentBord = (props) => {
     console.log(comment.current.value);
     //   console.log('2222222');
     let { data, error } = await supabase
-      .from('ユーザー')
+      .from('user')
       .select('*')
       .eq('id', user.id);
 
@@ -53,39 +53,39 @@ export const CommentBord = (props) => {
 
       console.log('000000000000');
       if (!comment.current.value || !user || !userName) {
-        alert('コメントを投稿するには値を入力して下さい！');
+        alert('commentを投稿するには値を入力して下さい！');
         return null;
       }
 
       return (
         await supabase
-          .from('企業コメント')
+          .from('company_comment')
           .insert({
             user_id: user.id,
-            //   企業情報_id: props.id,
-            コメント: comment.current.value,
-            //   ユーザー名: userName.名前,
+            //   company_id: props.id,
+            comment: comment.current.value,
+            //   user名: userName.user_name,
           })
-          .eq('企業情報_id', props.id),
+          .eq('company_id', props.id),
         loadDB(),
-        alert('コメントを投稿しました！')
+        alert('commentを投稿しました！')
 
         // catch((e) => {
-        //     alert('エラーが発生したためコメントを投稿出来ませんでした')})
+        //     alert('エラーが発生したためcommentを投稿出来ませんでした')})
       );
     }
   }, []);
 
   //   const insertDB = useCallback(async () => {
   //     const { data, error } = await supabase
-  //       .from('企業コメント')
-  //       .select(`user_id,ユーザー(id)`);
-  //     //   .eq('企業情報_id', props.id);
+  //       .from('company_comment')
+  //       .select(`user_id,user(id)`);
+  //     //   .eq('company_id', props.id);
   //     const comComment = data;
   //     console.log(data);
   //     console.log('comCommentcomComment');
   //     if (!comment.current.value || !user || !comComment) {
-  //       alert('コメントを投稿するには値を入力して下さい！');
+  //       alert('commentを投稿するには値を入力して下さい！');
   //       return null;
   //     }
   //     console.log(comComment);
@@ -93,19 +93,19 @@ export const CommentBord = (props) => {
 
   //     return (
   //       await supabase
-  //         .from('企業コメント')
+  //         .from('company_comment')
   //         .insert({
   //           user_id: comComment.id,
-  //           企業情報_id: props.id,
-  //           コメント: comment.current.value,
-  //           ユーザー名: comComment.名前,
+  //           company_id: props.id,
+  //           comment: comment.current.value,
+  //           user名: comComment.user_name,
   //         })
-  //         .eq('企業情報_id', props.id),
+  //         .eq('company_id', props.id),
   //       loadDB(),
-  //       alert('コメントを投稿しました！')
+  //       alert('commentを投稿しました！')
 
   //       // catch((e) => {
-  //       //     alert('エラーが発生したためコメントを投稿出来ませんでした')})
+  //       //     alert('エラーが発生したためcommentを投稿出来ませんでした')})
   //     );
   //   }, []);
 
@@ -113,7 +113,7 @@ export const CommentBord = (props) => {
     if (!id) return null;
     console.log('deleteDBdeleteDBdeleteDBdeleteDBdeleteDB');
     return supabase
-      .from('企業コメント')
+      .from('company_comment')
       .delete()
       .eq('id', id)
       .then(() => {
@@ -124,7 +124,7 @@ export const CommentBord = (props) => {
     if (!id) return null;
     console.log('changeStarDBchangeStarDBchangeStarDBchangeStarDB');
     return supabase
-      .from('企業コメント')
+      .from('company_comment')
       .update({ star: !star })
       .eq('id', id)
       .then(() => {
@@ -139,7 +139,7 @@ export const CommentBord = (props) => {
   useEffect(() => {
     loadDB();
     let subscribe = supabase
-      .from('企業コメント')
+      .from('company_comment')
       .on('*', () => {
         loadDB();
       })
@@ -161,7 +161,7 @@ export const CommentBord = (props) => {
           {logs &&
             logs.map((val, index) => {
               //   const day = new Date(val.createAt).toLocaleString('ja-JP');
-              const day = val.投稿日;
+              const day = val.time_stamp;
               return (
                 <div key={index} className="p-1 space-y-2">
                   {console.log(val)}
@@ -176,7 +176,7 @@ export const CommentBord = (props) => {
                     ])}
                   >
                     <div className="text-xs">{day}</div>
-                    <div className="text-sm pl-2">{val.コメントq}</div>
+                    <div className="text-sm pl-2">{val.commentq}</div>
                     {edit && (
                       <div className="absolute top-0 right-0 flex flex-row space-x-1.5 py-0.5 px-2">
                         <div
@@ -208,9 +208,9 @@ export const CommentBord = (props) => {
                       </div>
                     )}
                   </div>
-                  {val.コメント && (
+                  {val.comment && (
                     <div className="ml-auto mr-0 w-4/5 p-1 bg-blue-100 rounded-xl">
-                      <div className="text-sm pl-2">{val.コメント}</div>
+                      <div className="text-sm pl-2">{val.comment}</div>
                     </div>
                   )}
                 </div>
@@ -218,7 +218,7 @@ export const CommentBord = (props) => {
             })}
         </div>
         {/* ---- */}
-        <div>コメント</div>
+        <div>comment</div>
         <div className="w-full flex flex-col">
           <div className="w-full">
             <textarea

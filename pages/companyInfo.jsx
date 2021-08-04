@@ -14,24 +14,25 @@ import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 // import { BsCardList, GrMapLocation, GrMap } from 'react-icons/fa';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
-import { CommentB } from 'components/CommentBoard';
-// 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
+// import { CommentBoard } from 'components/CommentBoard';
+
+// companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
   let { data, error } = await supabase
-    .from('企業情報')
+    .from('company')
     .select('*')
-    .eq('id', id);
+    .eq('company_id', id);
 
   if (!error && data) {
     const companyInfo = data[0];
     ({ data, error } = await supabase
-      .from('企業情報補助')
+      .from('company_info')
       .select('*')
-      .eq('企業情報_id', id));
+      .eq('company_id', id));
     if (!error && data) {
       const companySubInfo = data[0];
 
-      return { companyInfo: companyInfo, companySubInfo: companySubInfo }; // 企業情報DBはある企業情報補助DBある
+      return { companyInfo: companyInfo, companySubInfo: companySubInfo }; // companyDBはあるcompany_infoDBある
     }
     // else {
     //   console.log('222222222222');
@@ -42,7 +43,7 @@ const getCompanyDB = async (id) => {
   return { companyInfo: null, companySubInfo: null };
 };
 
-// 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要ここまでーーーーーーーーーーーーーーーーーーーーここまで
+// companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要ここまでーーーーーーーーーーーーーーーーーーーーここまで
 
 // Company Informationに変更
 const companyInfo = () => {
@@ -53,9 +54,9 @@ const companyInfo = () => {
     const [isLike, setIsLike] = useState(false);
     const router = useRouter();
     const isReady = router.isReady;
-    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここから
+    // 今開いてるcompanyページのcompanyIDをURLから取得ーーーーーここから
     let { id } = router.query;
-    // 今開いてる企業情報ページの企業情報IDをURLから取得ーーーーーここまで
+    // 今開いてるcompanyページのcompanyIDをURLから取得ーーーーーここまで
     // map画面のオンオフ
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => {
@@ -74,9 +75,9 @@ const companyInfo = () => {
       const { data, error } = await supabase.from('flug').insert(
         [
           {
-            ブックマーク: isLike,
+            bookmark: isLike,
             user_id: user.id,
-            企業情報_id: id,
+            company_id: id,
           },
         ],
         { upsert: true }
@@ -88,7 +89,7 @@ const companyInfo = () => {
       }
     };
 
-    // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
+    // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
     const getCompanyDBsData = useCallback(async () => {
       if (id) {
         const { companyInfo, companySubInfo } = await getCompanyDB(id);
@@ -96,7 +97,7 @@ const companyInfo = () => {
         if (companyInfo) {
           setCompanyInfo(companyInfo);
         } else {
-          router.push('/');
+          // router.push('/');
         }
         if (companySubInfo) {
           setCompanySubInfo(companySubInfo);
@@ -104,11 +105,11 @@ const companyInfo = () => {
       }
     }, [id, router]);
 
-    // 取得した企業情報DBと企業情報補助DBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
+    // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
     useEffect(() => {
       if (!id && isReady) {
-        router.push('/');
+        // router.push('/');
       }
       getCompanyDBsData();
       // // clean up関数（Unmount時の処理）
@@ -118,9 +119,9 @@ const companyInfo = () => {
     }, [getCompanyDBsData, id]);
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
 
-    const address = companyInfo.住所;
-    const date = companyInfo.更新日;
-    const date2 = companySubInfo.更新日補助;
+    const address = companyInfo.company_address;
+    const date = companyInfo.update;
+    const date2 = companySubInfo.update_info;
     {
       /* <useMapGeocode/> */
     }
@@ -156,7 +157,7 @@ const companyInfo = () => {
             {/* Backボタン表示　ここまで */}
           </div>
           <div className="flex flex-row-reverse">
-            <div>更新日:{date >= date2 ? date : date2}</div>
+            <div>update:{date >= date2 ? date : date2}</div>
           </div>
           {/* ここから追加 */}
           <div className="font-mono bg-gray-400">
@@ -175,7 +176,7 @@ const companyInfo = () => {
                     }}
                   >
                     {/* <CommentBoard id={id} /> */}
-                    <CommentB id={id} />
+                    <CommentBoard id={id} />
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
@@ -191,7 +192,7 @@ const companyInfo = () => {
                         src="/company2.png"
                         className="z-1"
                       />
-                      {companyInfo.会社名}
+                      {companyInfo.company_name}
                       {console.log(companyInfo)}
                       {console.log('ここはいい色町一丁目')}
                     </h3>
@@ -207,7 +208,7 @@ const companyInfo = () => {
                             id="address"
                             type="address"
                           >
-                            {companyInfo.住所}
+                            {companyInfo.company_address}
                           </div>
                         </div>
                       </div>
@@ -223,7 +224,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyInfo.電話番号}
+                            {companyInfo.phone_number}
                           </div>
                         </div>
                       </div>
@@ -240,7 +241,7 @@ const companyInfo = () => {
                             id="capital"
                             type="capital"
                           >
-                            {companyInfo.資本金}
+                            {companyInfo.capital_stock}
                             万円
                           </div>
                         </div>
@@ -257,7 +258,7 @@ const companyInfo = () => {
                             id="email"
                             type="email"
                           >
-                            {companyInfo.社員数}人
+                            {companyInfo.employees}人
                           </div>
                         </div>
                       </div>
@@ -274,7 +275,7 @@ const companyInfo = () => {
                             id="date"
                             type="date"
                           >
-                            {companyInfo.設立日}
+                            {companyInfo.establishment_date}
                           </div>
                         </div>
                       </div>
@@ -297,7 +298,7 @@ const companyInfo = () => {
                          "
                         type="button"
                       >
-                        <a href={companyInfo.求人URL} target="_blank">
+                        <a href={companyInfo.job_url} target="_blank">
                           求人サイトへ
                         </a>
                       </button>
@@ -315,7 +316,7 @@ const companyInfo = () => {
                                 id="station"
                                 type="station"
                               >
-                                {companySubInfo.最寄駅}
+                                {companySubInfo.nearest_station}
                               </div>
                             </div>
                           </div>
@@ -330,7 +331,7 @@ const companyInfo = () => {
                                 id="access"
                                 type="accses"
                               >
-                                {companySubInfo.アクセス}
+                                {companySubInfo.access}
                               </div>
                             </div>
                           </div>
@@ -345,7 +346,7 @@ const companyInfo = () => {
                                 id="address"
                                 type="address"
                               >
-                                {companySubInfo.代表的なアプリ名}
+                                {companySubInfo.work}
                               </div>
                             </div>
                           </div>
@@ -360,7 +361,7 @@ const companyInfo = () => {
                                 id="address"
                                 type="address"
                               >
-                                {companySubInfo.駐輪場}
+                                {companySubInfo.parking_area_for_bicycles}
                               </div>
                             </div>
                           </div>
@@ -375,7 +376,7 @@ const companyInfo = () => {
                                 id="address"
                                 type="address"
                               >
-                                {companySubInfo.バイク置き場}
+                                {companySubInfo.motorcycle_parking}
                               </div>
                             </div>
                           </div>
@@ -390,7 +391,7 @@ const companyInfo = () => {
                                 id="address"
                                 type="address"
                               >
-                                {companySubInfo.駐車場}
+                                {companySubInfo.parking}
                               </div>
                             </div>
                           </div>
@@ -405,7 +406,7 @@ const companyInfo = () => {
                                 id="address"
                                 type="address"
                               >
-                                {companySubInfo.備考欄}
+                                {companySubInfo.remarks}
                               </div>
                             </div>
                           </div>
@@ -496,7 +497,7 @@ const companyInfo = () => {
                 {/* <!-- Row --> */}
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                   {/* <CommentBoard id={id} /> */}
-                  <CommentB id={id} />
+                  <CommentBoard id={id} />
                 </div>
               </div>
             </div>

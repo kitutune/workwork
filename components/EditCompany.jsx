@@ -3,7 +3,7 @@ import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { useRouter } from 'next/router';
 export const EditCompany = (props) => {
-  const uuid = props.id;
+  const companyId = props.id;
   const companyInfo = props.companyInfo;
   const companySubInfo = props.companySubInfo;
   console.log(companyInfo);
@@ -38,49 +38,49 @@ export const EditCompany = (props) => {
         /^\d{1,4}-\d{4}$|^\d{2,5}-\d{1,4}-\d{4}$/
       )
     ) {
-      alert('電話番号は数字で入力してください');
+      alert('電話番号は-を抜いた数字で入力してください');
     }
-    console.log(uuid);
-    console.log('uuiddedededededede');
+    console.log(companyId);
+    console.log('companyIddedededededede');
     await supabase
-      .from('企業情報')
+      .from('company')
       .update({
-        会社名: companyName.current.value,
-        電話番号: companyPhone.current.value,
-        住所: companyAddress.current.value,
-        資本金: companyCapital.current.value,
-        社員数: companyEmployees.current.value,
-        設立日: companyDate.current.value,
+        company_name: companyName.current.value,
+        phone_number: companyPhone.current.value,
+        company_address: companyAddress.current.value,
+        capital_stock: companyCapital.current.value,
+        employees: companyEmployees.current.value,
+        establishment_date: companyDate.current.value,
         URL: companyUrl.current.value,
-        求人URL: companyJobSite.current.value,
+        job_url: companyJobSite.current.value,
       })
-      .eq('id', uuid);
+      .eq('company_id', companyId);
     //   .then(() => {
     //     router.reload();
     //   });
-    // .then(() => router.push(`/companyInfo?id=${uuid}`));
+    // .then(() => router.push(`/companyInfo?id=${companyId}`));
   }, []);
-  //   console.log(uuid);
-  //   console.log('uuiddedededededede');
+  //   console.log(companyId);
+  //   console.log('companyIddedededededede');
   const companyInfoSubEditButton = useCallback(async () => {
     // if (name.current.value == '') {
     //   alert('名前を入力してください!');
     //   return;
     // }
-    console.log(uuid);
-    console.log('uuiddedededededede');
+    console.log(companyId);
+    console.log('companyIddedededededede');
     await supabase
-      .from('企業情報補助')
+      .from('company_info')
       .update({
-        最寄駅: companyNearestStation.current.value,
-        アクセス: companyAccess.current.value,
-        代表的なアプリ名: companyWork.current.value,
-        駐車場: companyParking.current.value,
-        バイク置き場: companyMotorcycleParking.current.value,
-        駐輪場: companyParkingBicycles.current.value,
-        備考欄: companyRemarks.current.value,
+        nearest_station: companyNearestStation.current.value,
+        access: companyAccess.current.value,
+        work: companyWork.current.value,
+        parking: companyParking.current.value,
+        motorcycle_parking: companyMotorcycleParking.current.value,
+        parking_area_for_bicycles: companyParkingBicycles.current.value,
+        remarks: companyRemarks.current.value,
       })
-      .eq('企業情報_id', uuid);
+      .eq('company_id', companyId);
     //   .then(() => {
     //     router.reload();
     //   });
@@ -90,25 +90,25 @@ export const EditCompany = (props) => {
     const edit = async () => {
       await companyInfoEditButton();
       await companyInfoSubEditButton();
-      //   router.push(`/companyInfo?id=${uuid}`);
+      //   router.push(`/companyInfo?id=${companyId}`);
     };
     // edit();
     edit().then(() => {
-      router.push(`/companyInfo?id=${uuid}`);
+      router.push(`/companyInfo?id=${companyId}`);
     });
   };
   // -----------------------------------------------
   //   const editButton = () => {
   //     companyInfoEditButton();
   //     companyInfoSubEditButton();
-  //     if (uuid) {
+  //     if (companyId) {
   //       router.reload();
   //     }
-  //   router.push(`/companyInfo?id=${uuid}`);
+  //   router.push(`/companyInfo?id=${companyId}`);
   //   };
   const backButton = async () => {
-    await supabase.from('企業情報補助').delete().eq('企業情報_id', uuid);
-    await supabase.from('企業情報').delete().eq('id', uuid);
+    await supabase.from('company_info').delete().eq('company_id', companyId);
+    await supabase.from('company').delete().eq('company_id', companyId);
 
     router.push('/');
   };
@@ -126,7 +126,7 @@ export const EditCompany = (props) => {
                 // type="number"
 
                 className="text-center uppercase text-xl"
-                defaultValue={props.companyInfo.会社名}
+                defaultValue={props.companyInfo.company_name}
                 ref={companyName}
               />
               {/* <div className="text-sm">
@@ -147,7 +147,7 @@ export const EditCompany = (props) => {
                     <label className="mb-1">住所</label>
                     <input
                       //   type="number"
-                      defaultValue={props.companyInfo.住所}
+                      defaultValue={props.companyInfo.company_address}
                       id="address"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyAddress}
@@ -158,7 +158,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      defaultValue={props.companyInfo.電話番号}
+                      defaultValue={props.companyInfo.phone_number}
                       ref={companyPhone}
                     />
                   </div>
@@ -168,7 +168,7 @@ export const EditCompany = (props) => {
                     <label className="mb-1">資本金</label>
                     <input
                       //   type="number"
-                      defaultValue={props.companyInfo.資本金}
+                      defaultValue={props.companyInfo.capital_stock}
                       id="capital"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyCapital}
@@ -179,7 +179,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      defaultValue={props.companyInfo.社員数}
+                      defaultValue={props.companyInfo.employees}
                       ref={companyEmployees}
                     />
                   </div>
@@ -189,7 +189,7 @@ export const EditCompany = (props) => {
                     <label className="mb-1">設立日</label>
                     <input
                       //   type="number"
-                      defaultValue={props.companyInfo.設立日}
+                      defaultValue={props.companyInfo.establishment_date}
                       id="date"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyDate}
@@ -200,7 +200,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      defaultValue={props.companyInfo.求人URL}
+                      defaultValue={props.companyInfo.job_url}
                       ref={companyJobSite}
                     />
                   </div>
@@ -223,7 +223,7 @@ export const EditCompany = (props) => {
                     <label className="mb-1">最寄駅</label>
                     <input
                       //   type="number"
-                      defaultValue={props.companySubInfo.最寄駅}
+                      defaultValue={props.companySubInfo.nearest_station}
                       id="weight-pounds"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyNearestStation}
@@ -234,17 +234,17 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      defaultValue={props.companySubInfo.アクセス}
+                      defaultValue={props.companySubInfo.access}
                       ref={companyAccess}
                     />
                   </div>
                 </div>
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex flex-col text-center w-3/6 px-2">
-                    <label className="mb-1">代表的なアプリ</label>
+                    <label className="mb-1">ワーク</label>
                     <input
                       //   type="number"
-                      defaultValue={props.companySubInfo.代表的なアプリ名}
+                      defaultValue={props.companySubInfo.work}
                       id="work"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyWork}
@@ -255,7 +255,7 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      defaultValue={props.companySubInfo.駐車場}
+                      defaultValue={props.companySubInfo.parking}
                       ref={companyParking}
                     />
                   </div>
@@ -265,7 +265,7 @@ export const EditCompany = (props) => {
                     <label className="mb-1">バイク置き場</label>
                     <input
                       //   type="number"
-                      defaultValue={props.companySubInfo.バイク置き場}
+                      defaultValue={props.companySubInfo.motorcycle_parking}
                       id="motorcycleparking"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyMotorcycleParking}
@@ -277,13 +277,15 @@ export const EditCompany = (props) => {
                     <input
                       //   type="number"
                       className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                      defaultValue={props.companySubInfo.駐輪場}
+                      defaultValue={
+                        props.companySubInfo.parking_area_for_bicycles
+                      }
                       ref={companyParkingBicycles}
                     />
                   </div>
                   {/* <div className="flex items-center justify-between mb-5 text-right">
                     <div className="flex flex-col text-right w-3/6 px-2">
-                      <label className="mr-3">駐輪場</label>
+                      <label className="mr-3">parking_area_for_bicycles</label>
                     </div>
                     <div
                       //  className="flex flex-col text-center w-3/6 px-2"
@@ -317,7 +319,7 @@ export const EditCompany = (props) => {
                     <label className="mb-1">備考欄</label>
                     <textarea
                       //   type="number"
-                      defaultValue={props.companySubInfo.備考欄}
+                      defaultValue={props.companySubInfo.remarks}
                       id="remarks"
                       className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
                       ref={companyRemarks}
@@ -341,7 +343,7 @@ export const EditCompany = (props) => {
                 {/* 選択型投稿画面ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー〜 */}
                 <div className="flex items-center justify-between mb-5 text-right">
                   <div className="flex flex-col text-right w-3/6 px-2">
-                    <label className="mr-3">代表的なアプリ名</label>
+                    <label className="mr-3">work</label>
                   </div>
                   <div className="flex flex-col text-center w-3/6 px-2">
                     <select

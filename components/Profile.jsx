@@ -24,14 +24,14 @@ export const Profile = (props) => {
         return;
       }
 
-      const { data, error } = await supabase.from('ユーザー').insert(
+      const { data, error } = await supabase.from('user').insert(
         [
           {
             id: uuid,
-            名前: name.current.value,
-            アイコン: icon.current.value,
-            年齢: age.current.value,
-            備考: memo.current.value,
+            user_name: name.current.value,
+            icon: icon.current.value,
+            age: age.current.value,
+            remarks: memo.current.value,
           },
         ],
         { upsert: true }
@@ -47,7 +47,7 @@ export const Profile = (props) => {
   );
   useEffect(async () => {
     const { data, error } = await supabase
-      .from('ユーザー')
+      .from('user')
       .select('*')
       .eq('id', uuid)
       .single();
@@ -56,10 +56,10 @@ export const Profile = (props) => {
     // setUserProf(data[0] || {});
   }, []);
   useEffect(() => {
-    name.current.value = userProf['名前'];
-    icon.current.value = userProf['アイコン'];
-    age.current.value = userProf['年齢'];
-    memo.current.value = userProf['備考'];
+    name.current.value = userProf['user_name'];
+    icon.current.value = userProf['icon'];
+    age.current.value = userProf['age'];
+    memo.current.value = userProf['remarks'];
   }, [userProf]);
   // console.log(!!{});
   return (
@@ -109,7 +109,7 @@ export const Profile = (props) => {
               />
             </div>
             <div className="grid grid-cols-4 gap-2 mt-4">
-              <div className="col-span-1 text-xl text-center">備考</div>
+              <div className="col-span-1 text-xl text-center">備考欄</div>
               <textarea
                 className="w-full h-60 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
                 ref={memo}
@@ -143,7 +143,7 @@ export const Profile = (props) => {
               </div>
               <div className="w-32 p-2">
                 <Button block size="large" onClick={() => handleAdd(uuid)}>
-                  {userProf['名前'] ? '更新' : '新規登録'}
+                  {userProf['user_name'] ? '更新' : '新規登録'}
                 </Button>
               </div>
             </div>

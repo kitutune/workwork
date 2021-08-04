@@ -5,7 +5,7 @@ import { Addcompany } from '../components/addCompany';
 
 export const CompanyList = (props) => {
   const filteredTitle = props.companyNames.filter((company) => {
-    let searchContent = company['会社名'] + ' ' + company.URL;
+    let searchContent = company['company_name'] + ' ' + company.URL;
     return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
   });
 
@@ -38,7 +38,7 @@ export const CompanyList = (props) => {
                   />
                 )}
               </div>
-              <div className="mt-2 text-center">{company['会社名']}</div>
+              <div className="mt-2 text-center">{company['company_name']}</div>
             </div>
           </Link>
         );

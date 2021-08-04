@@ -33,19 +33,19 @@ export const Addcompany = (props) => {
       alert('Input companyName.');
       return;
     }
-    let { data, error } = await supabase.from('企業情報').insert([
+    let { data, error } = await supabase.from('company').insert([
       {
-        会社名: companyName,
+        company_name: companyName,
         URL: companyUrl,
-        住所: companyAddress,
+        company_address: companyAddress,
       },
     ]);
     const company_uuid = data[0].id;
     console.log(company_uuid);
     console.log('gjsa;baajaiyjap:g:ps:prajth:aht:n');
-    ({ data, error } = await supabase.from('企業情報補助').insert([
+    ({ data, error } = await supabase.from('company_info').insert([
       {
-        企業情報_id: company_uuid,
+        company_id: company_uuid,
       },
     ]));
 
