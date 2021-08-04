@@ -14,7 +14,7 @@ import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 // import { BsCardList, GrMapLocation, GrMap } from 'react-icons/fa';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
-import { CommentB } from 'components/aaaaaaaaaaaaaaaaa';
+import { CommentB } from 'components/CommentBoard';
 // 企業情報と企業情報補助のDBを取ってくる関数（ただし表示される企業情報のURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
   let { data, error } = await supabase
