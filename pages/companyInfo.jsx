@@ -18,11 +18,12 @@ import cc from 'classcat';
 
 // companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
+  console.log('０００００００');
   let { data, error } = await supabase
     .from('company')
     .select('*')
     .eq('company_id', id);
-
+  console.log('１１１１１１１１');
   if (!error && data) {
     const companyInfo = data[0];
     ({ data, error } = await supabase
@@ -31,7 +32,9 @@ const getCompanyDB = async (id) => {
       .eq('company_id', id));
     if (!error && data) {
       const companySubInfo = data[0];
-
+      // console.log(companyInfo);
+      // console.log(companySubInfo);
+      // console.log('222222222222');
       return { companyInfo: companyInfo, companySubInfo: companySubInfo }; // companyDBはあるcompany_infoDBある
     }
     // else {
@@ -39,7 +42,7 @@ const getCompanyDB = async (id) => {
     //   return { companyInfo: companyInfo, companySubInfo: null };
     // }
   }
-  console.log('333333333333333');
+  // console.log('333333333333333');
   return { companyInfo: null, companySubInfo: null };
 };
 
@@ -47,10 +50,13 @@ const getCompanyDB = async (id) => {
 
 // Company Informationに変更
 const companyInfo = () => {
+  // console.log(user);
+  // console.log('222222222222222222222222');
   const Container = () => {
     const { user } = Auth.useUser();
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
+    const [bookmark, setBookMark] = useState([]);
     const [isLike, setIsLike] = useState(false);
     const router = useRouter();
     const isReady = router.isReady;
@@ -69,26 +75,54 @@ const companyInfo = () => {
       setCompanyOption((companyOption) => !companyOption);
     };
     // companyOption画面のオンオフ
-    const likeButton = async () => {
-      setIsLike((like) => !like);
+    // likeButton画面のオンオフ---------------ここから
+    // const likeButton = async () => {
+    //   setIsLike((isLike) => !isLike);
 
-      const { data, error } = await supabase.from('flug').insert(
-        [
-          {
-            bookmark: isLike,
-            user_id: user.id,
-            company_id: id,
-          },
-        ],
-        { upsert: true }
-      );
+    //   const { data, error } = await supabase.from('flug').insert(
+    //     [
+    //       {
+    //         bookmark: isLike,
+    //         user_id: user.id,
+    //         company_id: id,
+    //       },
+    //     ],
+    //     { upsert: true }
+    //   );
+    //   if (isLike == true) {
+    //     alert('お気に入りに登録しました！');
+    //   } else {
+    //     alert('お気に入りを解除しました！');
+    //   }
+    // };
+    // likeButton画面のオンオフ-----------------ここまで
+    // likeButton画面のオンオフ---------------ここから
+    console.log(bookmark);
+    console.log('bookboookbookboookbookboookbookboookbookboookbookboook');
+    const likeButton = async () => {
+      // setIsLike((isLike) => !isLike);
+      if (bookmark == 'null') {
+        const { data, error } = await supabase.from('flug').insert(
+          [
+            {
+              bookmark: isLike,
+              user_id: user.id,
+              company_id: id,
+            },
+          ]
+          // { upsert: true }
+        );
+      } else {
+        setIsLike((isLike) => !isLike);
+      }
+
       if (isLike == true) {
         alert('お気に入りに登録しました！');
       } else {
         alert('お気に入りを解除しました！');
       }
     };
-
+    // likeButton画面のオンオフ-----------------ここまで
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
     const getCompanyDBsData = useCallback(async () => {
       if (id) {
@@ -97,7 +131,7 @@ const companyInfo = () => {
         if (companyInfo) {
           setCompanyInfo(companyInfo);
         } else {
-          // router.push('/');
+          router.push('/');
         }
         if (companySubInfo) {
           setCompanySubInfo(companySubInfo);
@@ -106,19 +140,61 @@ const companyInfo = () => {
     }, [id, router]);
 
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
+
+    // user_idをもったflugテーブル作成　ここから
+
+    // const { data, error } = useCallback(() => {
+    //   const { user } = Auth.useUser();
+    //   supabase
+    //     .from('flug')
+    //     .insert([{ user_id: user.id, company_id: companyInfo.company_id }]);
+    // }, []);
+
+    const getBookmark = useCallback(async () => {
+      let { data: flug, error } = await supabase
+        .from('flug')
+        .select('bookmark')
+        .eq('company_id', id)
+        .single();
+      setBookMark(flug);
+    }, []);
+
+    // user_idをもったflugテーブル作成　ここまで
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
+
     useEffect(() => {
+      let unmounted = false;
       if (!id && isReady) {
-        // router.push('/');
+        router.push('/');
       }
       getCompanyDBsData();
-      // // clean up関数（Unmount時の処理）
-      // return () => {
-      //   unmounted = true;
-      // };
-    }, [getCompanyDBsData, id]);
-    // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
+      getBookmark();
 
+      // clean up関数（Unmount時の処理）
+      return () => {
+        unmounted = true;
+      };
+    }, []);
+
+    // -------------------------------
+    // useEffect(() => {
+    //   let unmounted = false;
+    //   if (!id && isReady) {
+    //     router.push('/');
+    //   }
+
+    //   // clean up関数（Unmount時の処理）
+    //   return () => {
+    //     unmounted = true;
+    //   };
+    // }, [getCompanyDBsData, id]);
+    // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
+    // {
+    //   console.log(companySubInfo);
+    // }
+    // {
+    //   console.log('ここは温泉街');
+    // }
     const address = companyInfo.company_address;
     const date = companyInfo.update;
     const date2 = companySubInfo.update_info;
@@ -129,6 +205,11 @@ const companyInfo = () => {
     if (user) {
       return (
         <div>
+          {console.log(isLike)}
+          {console.log(
+            'console.log(isLike);console.log(isLike);console.log(isLike);'
+          )}
+
           <div className="flex justify-end gap-2 my-2 mr-2">
             {/* 右端寄席のCSS */}
 
@@ -157,6 +238,8 @@ const companyInfo = () => {
             {/* Backボタン表示　ここまで */}
           </div>
           <div className="flex flex-row-reverse">
+            {console.log(date2)}
+            {console.log('ここはいい色町一丁目')}
             <div>update:{date >= date2 ? date : date2}</div>
           </div>
           {/* ここから追加 */}
@@ -181,7 +264,7 @@ const companyInfo = () => {
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                     <button className="float-right " onClick={likeButton}>
-                      {!isLike ? <FcLike /> : <FcLikePlaceholder />}
+                      {isLike === false ? <FcLikePlaceholder /> : <FcLike />}
                     </button>
                     <h3 className="pt-4 text-2xl text-center">
                       <Image
@@ -193,8 +276,6 @@ const companyInfo = () => {
                         className="z-1"
                       />
                       {companyInfo.company_name}
-                      {console.log(companyInfo)}
-                      {console.log('ここはいい色町一丁目')}
                     </h3>
                     <form className="px-8 pt-6 pb-8 mb-4　 bg-white rounded">
                       {/* 　項目ここから */}
