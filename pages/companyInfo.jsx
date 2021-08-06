@@ -157,9 +157,13 @@ const companyInfo = () => {
       console.log(id);
       console.log('idは有るのか？');
       if (!id && isReady) {
+        console.log('idがいません');
         router.push('/');
       }
-      // if(id){}
+      if (!user) {
+        console.log('userがいません');
+        router.reload();
+      }
       getCompanyDBsData();
       console.log('マウント');
       getFlugDb();
