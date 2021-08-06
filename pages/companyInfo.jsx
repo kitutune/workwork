@@ -119,6 +119,8 @@ const companyInfo = () => {
     console.log(likeCompany);
     console.log('3');
     const getFlugDb = async () => {
+      console.log(user);
+      console.log('来てる');
       if ((id, user)) {
         let { data, error } = await supabase
           .from('flug')
@@ -140,6 +142,7 @@ const companyInfo = () => {
           return setLikeCompany(likeCompany);
         }
       }
+      console.log('id,userが不在のため帰りました');
     };
     //     alert('お気に入りに登録しました！');
     //   } else {
@@ -151,9 +154,12 @@ const companyInfo = () => {
 
     useEffect(() => {
       let unmounted = false;
+      console.log(id);
+      console.log('idは有るのか？');
       if (!id && isReady) {
         router.push('/');
       }
+      // if(id){}
       getCompanyDBsData();
       console.log('マウント');
       getFlugDb();
