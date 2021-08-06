@@ -104,16 +104,13 @@ export const Sample = (props) => {
 
   return (
     <>
-      {' '}
       <div className="flex flex-col w-full pt-4">
         <div className="py-2">
           {logs &&
             logs.map((val, index) => {
-              // const day = new Date(val.createAt).toLocaleString('ja-JP');
               const day = val.time_stamp;
               return (
                 <div key={val.comment_id}>
-                  {/* <!-- defualt theme --> */}{' '}
                   <div className="text-xs">
                     {/* {day} */}
 
@@ -153,8 +150,6 @@ export const Sample = (props) => {
                             <div className="text-xs text-gray-400 hover:text-pink-400 outline-none">
                               <button
                                 onClick={() => {
-                                  // console.log(val.comment_id);
-                                  // console.log('1111111111111111111');
                                   deleteDB(val.comment_id);
                                 }}
                               >
@@ -163,22 +158,11 @@ export const Sample = (props) => {
                             </div>
                           </div>
                         )}
-                        {/* <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          className="h-5 w-5 text-yellow-500 "
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                        </svg> */}
                       </div>
                     </div>
                   </div>
                   <div className="max-w-3xl w-full mx-auto z-10">
-                    aa
-                    {/* <div className="flex flex-col"> */}
                     <div>
-                      bb
                       {/* 木下がそう */}
                       {/* <div className="bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4"> */}
                       <div
@@ -192,7 +176,6 @@ export const Sample = (props) => {
                           },
                         ])}
                       >
-                        cca
                         <div
                           className={cc([
                             // 'relative ml-0 mr-auto w-4/5 p-1 rounded-xl',
@@ -246,25 +229,15 @@ export const Sample = (props) => {
                                 <div className="flex flex-col break-normal">
                                   <div className="w-full break-all flex-none text-lg text-gray-800 font-bold　leading-none">
                                     {val.comment && (
-                                      //   <div className="ml-auto mr-0 w-4/5 p-1 bg-blue-100 rounded-xl">
-                                      //   <div className="text-sm pl-2">
                                       <div className=" "> {val.comment}</div>
-                                      //   </div>
-                                      //   </div>
                                     )}
                                   </div>
                                 </div>
                               </div>
                             </div>
-
-                            {/* <div className="flex flex-row items-center">
-                              <div>aaaaa</div>
-                            </div> */}
                           </div>
                         </div>
-                        aaa{' '}
                       </div>
-                      bbb
                     </div>
                   </div>
                 </div>
