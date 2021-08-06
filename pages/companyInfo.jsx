@@ -12,15 +12,17 @@ import { BsCardList } from 'react-icons/bs';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
+import { Sample } from 'components/sample';
 
 // companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
-  console.log('０００００００');
+  // console.log('０００００００');
   let { data, error } = await supabase
     .from('company')
     .select('*')
     .eq('company_id', id);
-  console.log('１１１１１１１１');
+  // console.log(id);
+  // console.log('１１１１１１１１');
   if (!error && data) {
     const companyInfo = data[0];
     ({ data, error } = await supabase
@@ -45,21 +47,33 @@ const getFlugDb = async (id) => {
     .select('*')
     .eq('company_id', id);
   // .eq('user_id', user.id);
+  // console.log(data[0]);
+  console.log('1111111111');
   if (!error && data) {
     const bookmark = data[0];
+    console.log(data[0]);
+    console.log('222222222');
     return { bookmark: bookmark };
   }
-  return { bookmark: null };
+
+  alert('koko!');
 };
 // Company Informationに変更
 const companyInfo = () => {
-  // console.log(user);
+  // const { user } = Auth.useUser();
+  // if (user) {
+  //   return (user_id = user.id);
+  // }
+  // const user_id = user.id;
+  // console.log(user_id);
+  // console.log(user_id);
   // console.log('222222222222222222222222');
   const Container = () => {
     const { user } = Auth.useUser();
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
-    const [bookmark, setBookMark] = useState([]);
+    const [flug, setFlug] = useState([]);
+    // const [bookmark, setBookMark] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const router = useRouter();
     const isReady = router.isReady;
@@ -97,126 +111,23 @@ const companyInfo = () => {
     }, [id, router]);
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
 
-    const getBookmark = useCallback(async () => {
-      const { bookmark } = await getFlugDb(id);
-      if (bookmark) {
-        setBookMark(bookmark);
-      } else {
-        router.push('/');
-      }
-    }, [id, router]);
-
     const bookmarkButton = async () => {
-      // if(!bookmark){
-      let { data, error } = await supabase.from('flug').insert(
-        [
-          {
-            company_id: id,
-            user_id: user.id,
-            bookmark: !bookmark ? true : !bookmark.bookmark,
-            // bookmark: bookmark.bookmark,
-          },
-        ],
-        { upsert: true }
-      );
+      const { data, error } = await supabase
+        .from('flug')
+        .insert([
+          { user_id: user.id, company_id: id, bookmark: !flug.bookmark },
+        ]);
 
-      // }
-      // else{
-
-      // // (bookmark.bookmark)=>{!bookmark.bookmark}
-
-      //   ({data,error}=await supabase.from("flug").insert(
-      //   [
-      //     {company_id:id,
-      //       user_id:user.id,
-      //       bookmark:bookmark.bookmark,
-
-      //     }
-      //   ]
-      // ))
-
-      // }
-
-      if (bookmark.bookmark == false) {
-        setBookMark(bookmark);
-        alert('お気に入りに登録しました！');
-      } else {
-        setBookMark(bookmark);
-        alert('お気に入りを解除しました！');
-      }
+      flug.bookmark == true
+        ? alsert('お気に入りに登録しました！')
+        : alert('お気に入りを解除しました！');
     };
 
-    // likeButton画面のオンオフ---------------ここから
-    // const likeButton = async () => {
-    //   setIsLike((isLike) => !isLike);
-
-    //   const { data, error } = await supabase.from('flug').insert(
-    //     [
-    //       {
-    //         bookmark: isLike,
-    //         user_id: user.id,
-    //         company_id: id,
-    //       },
-    //     ],
-    //     { upsert: true }
-    //   );
-    //   if (isLike == true) {
     //     alert('お気に入りに登録しました！');
     //   } else {
     //     alert('お気に入りを解除しました！');
     //   }
-    // };
-    // likeButton画面のオンオフ-----------------ここまで
-    // likeButton画面のオンオフ---------------ここから
 
-    //     console.log(bookmark);
-    //     console.log('bookboookbookboookbookboookbookboookbookboookbookboook');
-    //     const likeButton = async () => {
-
-    //       // setIsLike((isLike) => !isLike);
-    //       if (bookmark == null) {
-    //         const { data, error } = await supabase.from('flug').insert(
-    //           [
-    //             {
-    //               bookmark: isLike,
-    //               user_id: user.id,
-    //               company_id: id,
-    //             },
-    //           ]
-    //           // { upsert: true }
-    //         );
-    //       } else {
-    // if(isLike==true){setIsLike(false)}else
-    //         setIsLike((true))
-    //       }
-
-    //       if (isLike == true) {
-    //         alert('お気に入りに登録しました！');
-    //       } else {
-    //         alert('お気に入りを解除しました！');
-    //       }
-    //     };
-    // likeButton画面のオンオフ-----------------ここまで
-
-    // user_idをもったflugテーブル作成　ここから
-
-    // const { data, error } = useCallback(() => {
-    //   const { user } = Auth.useUser();
-    //   supabase
-    //     .from('flug')
-    //     .insert([{ user_id: user.id, company_id: companyInfo.company_id }]);
-    // }, []);
-
-    // const getBookmark = useCallback(async () => {
-    //   let { data: flug, error } = await supabase
-    //     .from('flug')
-    //     .select('bookmark')
-    //     .eq('company_id', id)
-    //     .single();
-    //   setBookMark(flug);
-    // }, []);
-
-    // user_idをもったflugテーブル作成　ここまで
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
 
     useEffect(() => {
@@ -225,8 +136,8 @@ const companyInfo = () => {
         router.push('/');
       }
       getCompanyDBsData();
-      // getBookmark();
 
+      getFlugDb();
       // clean up関数（Unmount時の処理）
       return () => {
         unmounted = true;
@@ -234,24 +145,6 @@ const companyInfo = () => {
     }, []);
 
     // -------------------------------
-    // useEffect(() => {
-    //   let unmounted = false;
-    //   if (!id && isReady) {
-    //     router.push('/');
-    //   }
-
-    //   // clean up関数（Unmount時の処理）
-    //   return () => {
-    //     unmounted = true;
-    //   };
-    // }, [getCompanyDBsData, id]);
-    // このページが表示される時に必ず実行される様にするーーーーーーーーーここまで
-    // {
-    //   console.log(companySubInfo);
-    // }
-    // {
-    //   console.log('ここは温泉街');
-    // }
 
     {
       /* <useMapGeocode/> */
@@ -293,8 +186,6 @@ const companyInfo = () => {
             {/* Backボタン表示　ここまで */}
           </div>
           <div className="flex flex-row-reverse">
-            {console.log(date2)}
-            {console.log('ここはいい色町一丁目')}
             <div>update:{date >= date2 ? date : date2}</div>
           </div>
           {/* ここから追加 */}
@@ -319,7 +210,14 @@ const companyInfo = () => {
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                     <button className="float-right " onClick={bookmarkButton}>
-                      {!bookmark.bookmark ? <FcLikePlaceholder /> : <FcLike />}
+                      {/* {bookmark ? <FcLikePlaceholder /> : <FcLike />} */}
+                      {bookmark.bookmark == false ||
+                      typeof bookmark == 'undefined' ||
+                      flug.bookmark == false ? (
+                        <FcLikePlaceholder />
+                      ) : (
+                        <FcLike />
+                      )}
                     </button>
                     <h3 className="pt-4 text-2xl text-center">
                       <Image
@@ -358,7 +256,7 @@ const companyInfo = () => {
                           <div
                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                             id="email"
-                            type="email"
+                            type="tel"
                           >
                             {companyInfo.phone_number}
                           </div>
@@ -633,7 +531,8 @@ const companyInfo = () => {
                 {/* <!-- Row --> */}
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                   {/* <CommentBoard id={id} /> */}
-                  <CommentBoard id={id} />
+                  {/* <CommentBoard id={id} /> */}
+                  <Sample id={id} />
                 </div>
               </div>
             </div>
@@ -649,7 +548,7 @@ const companyInfo = () => {
     <LayoutWrapper>
       <Auth.UserContextProvider supabaseClient={supabase}>
         <Container
-        //  id={id}
+        // user={user}
         />
       </Auth.UserContextProvider>
     </LayoutWrapper>
