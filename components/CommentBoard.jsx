@@ -14,7 +14,8 @@ export const CommentBoard = (props) => {
   const { user } = Auth.useUser();
 
   const loadDB = useCallback(() => {
-    const company_id = props.id;
+    console.log(props?.id);
+    console.log('props.idprops.idprops.id');
     return (
       supabase
         .from('company_comment')
@@ -23,8 +24,6 @@ export const CommentBoard = (props) => {
         //   .order('createAt', { ascending: false })
         .then((db) => {
           if (db.data && !db.error) {
-            // console.log(db.data);
-            // console.log('444444444444');
             setIlogs(db.data);
           } else {
             setIlogs([]);
@@ -35,98 +34,48 @@ export const CommentBoard = (props) => {
 
   const insertDB = useCallback(async () => {
     console.log(comment.current.value);
-    //   console.log('2222222');
-    let { data, error } = await supabase
-      .from('user')
-      .select('*')
-      .eq('id', user.id);
+    console.log('2222222');
 
-    if (
-      !error &&
-      data
-      // && comment.current.value
-    ) {
-      // const userName = data[0];
-      console.log(comment.current.value);
-      // console.log(user);
-      // console.log(userName);
-
-      console.log('000000000000');
-      if (!comment.current.value || !user || !userName) {
-        alert('commentを投稿するには値を入力して下さい！');
-        return null;
-      }
-
-      return (
-        await supabase
-          .from('company_comment')
-          .insert({
-            user_id: user.id,
-            //   company_id: props.id,
-            comment: comment.current.value,
-            //   user名: userName.user_name,
-          })
-          .eq('company_id', props.id),
-        loadDB(),
-        alert('commentを投稿しました！')
-
-        // catch((e) => {
-        //     alert('エラーが発生したためcommentを投稿出来ませんでした')})
-      );
+    if (!comment.current.value || !user) {
+      alert('コメントを投稿するには値を入力して下さい！');
+      return null;
     }
+
+    return (
+      await supabase
+        .from('company_comment')
+        .insert({
+          user_id: user.id,
+          company_id: props.id,
+          comment: comment.current.value,
+          //   user名: userName.user_name,
+        })
+        .eq('company_id', props.id),
+      loadDB(),
+      alert('コメントを投稿しました！')
+
+      // catch((e) => {
+      //     alert('エラーが発生したためコメントを投稿出来ませんでした')})
+    );
   }, []);
 
-  //   const insertDB = useCallback(async () => {
-  //     const { data, error } = await supabase
-  //       .from('company_comment')
-  //       .select(`user_id,user(id)`);
-  //     //   .eq('company_id', props.id);
-  //     const comComment = data;
-  //     console.log(data);
-  //     console.log('comCommentcomComment');
-  //     if (!comment.current.value || !user || !comComment) {
-  //       alert('commentを投稿するには値を入力して下さい！');
-  //       return null;
-  //     }
-  //     console.log(comComment);
-  //     console.log('comCommentcomComment');
-
-  //     return (
-  //       await supabase
-  //         .from('company_comment')
-  //         .insert({
-  //           user_id: comComment.id,
-  //           company_id: props.id,
-  //           comment: comment.current.value,
-  //           user名: comComment.user_name,
-  //         })
-  //         .eq('company_id', props.id),
-  //       loadDB(),
-  //       alert('commentを投稿しました！')
-
-  //       // catch((e) => {
-  //       //     alert('エラーが発生したためcommentを投稿出来ませんでした')})
-  //     );
-  //   }, []);
-
-  const deleteDB = useCallback((id) => {
-    if (!id) return null;
-    console.log('deleteDBdeleteDBdeleteDBdeleteDBdeleteDB');
+  const deleteDB = useCallback((comment_id) => {
+    if (!comment_id) return null;
     return supabase
       .from('company_comment')
       .delete()
-      .eq('id', id)
+      .eq('comment_id', comment_id)
       .then(() => {
         loadDB();
       });
   }, []);
-  const changeStarDB = useCallback((id, star) => {
-    if (!id) return null;
-    console.log('changeStarDBchangeStarDBchangeStarDBchangeStarDB');
+  const changeStarDB = useCallback((comment_id, star) => {
+    if (!comment_id) return null;
+
     return supabase
       .from('company_comment')
       .update({ star: !star })
-      .eq('id', id)
+      .eq('comment_id', comment_id)
       .then(() => {
         loadDB();
       });
@@ -137,13 +86,14 @@ export const CommentBoard = (props) => {
     });
   }, []);
   useEffect(() => {
-    loadDB();
+    loadDB(); //エラーはここで出ている
     let subscribe = supabase
       .from('company_comment')
       .on('*', () => {
         loadDB();
       })
       .subscribe();
+
     return () => {
       subscribe.unsubscribe();
     };
@@ -160,12 +110,12 @@ export const CommentBoard = (props) => {
         <div className="py-2">
           {logs &&
             logs.map((val, index) => {
-              //   const day = new Date(val.createAt).toLocaleString('ja-JP');
+              // const day = new Date(val.createAt).toLocaleString('ja-JP');
               const day = val.time_stamp;
               return (
-                <div key={index} className="p-1 space-y-2">
-                  {console.log(val)}
-                  {console.log('mapの中に来てる')}
+                <div key={val.comment_id} className="p-1 space-y-2">
+                  {/* {console.log(val.comment_id)}
+                  {console.log('mapの中に来てる')} */}
                   <div
                     className={cc([
                       'relative ml-0 mr-auto w-4/5 p-1 rounded-xl',
@@ -190,7 +140,7 @@ export const CommentBoard = (props) => {
                         >
                           <button
                             onClick={() => {
-                              changeStarDB(val.id, val.star);
+                              changeStarDB(val.comment_id, val.star);
                             }}
                           >
                             <FontAwesomeIcon icon={faStar} />
@@ -199,7 +149,9 @@ export const CommentBoard = (props) => {
                         <div className="text-xs text-gray-400 hover:text-pink-400 outline-none">
                           <button
                             onClick={() => {
-                              deleteDB(val.id);
+                              // console.log(val.comment_id);
+                              // console.log('1111111111111111111');
+                              deleteDB(val.comment_id);
                             }}
                           >
                             <FontAwesomeIcon icon={faTrash} />
@@ -218,7 +170,7 @@ export const CommentBoard = (props) => {
             })}
         </div>
         {/* ---- */}
-        <div>comment</div>
+        <div>コメント</div>
         <div className="w-full flex flex-col">
           <div className="w-full">
             <textarea
