@@ -41,23 +41,6 @@ const getCompanyDB = async (id) => {
 };
 // companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要ここまでーーーーーーーーーーーーーーーーーーーーここまで
 
-const getFlugDb = async (id) => {
-  let { data, error } = await supabase
-    .from('flug')
-    .select('*')
-    .eq('company_id', id);
-  // .eq('user_id', user.id);
-  // console.log(data[0]);
-  console.log('1111111111');
-  if (!error && data) {
-    const bookmark = data[0];
-    console.log(data[0]);
-    console.log('222222222');
-    return { bookmark: bookmark };
-  }
-
-  alert('koko!');
-};
 // Company Informationに変更
 const companyInfo = () => {
   // const { user } = Auth.useUser();
@@ -72,8 +55,9 @@ const companyInfo = () => {
     const { user } = Auth.useUser();
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
-    const [flug, setFlug] = useState([]);
+    const [flug, setFlug] = useState(null);
     // const [bookmark, setBookMark] = useState(false);
+    const [likeCompany, setLikeCompany] = useState();
     const [isLike, setIsLike] = useState(false);
     const router = useRouter();
     const isReady = router.isReady;
@@ -112,22 +96,57 @@ const companyInfo = () => {
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
 
     const bookmarkButton = async () => {
+      // console.log(likeCompany);
+      // console.log('likeCompanylikeCompanylikeCompanylikeCompany');
+      // setLikeCompany((likeCompany) => !likeCompany);
+      // console.log(likeCompany);
+      // console.log('likeCompany22222222222');
+      console.log(likeCompany);
+      console.log('00');
       const { data, error } = await supabase
         .from('flug')
-        .insert([
-          { user_id: user.id, company_id: id, bookmark: !flug.bookmark },
-        ]);
-
-      flug.bookmark == true
-        ? alsert('お気に入りに登録しました！')
-        : alert('お気に入りを解除しました！');
+        .update({ bookmark: !likeCompany })
+        .eq('company_id', id);
+      // const likeCompany = data[0].bookmark;
+      // console.log(data[0].bookmark);
+      console.log(data);
+      console.log('変更');
+      console.log(likeCompany);
+      console.log(data[0].bookmark);
+      console.log('01');
+      return setLikeCompany(data[0].bookmark);
     };
+    console.log(likeCompany);
+    console.log('3');
+    const getFlugDb = async () => {
+      if ((id, user)) {
+        let { data, error } = await supabase
+          .from('flug')
+          .select('*')
+          .eq('company_id', id);
+        if (data.length) {
+          const likeCompany = data[0].bookmark;
+          console.log(data[0].bookmark);
+          console.log('入れる');
+          return setLikeCompany(likeCompany);
+        } else {
+          ({ data, error } = await supabase
+            .from('flug')
+            .insert([{ company_id: id, user_id: user.id }]));
 
+          const likeCompany = data[0].bookmark;
+          console.log(data[0].bookmark);
+          console.log('作る');
+          return setLikeCompany(likeCompany);
+        }
+      }
+    };
     //     alert('お気に入りに登録しました！');
     //   } else {
     //     alert('お気に入りを解除しました！');
     //   }
-
+    console.log(likeCompany);
+    console.log('2');
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
 
     useEffect(() => {
@@ -136,27 +155,27 @@ const companyInfo = () => {
         router.push('/');
       }
       getCompanyDBsData();
-
+      console.log('マウント');
       getFlugDb();
       // clean up関数（Unmount時の処理）
       return () => {
+        console.log('アンマウント');
         unmounted = true;
       };
-    }, []);
+    }, [router]);
 
     // -------------------------------
 
     {
       /* <useMapGeocode/> */
     }
-
+    console.log(likeCompany);
+    console.log('1');
     if (user) {
       return (
         <div>
-          {/* {console.log(isLike)}
-          {console.log(
-            'console.log(isLike);console.log(isLike);console.log(isLike);'
-          )} */}
+          {console.log(likeCompany)}
+          {console.log('0')}
 
           <div className="flex justify-end gap-2 my-2 mr-2">
             {/* 右端寄席のCSS */}
@@ -211,9 +230,7 @@ const companyInfo = () => {
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                     <button className="float-right " onClick={bookmarkButton}>
                       {/* {bookmark ? <FcLikePlaceholder /> : <FcLike />} */}
-                      {bookmark.bookmark == false ||
-                      typeof bookmark == 'undefined' ||
-                      flug.bookmark == false ? (
+                      {likeCompany == false ? (
                         <FcLikePlaceholder />
                       ) : (
                         <FcLike />
