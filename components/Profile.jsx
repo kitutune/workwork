@@ -13,7 +13,7 @@ export const Profile = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const name = useRef(null);
   const age = useRef(null);
-  const icon = useRef(null);
+  // const icon = useRef(null);
   const memo = useRef(null);
 
   const uuid = props.uuid;
@@ -31,7 +31,8 @@ export const Profile = (props) => {
           {
             user_id: uuid,
             user_name: name.current.value,
-            icon: icon.current.value,
+            // icon: icon.current.value,
+            icon: preview,
             age: age.current.value,
             remarks: memo.current.value,
           },
@@ -45,8 +46,17 @@ export const Profile = (props) => {
       // alert(age.current.value);
       // alert(memo.current.value);
     },
-    [name, age, icon, memo]
+    [name, age, preview, memo]
   );
+  useEffect(() => {
+    let unmounted = false;
+
+    // clean up関数（Unmount時の処理）
+    return () => {
+      console.log('アンマウント');
+      unmounted = true;
+    };
+  }, []);
   useEffect(async () => {
     const { data, error } = await supabase
       .from('user')
@@ -60,12 +70,17 @@ export const Profile = (props) => {
     // setUserProf(data[0] || {});
   }, [uuid]);
   useEffect(() => {
-    name.current.value = userProf['user_name'];
-    icon.current.value = userProf['icon'];
-    age.current.value = userProf['age'];
-    memo.current.value = userProf['remarks'];
+    if (userProf) {
+      name.current.value = userProf['user_name'];
+      // icon.current.value = userProf['icon'];
+      setPreview(userProf.icon);
+      age.current.value = userProf['age'];
+      memo.current.value = userProf['remarks'];
+    }
   }, [userProf]);
   // console.log(!!{});
+  // console.log(icon.current.value);
+  // console.log(icon);
   console.log('画像');
   console.log(preview);
   console.log('画像イメージはあるか？');
@@ -73,10 +88,10 @@ export const Profile = (props) => {
     const { files } = e.target;
     setPreview(window.URL.createObjectURL(files[0]));
   };
-  const iconChangeButton = () => {
-    setIsOpen((isOpen) => !isOpen);
-  };
-  console.log(isOpen);
+  // const iconChangeButton = () => {
+  //   setIsOpen((isOpen) => !isOpen);
+  // };
+  // console.log(isOpen);
 
   return (
     <div>
@@ -92,12 +107,11 @@ export const Profile = (props) => {
             &#8203;
           </span>
 
-          <div
-            onClick={iconChangeButton}
-            // onChange={handleChangeFile}
-            className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform border border-gray-300 shadow-xl bg-gray-50 rounded-xl"
-          >
-            <header className="w-20 mx-auto mb-5">
+          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform border border-gray-300 shadow-xl bg-gray-50 rounded-xl">
+            <div
+              // onClick={iconChangeButton}
+              className="w-20 mx-auto mb-5"
+            >
               {preview == '' ? (
                 <Image
                   src="/favicon.ico"
@@ -113,20 +127,18 @@ export const Profile = (props) => {
                   height={80}
                 />
               )}
-              {/* <Image
-                // src="/favicon.ico"
-                src={preview}
-                width={80}
-                height={80}
-              /> */}
-            </header>
-            {isOpen === false ? (
-              <></>
-            ) : (
-              <div className="text-center">
-                <input type="file" onChange={handleChangeFile} />
-              </div>
-            )}
+            </div>
+            {/* {isOpen === false ? (
+              <div ref={icon}></div>
+            ) : ( */}
+            <div className="text-center">
+              <input
+                //  ref={icon}
+                type="file"
+                onChange={handleChangeFile}
+              />
+            </div>
+            {/* )} */}
             <div
               as="h3"
               className="text-2xl font-medium leading-6 text-center text-gray-900"
@@ -140,13 +152,13 @@ export const Profile = (props) => {
                 ref={name}
               />
             </div>
-            <div className="grid grid-cols-4 gap-2 mt-4">
+            {/* <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">アイコン</div>
               <input
                 className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                ref={icon}
+                // ref={icon}
               />
-            </div>
+            </div> */}
             <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">年齢</div>
               <input
