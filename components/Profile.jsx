@@ -9,14 +9,15 @@ import { supabase } from 'utils/supabaseClient';
 
 export const Profile = (props) => {
   const [userProf, setUserProf] = useState({});
+  const [preview, setPreview] = useState('');
   const name = useRef(null);
   const age = useRef(null);
   const icon = useRef(null);
   const memo = useRef(null);
 
   const uuid = props.uuid;
-  console.log(userProf);
-  console.log('useProfのログ');
+  // console.log(userProf);
+  // console.log('useProfのログ');
   const handleAdd = useCallback(
     async (uuid) => {
       if (name.current.value == '') {
@@ -27,7 +28,7 @@ export const Profile = (props) => {
       const { data, error } = await supabase.from('user').insert(
         [
           {
-            id: uuid,
+            user_id: uuid,
             user_name: name.current.value,
             icon: icon.current.value,
             age: age.current.value,
@@ -37,11 +38,11 @@ export const Profile = (props) => {
         { upsert: true }
       );
       alert('登録完了');
-      alert(uuid);
-      alert(name.current.value);
-      alert(icon.current.value);
-      alert(age.current.value);
-      alert(memo.current.value);
+      // alert(uuid);
+      // alert(name.current.value);
+      // alert(icon.current.value);
+      // alert(age.current.value);
+      // alert(memo.current.value);
     },
     [name, age, icon, memo]
   );
@@ -49,12 +50,14 @@ export const Profile = (props) => {
     const { data, error } = await supabase
       .from('user')
       .select('*')
-      .eq('id', uuid)
+      .eq('user_id', uuid)
       .single();
-    // console.log(data);
+    console.log(uuid);
+    console.log(data);
+    console.log('ユーザーを読み込んでいます');
     setUserProf(data);
     // setUserProf(data[0] || {});
-  }, []);
+  }, [uuid]);
   useEffect(() => {
     name.current.value = userProf['user_name'];
     icon.current.value = userProf['icon'];
@@ -62,6 +65,13 @@ export const Profile = (props) => {
     memo.current.value = userProf['remarks'];
   }, [userProf]);
   // console.log(!!{});
+  console.log('画像');
+  console.log(preview);
+  console.log('画像イメージはあるか？');
+  const handleChangeFile = (e) => {
+    const { files } = e.target;
+    setPreview(window.URL.createObjectURL(files[0]));
+  };
   return (
     <div>
       <div
@@ -76,9 +86,33 @@ export const Profile = (props) => {
             &#8203;
           </span>
 
-          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform border border-gray-300 shadow-xl bg-gray-50 rounded-xl">
+          <div
+            // onChange={handleChangeFile}
+            className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform border border-gray-300 shadow-xl bg-gray-50 rounded-xl"
+          >
             <header className="w-20 mx-auto mb-5">
-              <Image src="/favicon.ico" width={80} height={80} />
+              {preview == '' ? (
+                <Image
+                  src="/favicon.ico"
+                  // src={preview}
+                  width={80}
+                  height={80}
+                />
+              ) : (
+                <img
+                  // src="/favicon.ico"
+                  src={preview}
+                  width={80}
+                  height={80}
+                />
+              )}
+              {/* <Image
+                // src="/favicon.ico"
+                src={preview}
+                width={80}
+                height={80}
+              /> */}
+              <input type="file" name="photo" onChange={handleChangeFile} />
             </header>
 
             <div
