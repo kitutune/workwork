@@ -10,20 +10,6 @@ export const CompanyList = (props) => {
     return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
   });
 
-  // user_idをもったflugテーブル作成　ここから
-  const makeUserBookmark = useCallback(async () => {
-    // console.log(props.uuid);
-    // console.log('11111111111111');
-    const { data, error } = await supabase
-      .from('flug')
-      .insert([{ user_id: props.uuid }]);
-  }, []);
-  // user_idをもったflugテーブル作成　ここまで
-  // flugテーブルにuser_idを渡す　ここから
-  useEffect(() => {
-    makeUserBookmark(props.uuid);
-  }, [props.uuid]);
-  // flugテーブルにuser_idを渡す　ここまで
   return (
     <div className="grid grid-cols-3 gap-2 m-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
       <Addcompany uuid={props.uuid} getCompanyList={props.getCompanyList} />
@@ -33,6 +19,7 @@ export const CompanyList = (props) => {
             key={company.company_id}
             href={`/companyInfo?id=${company.company_id}`}
             passHref
+            userId={props.uuid}
           >
             <div className="p-2 border cursor-pointer">
               <div className="flex justify-center">
