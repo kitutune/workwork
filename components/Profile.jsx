@@ -10,6 +10,7 @@ import { supabase } from 'utils/supabaseClient';
 export const Profile = (props) => {
   const [userProf, setUserProf] = useState({});
   const [preview, setPreview] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const name = useRef(null);
   const age = useRef(null);
   const icon = useRef(null);
@@ -72,6 +73,11 @@ export const Profile = (props) => {
     const { files } = e.target;
     setPreview(window.URL.createObjectURL(files[0]));
   };
+  const iconChangeButton = () => {
+    setIsOpen((isOpen) => !isOpen);
+  };
+  console.log(isOpen);
+
   return (
     <div>
       <div
@@ -87,6 +93,7 @@ export const Profile = (props) => {
           </span>
 
           <div
+            onClick={iconChangeButton}
             // onChange={handleChangeFile}
             className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform border border-gray-300 shadow-xl bg-gray-50 rounded-xl"
           >
@@ -112,9 +119,14 @@ export const Profile = (props) => {
                 width={80}
                 height={80}
               /> */}
-              <input type="file" name="photo" onChange={handleChangeFile} />
             </header>
-
+            {isOpen === false ? (
+              <></>
+            ) : (
+              <div className="text-center">
+                <input type="file" onChange={handleChangeFile} />
+              </div>
+            )}
             <div
               as="h3"
               className="text-2xl font-medium leading-6 text-center text-gray-900"
