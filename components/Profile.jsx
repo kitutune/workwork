@@ -8,6 +8,8 @@ import { supabase } from 'utils/supabaseClient';
 // これらを入れる必要あり
 
 export const Profile = (props) => {
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [imgtag, setImagetag] = useState({});
   const [userProf, setUserProf] = useState({});
   const [preview, setPreview] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +21,22 @@ export const Profile = (props) => {
   const uuid = props.uuid;
   // console.log(userProf);
   // console.log('useProfのログ');
+  const onChange = (e) => {
+    setUploadedFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    const reader = new FileReader();
+    const imgtag = document.getElementById('myimage');
+    imgtag.title = selectedFile.name;
+    reader.onload = function (event) {
+      imgtag.src = event.target.result;
+    };
+    reader.readAsDataURL(selectedFile);
+    setImagetag(imgtag);
+    console.log(imgtag);
+    console.log('画像の正体は？');
+  };
+  console.log(imgtag.src);
+  console.log('画像の正体はその２？');
   const handleAdd = useCallback(
     async (uuid) => {
       if (name.current.value == '') {
@@ -32,7 +50,8 @@ export const Profile = (props) => {
             user_id: uuid,
             user_name: name.current.value,
             // icon: icon.current.value,
-            icon: preview,
+            // icon: preview,
+            icon: imgtag.src,
             age: age.current.value,
             remarks: memo.current.value,
           },
@@ -46,7 +65,13 @@ export const Profile = (props) => {
       // alert(age.current.value);
       // alert(memo.current.value);
     },
-    [name, age, preview, memo]
+    [
+      name,
+      age,
+      preview,
+      memo,
+      // , imgtag
+    ]
   );
   useEffect(() => {
     let unmounted = false;
@@ -88,10 +113,28 @@ export const Profile = (props) => {
     const { files } = e.target;
     setPreview(window.URL.createObjectURL(files[0]));
   };
+
+  // const handleChangeFile = (e) => {
+  //   const reader = new FileReader();
+  //   const { files } = e.target;
+  //   setPreview(reader.readAsDataURL(files[0]));
+  // };
+
   // const iconChangeButton = () => {
   //   setIsOpen((isOpen) => !isOpen);
   // };
   // console.log(isOpen);
+
+  // const handleChangeFile = (e) => {
+  //   // if (e.target.files[0] && e.target.files) {
+  //     const reader = new FileReader();
+  //     const { files } = e.target;
+  //     reader.onload = (e) => {
+  //       setPreview(e.target.result);
+  //     };
+  //     reader.readAsDataURL(files[0]);
+  //   // }
+  // };
 
   return (
     <div>
@@ -120,22 +163,28 @@ export const Profile = (props) => {
                   height={80}
                 />
               ) : (
-                <img
-                  // src="/favicon.ico"
-                  src={preview}
-                  width={80}
-                  height={80}
-                />
+                // <img
+                //   // src="/favicon.ico"
+                //   src={preview}
+                //   width={80}
+                //   height={80}
+                // />
+                <img id="myimage" width={80} height={80} />
               )}
             </div>
             {/* {isOpen === false ? (
               <div ref={icon}></div>
             ) : ( */}
             <div className="text-center">
-              <input
+              {/* <input
                 //  ref={icon}
                 type="file"
                 onChange={handleChangeFile}
+              /> */}
+              <input
+                //  ref={icon}
+                type="file"
+                onChange={onChange}
               />
             </div>
             {/* )} */}
@@ -208,6 +257,7 @@ export const Profile = (props) => {
           </div>
         </div>
       </div>
+      <img src={imgtag.src}></img>
     </div>
   );
 };
