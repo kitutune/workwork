@@ -12,7 +12,6 @@ import { BsCardList } from 'react-icons/bs';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
-import { Sample } from 'components/sample';
 
 // companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
@@ -52,21 +51,18 @@ const companyInfo = () => {
   // console.log(user_id);
   // console.log('222222222222222222222222');
   const Container = () => {
-    const { user } = Auth.useUser();
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
-    const [flug, setFlug] = useState(null);
-    // const [bookmark, setBookMark] = useState(false);
-    const [likeCompany, setLikeCompany] = useState();
-    const [isLike, setIsLike] = useState(false);
+    const [likeCompany, setLikeCompany] = useState(false);
+
+    const { user } = Auth.useUser();
     const router = useRouter();
+    let { id } = router.query;
+
     const isReady = router.isReady;
     const address = companyInfo.company_address;
     const date = companyInfo.update;
     const date2 = companySubInfo.update_info;
-    // 今開いてるcompanyページのcompanyIDをURLから取得ーーーーーここから
-    let { id } = router.query;
-    // 今開いてるcompanyページのcompanyIDをURLから取得ーーーーーここまで
     // map画面のオンオフ
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => {
@@ -118,15 +114,20 @@ const companyInfo = () => {
     };
     console.log(likeCompany);
     console.log('3');
+
     const getFlugDb = async () => {
+      console.log(id);
       console.log(user);
       console.log('来てる');
       if ((id, user)) {
         let { data, error } = await supabase
           .from('flug')
           .select('*')
-          .eq('company_id', id);
-        if (data.length) {
+          .eq('company_id', id)
+          .eq('user_id', user.id);
+        console.log(data);
+        console.log('いらっしゃい');
+        if (data && data.length) {
           const likeCompany = data[0].bookmark;
           console.log(data[0].bookmark);
           console.log('入れる');
@@ -136,14 +137,16 @@ const companyInfo = () => {
             .from('flug')
             .insert([{ company_id: id, user_id: user.id }]));
 
-          const likeCompany = data[0].bookmark;
-          console.log(data[0].bookmark);
+          // const likeCompany = data[0].bookmark;
+          // console.log(data[0].bookmark);
+          // console.log(data[0].bookmark);
           console.log('作る');
           return setLikeCompany(likeCompany);
         }
       }
-      console.log('id,userが不在のため帰りました');
+      console.log('idまたはuserが不在のため帰りました');
     };
+
     //     alert('お気に入りに登録しました！');
     //   } else {
     //     alert('お気に入りを解除しました！');
@@ -152,8 +155,38 @@ const companyInfo = () => {
     console.log('2');
     // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
 
+    // useEffect(() => {
+    //   let unmounted = false;
+    //   console.log(id);
+    //   console.log('idは有るのか？');
+    //   if (!id && isReady) {
+    //     console.log('idがいません');
+    //     router.push('/');
+    //   }
+    //   if (!user) {
+    //     console.log('userがいません');
+    //     // router.reload();
+    //   }
+    //   getCompanyDBsData();
+    //   console.log('マウント');
+    //   getFlugDb();
+    //   // clean up関数（Unmount時の処理）
+    //   return () => {
+    //     console.log('アンマウント');
+    //     unmounted = true;
+    //   };
+    // }, [user, router]);
+
     useEffect(() => {
       let unmounted = false;
+
+      // clean up関数（Unmount時の処理）
+      return () => {
+        console.log('アンマウント');
+        unmounted = true;
+      };
+    }, []);
+    useEffect(() => {
       console.log(id);
       console.log('idは有るのか？');
       if (!id && isReady) {
@@ -162,17 +195,21 @@ const companyInfo = () => {
       }
       if (!user) {
         console.log('userがいません');
-        router.reload();
+        // router.reload();
       }
       getCompanyDBsData();
       console.log('マウント');
       getFlugDb();
-      // clean up関数（Unmount時の処理）
-      return () => {
-        console.log('アンマウント');
-        unmounted = true;
-      };
-    }, [router]);
+    }, [user, router]);
+
+    useEffect(() => {
+      console.log(id);
+      console.log('idは有るのか？');
+
+      getCompanyDBsData();
+      console.log('マウント');
+      getFlugDb();
+    }, [user, router]);
 
     // -------------------------------
 
@@ -233,6 +270,7 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
+                    {/* <CommentBoard id={id} /> */}
                     {/* <CommentBoard id={id} /> */}
                     <CommentBoard id={id} />
                   </div>
@@ -559,7 +597,7 @@ const companyInfo = () => {
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                   {/* <CommentBoard id={id} /> */}
                   {/* <CommentBoard id={id} /> */}
-                  <Sample id={id} />
+                  <CommentBoard id={id} />
                 </div>
               </div>
             </div>
