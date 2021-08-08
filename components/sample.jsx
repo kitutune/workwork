@@ -13,13 +13,14 @@ export const Sample = (props) => {
   const { user } = Auth.useUser();
 
   const loadDB = useCallback(() => {
-    console.log(props?.id);
-    console.log('props.idprops.idprops.id');
+    // console.log(props?.id);
+    // console.log('props.idprops.idprops.id');
     return (
       supabase
         .from('company_comment')
         .select('*')
         .eq('company_id', props.id)
+        .order('time_stamp', { ascending: true })
         //   .order('createAt', { ascending: false })
         .then((db) => {
           if (db.data && !db.error) {
@@ -32,8 +33,8 @@ export const Sample = (props) => {
   }, []);
 
   const insertDB = useCallback(async () => {
-    console.log(comment.current.value);
-    console.log('2222222');
+    // console.log(comment.current.value);
+    // console.log('2222222');
 
     if (!comment.current.value || !user) {
       alert('コメントを投稿するには値を入力して下さい！');
