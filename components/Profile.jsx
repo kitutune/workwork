@@ -5,49 +5,33 @@ import { supabase } from 'utils/supabaseClient';
 
 export const Profile = (props) => {
   const [uploadedFile, setUploadedFile] = useState({});
-  const [imgtag, setImagetag] = useState({});
+
   const [userProf, setUserProf] = useState({});
   const [preview, setPreview] = useState('');
-  // const [isOpen, setIsOpen] = useState(false);
+
   const name = useRef(null);
   const age = useRef(null);
-  // const icon = useRef(null);
+  const imgData = useRef(null);
   const memo = useRef(null);
 
-  // const uuid = props.uuid;
-  // console.log(userProf);
-  // console.log('useProfのログ');
   const onChange = async (e) => {
-    // if (props.uuid) {
     setUploadedFile(e.target.files[1]);
     const selectedFile = e.target.files[0];
     const reader = new FileReader();
-    const imgtag = document.getElementById('myimage');
+
+    const imgtag = imgData.current;
     // imgtag.title = selectedFile.name;
     reader.onload = function (event) {
       imgtag.src = event.target.result;
     };
     reader.readAsDataURL(selectedFile);
-    setImagetag(imgtag);
-
-    console.log(imgtag);
-    console.log('現在のimgtag');
-    // if (imgtag && props.uuid) {
-    //   const { data, error } = await supabase
-    //     .from('user')
-    //     .insert([{ icon: imgtag.src }], { upsert: true })
-
-    //     .eq('user_id', userProf.user_id);
-    // } else {
-    //   alert('画像がありません');
-    // }
-    // // }
   };
-  console.log(userProf);
-  console.log('userProfの情報来てる？');
-  console.log(imgtag.length);
-  console.log(imgtag);
-  console.log('現在のimgtag');
+  // console.log(userProf);
+  // console.log('userProfの情報来てる？');
+  // console.log(imgData.src);
+  // console.log('現在のimgData');
+  // console.log(imgData);
+  // console.log('現在のimgData');
   // console.log(imgtag.src);
   // console.log('画像の正体はその２？');
   const handleAdd = useCallback(async () => {
@@ -63,7 +47,7 @@ export const Profile = (props) => {
           user_name: name.current.value,
           // icon: icon.current.value,
           // icon: preview,
-          icon: imgtag.length === undefined ? userProf.icon : imgtag.src,
+          icon: imgtag.length === undefined ? userProf.icon : imageSrc,
           age: age.current.value,
           remarks: memo.current.value,
         },
@@ -71,12 +55,7 @@ export const Profile = (props) => {
       { upsert: true }
     );
     alert('登録完了');
-    // alert(uuid);
-    // alert(name.current.value);
-    // alert(icon.current.value);
-    // alert(age.current.value);
-    // alert(memo.current.value);
-  }, [name, age, preview, memo, , imgtag]);
+  }, [name, age, preview, memo, imgData]);
 
   useEffect(() => {
     let unmounted = false;
@@ -118,36 +97,15 @@ export const Profile = (props) => {
     setPreview(window.URL.createObjectURL(files[0]));
   };
 
-  // const handleChangeFile = (e) => {
-  //   const reader = new FileReader();
-  //   const { files } = e.target;
-  //   setPreview(reader.readAsDataURL(files[0]));
-  // };
-
-  // const iconChangeButton = () => {
-  //   setIsOpen((isOpen) => !isOpen);
-  // };
-  // console.log(isOpen);
-
-  // const handleChangeFile = (e) => {
-  //   // if (e.target.files[0] && e.target.files) {
-  //     const reader = new FileReader();
-  //     const { files } = e.target;
-  //     reader.onload = (e) => {
-  //       setPreview(e.target.result);
-  //     };
-  //     reader.readAsDataURL(files[0]);
-  //   // }
-  // };
-
   return (
     <div>
-      <img
-        id="myimage"
+      {/* <img
+        ref={imgData}
+        // id="myimage"
         width={30}
         height={30}
         // className="z-negative"
-      />
+      /> */}
       <div
         as="div"
         // className="fixed inset-0 z-10 overflow-y-auto"
@@ -165,33 +123,16 @@ export const Profile = (props) => {
               // onClick={iconChangeButton}
               className="w-20 mx-auto mb-5"
             >
-              {/* {imgtag == null ? ( */}
-              <Image
-                src="/favicon.ico"
-                // src={preview}
-                width={80}
-                height={80}
-              />
-              {/* ) : ( */}
-              {/* // <img
-                //   // src="/favicon.ico"
-                //   src={preview}
-                //   width={80}
-                //   height={80}
-                // /> */}
-              <img src={userProf.icon} width={80} height={80} />
-              // <img id="myimage" width={80} height={80} />
-              {/* )} */}
+              {!imgData.src ? (
+                <Image src="/favicon.ico" width={80} height={80} />
+              ) : (
+                <img id="myimage" ref={imgData} width={80} height={80} />
+              )}
+
+              {/* <img src={userProf.icon} width={80} height={80} /> */}
             </div>
-            {/* {isOpen === false ? (
-              <div ref={icon}></div>
-            ) : ( */}
+
             <div className="text-center">
-              {/* <input
-                //  ref={icon}
-                type="file"
-                onChange={handleChangeFile}
-              /> */}
               <input
                 //  ref={icon}
                 type="file"
@@ -227,6 +168,7 @@ export const Profile = (props) => {
               // className="z-negative"
             />
             <img src={userProf.icon} width={80} height={80} />
+            <img src={imgData.src} width={80} height={80} />
             {/* </div> */}
             <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">年齢</div>
