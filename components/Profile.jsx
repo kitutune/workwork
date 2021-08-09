@@ -3,79 +3,83 @@ import Image from 'next/image';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 
-// const { user } = Auth.useUser();
-// <Profile uuid={user.id} />
-// これらを入れる必要あり
-
 export const Profile = (props) => {
   const [uploadedFile, setUploadedFile] = useState({});
   const [imgtag, setImagetag] = useState({});
   const [userProf, setUserProf] = useState({});
   const [preview, setPreview] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const name = useRef(null);
   const age = useRef(null);
   // const icon = useRef(null);
   const memo = useRef(null);
 
-  const uuid = props.uuid;
+  // const uuid = props.uuid;
   // console.log(userProf);
   // console.log('useProfのログ');
-  const onChange = (e) => {
-    setUploadedFile(e.target.files[0]);
+  const onChange = async (e) => {
+    // if (props.uuid) {
+    setUploadedFile(e.target.files[1]);
     const selectedFile = e.target.files[0];
     const reader = new FileReader();
     const imgtag = document.getElementById('myimage');
-    imgtag.title = selectedFile.name;
+    // imgtag.title = selectedFile.name;
     reader.onload = function (event) {
       imgtag.src = event.target.result;
     };
     reader.readAsDataURL(selectedFile);
     setImagetag(imgtag);
-    console.log(imgtag);
-    console.log('画像の正体は？');
-  };
-  console.log(imgtag.src);
-  console.log('画像の正体はその２？');
-  const handleAdd = useCallback(
-    async (uuid) => {
-      if (name.current.value == '') {
-        alert('名前を入力してください!');
-        return;
-      }
 
-      const { data, error } = await supabase.from('user').insert(
-        [
-          {
-            user_id: uuid,
-            user_name: name.current.value,
-            // icon: icon.current.value,
-            // icon: preview,
-            icon: imgtag.src,
-            age: age.current.value,
-            remarks: memo.current.value,
-          },
-        ],
-        { upsert: true }
-      );
-      alert('登録完了');
-      // alert(uuid);
-      // alert(name.current.value);
-      // alert(icon.current.value);
-      // alert(age.current.value);
-      // alert(memo.current.value);
-    },
-    [
-      name,
-      age,
-      preview,
-      memo,
-      // , imgtag
-    ]
-  );
+    console.log(imgtag);
+    console.log('現在のimgtag');
+    // if (imgtag && props.uuid) {
+    //   const { data, error } = await supabase
+    //     .from('user')
+    //     .insert([{ icon: imgtag.src }], { upsert: true })
+
+    //     .eq('user_id', userProf.user_id);
+    // } else {
+    //   alert('画像がありません');
+    // }
+    // // }
+  };
+  console.log(userProf);
+  console.log('userProfの情報来てる？');
+  console.log(imgtag.length);
+  console.log(imgtag);
+  console.log('現在のimgtag');
+  // console.log(imgtag.src);
+  // console.log('画像の正体はその２？');
+  const handleAdd = useCallback(async () => {
+    if (name.current.value == '') {
+      alert('名前を入力してください!');
+      return;
+    }
+
+    const { data, error } = await supabase.from('user').insert(
+      [
+        {
+          user_id: props.uuid,
+          user_name: name.current.value,
+          // icon: icon.current.value,
+          // icon: preview,
+          icon: imgtag.length === undefined ? userProf.icon : imgtag.src,
+          age: age.current.value,
+          remarks: memo.current.value,
+        },
+      ],
+      { upsert: true }
+    );
+    alert('登録完了');
+    // alert(uuid);
+    // alert(name.current.value);
+    // alert(icon.current.value);
+    // alert(age.current.value);
+    // alert(memo.current.value);
+  }, [name, age, preview, memo, , imgtag]);
+
   useEffect(() => {
     let unmounted = false;
-
     // clean up関数（Unmount時の処理）
     return () => {
       console.log('アンマウント');
@@ -86,23 +90,23 @@ export const Profile = (props) => {
     const { data, error } = await supabase
       .from('user')
       .select('*')
-      .eq('user_id', uuid)
+      .eq('user_id', props.uuid)
       .single();
-    console.log(uuid);
+    console.log(props.uuid);
     console.log(data);
     console.log('ユーザーを読み込んでいます');
     setUserProf(data);
-    // setUserProf(data[0] || {});
-  }, [uuid]);
+  }, [props.uuid]);
   useEffect(() => {
     if (userProf) {
       name.current.value = userProf['user_name'];
       // icon.current.value = userProf['icon'];
-      setPreview(userProf.icon);
+      // setPreview(userProf.icon);
       age.current.value = userProf['age'];
       memo.current.value = userProf['remarks'];
     }
   }, [userProf]);
+
   // console.log(!!{});
   // console.log(icon.current.value);
   // console.log(icon);
@@ -138,6 +142,12 @@ export const Profile = (props) => {
 
   return (
     <div>
+      <img
+        id="myimage"
+        width={30}
+        height={30}
+        // className="z-negative"
+      />
       <div
         as="div"
         // className="fixed inset-0 z-10 overflow-y-auto"
@@ -155,22 +165,23 @@ export const Profile = (props) => {
               // onClick={iconChangeButton}
               className="w-20 mx-auto mb-5"
             >
-              {preview == '' ? (
-                <Image
-                  src="/favicon.ico"
-                  // src={preview}
-                  width={80}
-                  height={80}
-                />
-              ) : (
-                // <img
+              {/* {imgtag == null ? ( */}
+              <Image
+                src="/favicon.ico"
+                // src={preview}
+                width={80}
+                height={80}
+              />
+              {/* ) : ( */}
+              {/* // <img
                 //   // src="/favicon.ico"
                 //   src={preview}
                 //   width={80}
                 //   height={80}
-                // />
-                <img id="myimage" width={80} height={80} />
-              )}
+                // /> */}
+              <img src={userProf.icon} width={80} height={80} />
+              // <img id="myimage" width={80} height={80} />
+              {/* )} */}
             </div>
             {/* {isOpen === false ? (
               <div ref={icon}></div>
@@ -208,6 +219,15 @@ export const Profile = (props) => {
                 // ref={icon}
               />
             </div> */}
+            {/* <div className="z-negative absolute border-none"> */}
+            <img
+              src={userProf.icon}
+              width={0}
+              height={0}
+              // className="z-negative"
+            />
+            <img src={userProf.icon} width={80} height={80} />
+            {/* </div> */}
             <div className="grid grid-cols-4 gap-2 mt-4">
               <div className="col-span-1 text-xl text-center">年齢</div>
               <input
@@ -249,7 +269,7 @@ export const Profile = (props) => {
                 {/* </CloseModal> */}
               </div>
               <div className="w-32 p-2">
-                <Button block size="large" onClick={() => handleAdd(uuid)}>
+                <Button block size="large" onClick={() => handleAdd()}>
                   {userProf['user_name'] ? '更新' : '新規登録'}
                 </Button>
               </div>
@@ -257,7 +277,6 @@ export const Profile = (props) => {
           </div>
         </div>
       </div>
-      <img src={imgtag.src}></img>
     </div>
   );
 };
