@@ -81,11 +81,11 @@ export const Header = () => {
                     name="Profile"
                   >
                     <Profile
-                      // button1osita={() => {
-                      //   alert('cancel');
-                      // }}
-                      // button1="sugoi"
-                      uuid={user.id}
+                    // button1osita={() => {
+                    //   alert('cancel');
+                    // }}
+                    // button1="sugoi"
+                    // uuid={user.id}
                     />
                   </ToolModal>
                   <a
