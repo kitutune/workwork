@@ -1,19 +1,39 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import companyIcon from 'public/company.png';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Addcompany } from '../components/addCompany';
 import { supabase } from 'utils/supabaseClient';
+
 export const CompanyList = (props) => {
-  const filteredTitle = props.companyNames.filter((company) => {
-    let searchContent = company['company_name'] + ' ' + company.URL;
+  const searchCompany = props.allData.filter((company) => {
+    let searchContent =
+      company['company_name'] +
+      ' ' +
+      company['URL'] +
+      ' ' +
+      company['access'] +
+      ' ' +
+      company['capital_stock'] +
+      ' ' +
+      company['company_address'] +
+      ' ' +
+      company['work'];
     return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
   });
+
+  // console.log(searchCompany);
+  // console.log('searchCompany');
+
+  // console.log(props.allData);
+  // console.log('allData');
+  // console.log(props.companyNames);
+  // console.log('props.companyNames');
 
   return (
     <div className="grid grid-cols-3 gap-2 m-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
       <Addcompany uuid={props.uuid} getCompanyList={props.getCompanyList} />
-      {filteredTitle.map((company) => {
+      {searchCompany.map((company) => {
         return (
           <Link
             key={company.company_id}
