@@ -48,23 +48,25 @@ const Container = (props) => {
   }, [user, getCompanyList]);
 
   useEffect(async () => {
-    if (user && bookmark) {
-      const { data, error } = await supabase
-        .from('company_info_flug')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('bookmark', true);
-      setAllData(data);
-      // console.log(data);
-      // console.log('ALLdata');
-    } else {
-      const { data, error } = await supabase
-        .from('company_info_flug')
-        .select('*')
-        .eq('user_id', user.id);
-      setAllData(data);
-      // console.log(data);
-      // console.log('ALLdata');
+    if (user) {
+      if (bookmark) {
+        const { data, error } = await supabase
+          .from('company_info_flug')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('bookmark', true);
+        setAllData(data);
+        // console.log(data);
+        // console.log('ALLdata');
+      } else {
+        const { data, error } = await supabase
+          .from('company_info_flug')
+          .select('*')
+          .eq('user_id', user.id);
+        setAllData(data);
+        // console.log(data);
+        // console.log('ALLdata');
+      }
     }
   }, [user, bookmark]);
 
