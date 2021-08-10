@@ -19,7 +19,12 @@ export const Header = () => {
         <nav className="flex items-center justify-between flex-wrap bg-teal p-6">
           <div className="flex items-center flex-no-shrink text-white mr-6">
             <Back>
-              <Image width={250} height={64} alt="jobicon" src="/job.png" />
+              <Image
+                width={250}
+                height={64}
+                alt="jobicon"
+                src="/workwork.png"
+              />
             </Back>
           </div>
           {!user ? (
