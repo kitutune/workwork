@@ -7,7 +7,15 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      minWidth: {
+        '3rem': '3rem',
+      },
+      zIndex: {
+        '-10': '-10',
+        negative: '- 1',
+      },
+    },
   },
   variants: {
     extend: {},
