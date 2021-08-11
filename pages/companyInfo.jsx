@@ -1,5 +1,4 @@
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
-import { Back } from 'components/Back';
 import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
 import router, { useRouter } from 'next/router';
@@ -12,6 +11,8 @@ import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
 import { LayoutWrapper } from 'components/LayoutWrapper';
+import { Back } from 'components/back';
+// import { Back } from 'components/Back';
 
 const getCompanyDB = async (id) => {
   let { data, error } = await supabase
