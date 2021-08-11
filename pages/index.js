@@ -2,7 +2,7 @@ import { Auth, Button, IconLogOut } from '@supabase/ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { LayoutWrapper } from '../components/layoutWrapper';
 import { supabase } from 'utils/supabaseClient';
-import { CompanyList } from 'components/companyList';
+import { CompanyList } from 'components/CompanyList';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 const getCompany = async () => {
   const { data, error } = await supabase
@@ -45,8 +45,7 @@ const Container = (props) => {
       } else {
         const { data, error } = await supabase
           .from('company_info_flug')
-          .select('*')
-          .eq('user_id', user.id);
+          .select('*');
         setAllData(data);
       }
     }
@@ -74,7 +73,7 @@ const Container = (props) => {
             allData={allData}
             companyNames={companyNames}
             uuid={user.id}
-            // getCompanyList={getCompanyList}
+            getCompanyList={getCompanyList}
             filterText={text}
           />
         )}

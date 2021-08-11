@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import companyIcon from 'public/company.png';
-import { Addcompany } from '../components/addCompany';
+import { Addcompany } from './AddCompany';
 
 export const CompanyList = (props) => {
   const searchCompany = props.allData.filter((company) => {

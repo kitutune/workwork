@@ -1,5 +1,5 @@
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
-import { Back } from 'components/back';
+import { Back } from 'components/Back';
 import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
 import router, { useRouter } from 'next/router';

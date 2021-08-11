@@ -10,7 +10,9 @@ export const CommentBoard = (props) => {
   const [logs, setIlogs] = useState([]);
   const [edit, setEdit] = useState(false);
   const { user } = Auth.useUser();
-
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  // const [uploading, setUploading] = useState(false);
+  const [url, setUrl] = useState(null);
   const loadDB = useCallback(() => {
     return supabase
       .from('company_comment')
@@ -63,34 +65,27 @@ export const CommentBoard = (props) => {
   }, []);
   useEffect(() => {
     loadDB(); //エラーはここで出ている
-    let subscribe = supabase
-      .from('company_comment')
-      .on('*', () => {
-        loadDB();
-      })
-      .subscribe();
+    // let subscribe = supabase
+    //   .from('company_comment')
+    //   .on('*', () => {
+    //     loadDB();
+    //   })
+    //   .subscribe();
 
-    return () => {
-      subscribe.unsubscribe();
-    };
+    // return () => {
+    //   subscribe.unsubscribe();
+    // };
   }, []);
+
   const addMessage = useCallback(() => {
     insertDB();
     comment.current.value = '';
   }, []);
 
-  const [avatarUrl, setAvatarUrl] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [url, setUrl] = useState(null);
-  useEffect(() => {
-    getURL();
-
-    if (url) downloadImage(url);
-  }, [url]);
   async function getURL() {
     const user = supabase.auth.user();
 
-    let { data, error, status } = await supabase
+    let { data, error } = await supabase
       .from('user')
       .select(`*`)
       .eq('user_id', user.id)
@@ -115,7 +110,20 @@ export const CommentBoard = (props) => {
       console.log('Error downloading image: ', error.message);
     }
   }
+  useEffect(() => {
+    getURL();
 
+    if (url) downloadImage(url);
+  }, [url]);
+  useEffect(() => {
+    let unmounted = false;
+
+    // clean up関数（Unmount時の処理）
+    return () => {
+      console.log('アンマウント');
+      unmounted = true;
+    };
+  }, []);
   return (
     <>
       <div className="flex flex-col w-full pt-4">

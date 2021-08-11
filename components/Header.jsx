@@ -1,4 +1,4 @@
-import { Back } from './back';
+import { Back } from './Back';
 import { Profile } from './Profile';
 import { ToolModal } from './ToolModal';
 import { Auth } from '@supabase/ui';
