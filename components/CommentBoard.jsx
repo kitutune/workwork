@@ -146,7 +146,7 @@ export const CommentBoard = (props) => {
         <div className="py-2">
           {logs &&
             logs.map((val, index) => {
-              const day = val.time_stamp;
+              const day = new Date(val.time_stamp).toLocaleString('ja-JP');
               return (
                 <div key={val.comment_id}>
                   <div className="text-xs">
