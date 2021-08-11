@@ -162,9 +162,11 @@ export const CommentBoard = (props) => {
                               height={80}
                             />
                           ) : (
-                            <img
+                            <Image
                               className="w-12 min-w-3rem "
                               src="/human.png"
+                              width={80}
+                              height={80}
                             />
                           )}
                         </div>
