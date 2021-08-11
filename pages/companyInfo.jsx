@@ -197,7 +197,7 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    <CommentBoard id={id} />
+                    {/* <CommentBoard id={id} /> */}
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
@@ -488,7 +488,7 @@ const companyInfo = () => {
 
               <div className="flex justify-center px-6 my-12　 lg:hidden">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  <CommentBoard id={id} />
+                  {/* <CommentBoard id={id} /> */}
                 </div>
               </div>
             </div>
