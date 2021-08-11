@@ -1,10 +1,11 @@
-import { Back } from './Back';
+// import { Back } from './Back';
 import { Profile } from './Profile';
 import { ToolModal } from './ToolModal';
 import { Auth } from '@supabase/ui';
 import { useState } from 'react';
 import Image from 'next/image';
 import cc from 'classcat';
+import { Back } from './back';
 export const Header = () => {
   const { user } = Auth.useUser();
 
