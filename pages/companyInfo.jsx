@@ -145,7 +145,7 @@ const companyInfo = () => {
       getCompanyDBsData();
       console.log('マウント');
       getFlugDb();
-    }, [user, router]);
+    }, [user, router, getCompanyDBsData, getFlugDb, id, isReady]);
 
     useEffect(() => {
       console.log(id);
