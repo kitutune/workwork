@@ -76,7 +76,7 @@ export default function Avatar({ url, size, onUpload }) {
       {avatarUrl ? (
         <Image src={avatarUrl} alt="Avatar" width={80} height={80} />
       ) : (
-        <Image src="/human.png" width={80} height={80} />
+        <Image src="/human.png" alt="NoAvatar" width={80} height={80} />
       )}
       <div className="text-center">
         <label className="button primary block" htmlFor="single">

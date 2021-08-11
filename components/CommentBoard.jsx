@@ -27,7 +27,7 @@ export const CommentBoard = (props) => {
           setIlogs([]);
         }
       });
-  }, []);
+  }, [props.id]);
 
   const insertDB = useCallback(async () => {
     if (!comment.current.value || !user) {
@@ -47,18 +47,21 @@ export const CommentBoard = (props) => {
       loadDB(),
       alert('コメントを投稿しました！')
     );
-  }, []);
+  }, [loadDB, props.id, user]);
 
-  const deleteDB = useCallback((comment_id) => {
-    if (!comment_id) return null;
-    return supabase
-      .from('company_comment')
-      .delete()
-      .eq('comment_id', comment_id)
-      .then(() => {
-        loadDB();
-      });
-  }, []);
+  const deleteDB = useCallback(
+    (comment_id) => {
+      if (!comment_id) return null;
+      return supabase
+        .from('company_comment')
+        .delete()
+        .eq('comment_id', comment_id)
+        .then(() => {
+          loadDB();
+        });
+    },
+    [loadDB]
+  );
   const handleEditChange = useCallback(() => {
     setEdit((prev) => {
       return !prev;
@@ -76,12 +79,12 @@ export const CommentBoard = (props) => {
     // return () => {
     //   subscribe.unsubscribe();
     // };
-  }, []);
+  }, [loadDB]);
 
   const addMessage = useCallback(() => {
     insertDB();
     comment.current.value = '';
-  }, []);
+  }, [insertDB]);
 
   async function getURL() {
     const user = supabase.auth.user();
@@ -165,6 +168,7 @@ export const CommentBoard = (props) => {
                             <Image
                               className="w-12 min-w-3rem "
                               src="/human.png"
+                              alt="NoAvatar"
                               width={80}
                               height={80}
                             />

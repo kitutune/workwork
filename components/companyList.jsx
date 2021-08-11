@@ -40,12 +40,13 @@ export const CompanyList = (props) => {
                       src={`http://capture.heartrails.com/126x200/cool?${company.URL}`}
                       width={126}
                       height={200}
+                      alt="CompanyThumbnail"
                     />
                   </div>
                 ) : (
                   <Image
                     src={companyIcon}
-                    alt="thumbnail"
+                    alt="NoThumbnail"
                     width={126}
                     height={200}
                   />

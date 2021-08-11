@@ -91,7 +91,7 @@ const companyInfo = () => {
     console.log(likeCompany);
     console.log('3');
 
-    const getFlugDb = async () => {
+    const getFlugDb = useCallback(async () => {
       console.log(id);
       console.log(user);
       console.log('来てる');
@@ -118,7 +118,7 @@ const companyInfo = () => {
         }
       }
       console.log('idまたはuserが不在のため帰りました');
-    };
+    }, []);
     console.log(likeCompany);
     console.log('2');
 
@@ -154,7 +154,7 @@ const companyInfo = () => {
       getCompanyDBsData();
       console.log('マウント');
       getFlugDb();
-    }, [user, router]);
+    }, [user, router, getCompanyDBsData, getFlugDb, id]);
 
     console.log(likeCompany);
     console.log('1');

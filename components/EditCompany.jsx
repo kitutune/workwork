@@ -38,7 +38,7 @@ export const EditCompany = (props) => {
         job_url: companyJobSite.current.value,
       })
       .eq('company_id', companyId);
-  }, []);
+  }, [companyId]);
   console.log(props.companySubInfo);
   console.log('company_info');
 
@@ -57,7 +57,7 @@ export const EditCompany = (props) => {
         update_info: props.companySubInfo.update_info,
       })
       .eq('company_id', companyId);
-  }, []);
+  }, [companyId, props.companySubInfo.update_info]);
   const editButton = () => {
     const edit = async () => {
       await companyInfoEditButton();
