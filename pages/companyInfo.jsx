@@ -13,15 +13,11 @@ import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
 
-// companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要）ここからーーーーーーーーーーーーーーーーーーーーここから
 const getCompanyDB = async (id) => {
-  // console.log('０００００００');
   let { data, error } = await supabase
     .from('company')
     .select('*')
     .eq('company_id', id);
-  // console.log(id);
-  // console.log('１１１１１１１１');
   if (!error && data) {
     const companyInfo = data[0];
     ({ data, error } = await supabase
@@ -32,24 +28,10 @@ const getCompanyDB = async (id) => {
       const companySubInfo = data[0];
       return { companyInfo: companyInfo, companySubInfo: companySubInfo };
     }
-    // else {
-    //   return { companyInfo: companyInfo, companySubInfo: null };
-    // }
   }
   return { companyInfo: null, companySubInfo: null };
 };
-// companyとcompany_infoのDBを取ってくる関数（ただし表示されるcompanyのURL＝IDが必要ここまでーーーーーーーーーーーーーーーーーーーーここまで
-
-// Company Informationに変更
 const companyInfo = () => {
-  // const { user } = Auth.useUser();
-  // if (user) {
-  //   return (user_id = user.id);
-  // }
-  // const user_id = user.id;
-  // console.log(user_id);
-  // console.log(user_id);
-  // console.log('222222222222222222222222');
   const Container = () => {
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companySubInfo, setCompanySubInfo] = useState([]);
@@ -92,19 +74,12 @@ const companyInfo = () => {
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
 
     const bookmarkButton = async () => {
-      // console.log(likeCompany);
-      // console.log('likeCompanylikeCompanylikeCompanylikeCompany');
-      // setLikeCompany((likeCompany) => !likeCompany);
-      // console.log(likeCompany);
-      // console.log('likeCompany22222222222');
       console.log(likeCompany);
       console.log('00');
       const { data, error } = await supabase
         .from('flug')
         .update({ bookmark: !likeCompany })
         .eq('company_id', id);
-      // const likeCompany = data[0].bookmark;
-      // console.log(data[0].bookmark);
       console.log(data);
       console.log('変更');
       console.log(likeCompany);
@@ -137,45 +112,14 @@ const companyInfo = () => {
             .from('flug')
             .insert([{ company_id: id, user_id: user.id }]));
 
-          // const likeCompany = data[0].bookmark;
-          // console.log(data[0].bookmark);
-          // console.log(data[0].bookmark);
           console.log('作る');
           return setLikeCompany(likeCompany);
         }
       }
       console.log('idまたはuserが不在のため帰りました');
     };
-
-    //     alert('お気に入りに登録しました！');
-    //   } else {
-    //     alert('お気に入りを解除しました！');
-    //   }
     console.log(likeCompany);
     console.log('2');
-    // このページが表示される時に必ず実行される様にするーーーーーーーーーここから
-
-    // useEffect(() => {
-    //   let unmounted = false;
-    //   console.log(id);
-    //   console.log('idは有るのか？');
-    //   if (!id && isReady) {
-    //     console.log('idがいません');
-    //     router.push('/');
-    //   }
-    //   if (!user) {
-    //     console.log('userがいません');
-    //     // router.reload();
-    //   }
-    //   getCompanyDBsData();
-    //   console.log('マウント');
-    //   getFlugDb();
-    //   // clean up関数（Unmount時の処理）
-    //   return () => {
-    //     console.log('アンマウント');
-    //     unmounted = true;
-    //   };
-    // }, [user, router]);
 
     useEffect(() => {
       let unmounted = false;
@@ -211,11 +155,6 @@ const companyInfo = () => {
       getFlugDb();
     }, [user, router]);
 
-    // -------------------------------
-
-    {
-      /* <useMapGeocode/> */
-    }
     console.log(likeCompany);
     console.log('1');
     if (user) {
@@ -225,12 +164,8 @@ const companyInfo = () => {
           {console.log('0')}
 
           <div className="flex justify-end gap-2 my-2 mr-2">
-            {/* 右端寄席のCSS */}
-
-            {/* Backボタン表示　ここから */}
             <div className="w-24">
               <Button block size="medium" icon={<IconCornerDownLeft />}>
-                {/* EDIT */}
                 <ToolModal name="EDIT">
                   <EditCompany
                     companyInfo={companyInfo}
@@ -240,8 +175,6 @@ const companyInfo = () => {
                 </ToolModal>
               </Button>
             </div>
-            {/* Backボタン表示　ここまで */}
-            {/* Backボタン表示　ここから */}
             <div className="w-24">
               <Back>
                 <Button block size="medium" icon={<IconCornerDownLeft />}>
@@ -249,35 +182,26 @@ const companyInfo = () => {
                 </Button>
               </Back>
             </div>
-            {/* Backボタン表示　ここまで */}
           </div>
           <div className="flex flex-row-reverse">
             <div>update:{date >= date2 ? date : date2}</div>
           </div>
-          {/* ここから追加 */}
           <div className="font-mono bg-gray-400">
-            {/* <!-- Container --> */}
             <div className="container mx-auto">
               <div className="flex justify-center px-6 my-12">
-                {/* <!-- Row --> */}
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  {/* <!-- Col --> */}
                   <div
                     className="w-full h-auto bg-gray-400 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
-                    //  style="background-image: url('https://source.unsplash.com/Mv9hjnEUHR4/600x800')"
                     style={{
                       backgroundImage:
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    {/* <CommentBoard id={id} /> */}
-                    {/* <CommentBoard id={id} /> */}
                     <CommentBoard id={id} />
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                     <button className="float-right " onClick={bookmarkButton}>
-                      {/* {bookmark ? <FcLikePlaceholder /> : <FcLike />} */}
                       {likeCompany == false ? (
                         <FcLikePlaceholder />
                       ) : (
@@ -514,56 +438,28 @@ const companyInfo = () => {
                       ) : (
                         <div></div>
                       )}
-                      {/* <div className="text-center">
-                        <a
-                          className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                          href="#"
-                        >
-                          Forgot Password?
-                        </a>
-                      </div>
-                      <div className="text-center">
-                        <a
-                          className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                          href="./index.html"
-                        >
-                          Already have an account? Login!
-                        </a>
-                      </div> */}
                       <div className="flex">
                         <div className="w-24 pr-3">
                           <Button
                             block
                             size="medium"
                             onClick={companyOptionButton}
-                            // icon={<IconCornerDownLeft />}
                           >
                             <BsCardList />
                             option
                           </Button>
                         </div>
                         <div className="w-24">
-                          <Button
-                            block
-                            size="medium"
-                            onClick={toggle}
-                            // icon={<IconCornerDownLeft />}
-                          >
+                          <Button block size="medium" onClick={toggle}>
                             <GrMapLocation />
                             Map
                           </Button>
                         </div>
-                        {/* <GrMap /> */}
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
-              {/* ---------------- */}
-
-              {/* -------------------- */}
-
-              {/* --------------------------- */}
               <div className="flex justify-center px-6 my-12">
                 <div
                   className="
@@ -571,7 +467,6 @@ const companyInfo = () => {
                 "
                 ></div>
               </div>
-              {/* ---------- */}
               {isOpen === false ? (
                 <div></div>
               ) : (
@@ -591,18 +486,13 @@ const companyInfo = () => {
                 </div>
               )}
 
-              {/* ------------- */}
               <div className="flex justify-center px-6 my-12　 lg:hidden">
-                {/* <!-- Row --> */}
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  {/* <CommentBoard id={id} /> */}
-                  {/* <CommentBoard id={id} /> */}
                   <CommentBoard id={id} />
                 </div>
               </div>
             </div>
           </div>
-          {/* ここまで追加 */}
         </div>
       );
     }
@@ -612,9 +502,7 @@ const companyInfo = () => {
   return (
     <LayoutWrapper>
       <Auth.UserContextProvider supabaseClient={supabase}>
-        <Container
-        // user={user}
-        />
+        <Container />
       </Auth.UserContextProvider>
     </LayoutWrapper>
   );

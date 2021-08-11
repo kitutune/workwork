@@ -57,28 +57,15 @@ export default function Avatar({ url, size, onUpload }) {
   return (
     <div>
       {avatarUrl ? (
-        <img
-          src={avatarUrl}
-          alt="Avatar"
-          // className="avatar image"
-          // style={{ height: size, width: size }}
-        />
+        <img src={avatarUrl} alt="Avatar" />
       ) : (
-        <img
-          // className="avatar no-image"
-          src="/human.png"
-          // style={{ height: size, width: size }}
-        />
+        <img src="/human.png" />
       )}
       <div className="text-center">
         <label className="button primary block" htmlFor="single">
           {uploading ? 'Uploading ...' : 'upload'}
         </label>
         <input
-          // style={{
-          //   visibility: 'hidden',
-          //   position: 'absolute',
-          // }}
           className="hidden"
           type="file"
           id="single"

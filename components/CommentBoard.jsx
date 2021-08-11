@@ -1,5 +1,4 @@
 import cc from 'classcat';
-// import { supabase } from '@util/supabase';
 import { supabase } from 'utils/supabaseClient';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,29 +12,21 @@ export const CommentBoard = (props) => {
   const { user } = Auth.useUser();
 
   const loadDB = useCallback(() => {
-    // console.log(props?.id);
-    // console.log('props.idprops.idprops.id');
-    return (
-      supabase
-        .from('company_comment')
-        .select('*')
-        .eq('company_id', props.id)
-        .order('time_stamp', { ascending: true })
-        //   .order('createAt', { ascending: false })
-        .then((db) => {
-          if (db.data && !db.error) {
-            setIlogs(db.data);
-          } else {
-            setIlogs([]);
-          }
-        })
-    );
+    return supabase
+      .from('company_comment')
+      .select('*')
+      .eq('company_id', props.id)
+      .order('time_stamp', { ascending: true })
+      .then((db) => {
+        if (db.data && !db.error) {
+          setIlogs(db.data);
+        } else {
+          setIlogs([]);
+        }
+      });
   }, []);
 
   const insertDB = useCallback(async () => {
-    // console.log(comment.current.value);
-    // console.log('2222222');
-
     if (!comment.current.value || !user) {
       alert('コメントを投稿するには値を入力して下さい！');
       return null;
@@ -48,14 +39,10 @@ export const CommentBoard = (props) => {
           user_id: user.id,
           company_id: props.id,
           comment: comment.current.value,
-          //   user名: userName.user_name,
         })
         .eq('company_id', props.id),
       loadDB(),
       alert('コメントを投稿しました！')
-
-      // catch((e) => {
-      //     alert('エラーが発生したためコメントを投稿出来ませんでした')})
     );
   }, []);
 
@@ -64,17 +51,6 @@ export const CommentBoard = (props) => {
     return supabase
       .from('company_comment')
       .delete()
-      .eq('comment_id', comment_id)
-      .then(() => {
-        loadDB();
-      });
-  }, []);
-  const changeStarDB = useCallback((comment_id, star) => {
-    if (!comment_id) return null;
-
-    return supabase
-      .from('company_comment')
-      .update({ star: !star })
       .eq('comment_id', comment_id)
       .then(() => {
         loadDB();
@@ -103,6 +79,43 @@ export const CommentBoard = (props) => {
     comment.current.value = '';
   }, []);
 
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [url, setUrl] = useState(null);
+  useEffect(() => {
+    getURL();
+
+    if (url) downloadImage(url);
+  }, [url]);
+  async function getURL() {
+    const user = supabase.auth.user();
+
+    let { data, error, status } = await supabase
+      .from('user')
+      .select(`*`)
+      .eq('user_id', user.id)
+      .single();
+
+    if (data) {
+      setUrl(data.avatar_url);
+    }
+  }
+
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const url = URL.createObjectURL(data);
+      setAvatarUrl(url);
+    } catch (error) {
+      console.log('Error downloading image: ', error.message);
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col w-full pt-4">
@@ -113,125 +126,57 @@ export const CommentBoard = (props) => {
               return (
                 <div key={val.comment_id}>
                   <div className="text-xs">
-                    {/* {day} */}
-
-                    <div
-                      className="bg-gray-50  w-2/5"
-                      //   className={cc([
-                      //     // 'relative ml-0 mr-auto w-4/5 p-1 rounded-xl',
-                      //     '',
-                      //     {
-                      //       'bg-gray-50': !val.star,
-                      //       'bg-yellow-100 border-2 border-yellow-500': val.star,
-                      //     },
-                      //   ])}
-                    >
-                      {day}
-                      <div className="text-right">
-                        {edit && (
-                          <div className="absolute top-0 right-0 flex flex-row space-x-1.5 py-0.5 px-2">
-                            <div
-                              className={cc([
-                                'text-xs  outline-none',
-                                {
-                                  'text-gray-400 hover:text-yellow-400':
-                                    !val.star,
-                                  'text-yellow-400': val.star,
-                                },
-                              ])}
-                            >
-                              <button
-                                onClick={() => {
-                                  changeStarDB(val.comment_id, val.star);
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faStar} />
-                              </button>
-                            </div>
-                            <div className="text-xs text-gray-400 hover:text-pink-400 outline-none">
-                              <button
-                                onClick={() => {
-                                  deleteDB(val.comment_id);
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faTrash} />
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    <div className=" ">{day}</div>
                   </div>
-                  <div className="max-w-3xl w-full mx-auto z-10">
+                  <div className="max-w-3xl w-full mx-auto  z-10">
                     <div>
-                      {/* 木下がそう */}
-                      {/* <div className="bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4"> */}
-                      <div
-                        className={cc([
-                          // 'relative ml-0 mr-auto w-4/5 p-1 rounded-xl',
-                          'bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4',
-                          {
-                            'bg-gray-50': !val.star,
-                            'bg-yellow-100 border-2 border-yellow-500':
-                              val.star,
-                          },
-                        ])}
-                      >
-                        <div
-                          className={cc([
-                            // 'relative ml-0 mr-auto w-4/5 p-1 rounded-xl',
-                            'relative ml-0 mr-auto  p-1 rounded-xl',
-                            {
-                              'bg-gray-50': !val.star,
-                              'bg-yellow-100  ': val.star,
-                            },
-                          ])}
-                        >
-                          <div className="text-right">
-                            {edit && (
-                              <div className="absolute top-0 right-0 flex flex-row space-x-1.5 py-0.5 px-2">
-                                <div
-                                  className={cc([
-                                    'text-xs  outline-none',
-                                    {
-                                      'text-gray-400 hover:text-yellow-400':
-                                        !val.star,
-                                      'text-yellow-400': val.star,
-                                    },
-                                  ])}
-                                >
-                                  <button
-                                    onClick={() => {
-                                      changeStarDB(val.comment_id, val.star);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon={faStar} />
-                                  </button>
-                                </div>
-                                <div className="text-xs text-gray-400 hover:text-pink-400 outline-none">
-                                  <button
-                                    onClick={() => {
-                                      // console.log(val.comment_id);
-                                      // console.log('1111111111111111111');
-                                      deleteDB(val.comment_id);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon={faTrash} />
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </div>
+                      <div className="flex items-center">
+                        <div>
+                          {avatarUrl ? (
+                            <img
+                              src={avatarUrl}
+                              alt="Avatar"
+                              className="w-12 min-w-3rem"
+                            />
+                          ) : (
+                            <img
+                              className="w-12 min-w-3rem "
+                              src="/human.png"
+                            />
+                          )}
                         </div>
-                        <div className="flex-none  sm:flex">
-                          <div className="flex-auto sm:ml-5 justify-evenly">
-                            <div className="flex items-center justify-between sm:mt-2">
-                              <div className="flex items-center">
-                                <div className="flex flex-col break-normal">
-                                  <div className="w-full break-all flex-none text-lg text-gray-800 font-bold　leading-none">
-                                    {val.comment && (
-                                      <div className=" "> {val.comment}</div>
-                                    )}
+                        <div className=" flex-auto bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4">
+                          <div className="relative ml-0 mr-auto  p-1 rounded-xl">
+                            <div className="text-right">
+                              {edit && (
+                                <div className="absolute top-0 right-0 flex flex-row space-x-1.5 py-0.5 px-2">
+                                  <div className="text-xs text-gray-400 hover:text-pink-400 outline-none">
+                                    <button
+                                      onClick={() => {
+                                        deleteDB(val.comment_id);
+                                      }}
+                                    >
+                                      <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex-none  sm:flex">
+                            <div className="flex-auto sm:ml-5 justify-evenly">
+                              <div className="flex items-center justify-between sm:mt-2">
+                                <div className="flex items-center">
+                                  <div className="flex flex-col break-normal">
+                                    <div
+                                      className="w-full break-all 
+                                  flex-none
+                                   text-lg text-gray-800 font-bold　leading-none"
+                                    >
+                                      {val.comment && (
+                                        <div className=" "> {val.comment}</div>
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -245,7 +190,6 @@ export const CommentBoard = (props) => {
               );
             })}
         </div>
-        {/* ---- */}
         <div>コメント</div>
         <div className="w-full flex flex-col">
           <div className="w-full">
@@ -269,7 +213,6 @@ export const CommentBoard = (props) => {
             </label>
           </div>
         </div>
-        {/* ---- */}
       </div>
     </>
   );

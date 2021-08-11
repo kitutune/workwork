@@ -4,18 +4,13 @@ import Image from 'next/image';
 import add from 'public/add.png';
 import { Fragment, useCallback, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
-// import { supabase } from 'utils/supabasesupabase';
-
-// type props = {
-//   uuid: string;
-//   getCompanyList: VoidFunction;
-// };
 
 export const Addcompany = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
+
   // ダイアログを開く
   const openModal = useCallback(() => {
     setIsOpen(true);
@@ -40,9 +35,8 @@ export const Addcompany = (props) => {
         company_address: companyAddress,
       },
     ]);
-    const company_uuid = data[0].id;
-    console.log(company_uuid);
-    console.log('gjsa;baajaiyjap:g:ps:prajth:aht:n');
+    const company_uuid = data[0].company_id;
+
     ({ data, error } = await supabase.from('company_info').insert([
       {
         company_id: company_uuid,
@@ -144,7 +138,7 @@ export const Addcompany = (props) => {
                       block
                       size="large"
                       icon={<IconPlus />}
-                      onClick={() => handleAdd(props.uuid)}
+                      onClick={() => handleAdd()}
                     >
                       追加
                     </Button>

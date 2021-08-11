@@ -4,7 +4,6 @@ import { LayoutWrapper } from '../components/layoutWrapper';
 import { supabase } from 'utils/supabaseClient';
 import { CompanyList } from 'components/companyList';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
-// companyテーブルのみ　ここから
 const getCompany = async () => {
   const { data, error } = await supabase
     .from('company')
@@ -20,10 +19,6 @@ const Container = (props) => {
   const { user } = Auth.useUser();
   const [allData, setAllData] = useState({});
   const [bookmark, setBookmark] = useState(false);
-  // console.log(user);
-  // console.log('indexのuser');
-  // console.log(allData.length);
-  // console.log('indexのallData');
   const [text, setText] = useState('');
   const [companyNames, setCompanyNames] = useState([]);
 
@@ -32,17 +27,8 @@ const Container = (props) => {
     setCompanyNames(data);
   }, []);
   const bookmarkButton = useCallback(async () => {
-    // if (user) {
-    //   const { data, error } = await supabase
-    //     .ftom('company_info_flug')
-    //     .eq('user_id', user.id)
-    //     .eq('bookmark', true);
-    //   return setAllData(data);
-    // }
     setBookmark((bookmark) => !bookmark);
   }, []);
-  console.log(bookmark);
-  console.log('bookmark');
   useEffect(() => {
     getCompanyList();
   }, [user, getCompanyList]);
@@ -56,16 +42,12 @@ const Container = (props) => {
           .eq('user_id', user.id)
           .eq('bookmark', true);
         setAllData(data);
-        // console.log(data);
-        // console.log('ALLdata');
       } else {
         const { data, error } = await supabase
           .from('company_info_flug')
           .select('*')
           .eq('user_id', user.id);
         setAllData(data);
-        // console.log(data);
-        // console.log('ALLdata');
       }
     }
   }, [user, bookmark]);
@@ -81,17 +63,10 @@ const Container = (props) => {
             onChange={(e) => setText(e.target.value)}
           />
 
-          <button
-            // className="float-right "
-            onClick={bookmarkButton}
-          >
+          <button onClick={bookmarkButton}>
             <FcLike />
           </button>
         </div>
-        {/* {console.log(bookmark)}
-        {console.log('bookmark')}
-        {console.log(allData)}
-        {console.log('allData')} */}
         {allData.length === undefined ? (
           <div></div>
         ) : (

@@ -13,11 +13,7 @@ export const ToolModal = (props) => {
   return (
     <div className={props.style}>
       <div>
-        <div
-          type="button"
-          onClick={openModal}
-          // className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
+        <div type="button" onClick={openModal}>
           {props.name}
         </div>
       </div>
@@ -51,7 +47,6 @@ export const ToolModal = (props) => {
               <div className="absolute right-0 z-20 top-0 p-4">
                 <button
                   type="button"
-                  // className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                   className=" justify-center px-4 py-2 text-sm font-medium  font-bold text-whitebg-transparent border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                   onClick={closeModal}
                 >
@@ -71,11 +66,3 @@ export const ToolModal = (props) => {
     </div>
   );
 };
-
-// export const CloseModal = (props) => {
-//   let [isOpen, setIsOpen] = useState(false);
-//   const closeModal = useCallback(() => {
-//     setIsOpen(false);
-//   }, []);
-//   return <div onClick={closeModal}>{props.children}</div>;
-// };

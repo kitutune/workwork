@@ -80,13 +80,7 @@ export const Header = () => {
                     style="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
                     name="Profile"
                   >
-                    <Profile
-                    // button1osita={() => {
-                    //   alert('cancel');
-                    // }}
-                    // button1="sugoi"
-                    // uuid={user.id}
-                    />
+                    <Profile />
                   </ToolModal>
                   <a
                     href="#responsive-header"
