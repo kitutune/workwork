@@ -118,7 +118,7 @@ const companyInfo = () => {
         }
       }
       console.log('idまたはuserが不在のため帰りました');
-    }, []);
+    }, [id, likeCompany, user]);
     console.log(likeCompany);
     console.log('2');
 

@@ -34,20 +34,24 @@ const Container = (props) => {
     getCompanyList();
   }, [user, getCompanyList]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (user) {
       if (bookmark) {
-        const { data, error } = await supabase
+        supabase
           .from('company_info_flug')
           .select('*')
           .eq('user_id', user.id)
-          .eq('bookmark', true);
-        setAllData(data);
+          .eq('bookmark', true)
+          .then((db) => {
+            setAllData(db.data);
+          });
       } else {
-        const { data, error } = await supabase
+        supabase
           .from('company_info_flug')
-          .select('*');
-        setAllData(data);
+          .select('*')
+          .then((db) => {
+            setAllData(db.data);
+          });
       }
     }
   }, [user, bookmark]);
