@@ -1,9 +1,10 @@
 import { Auth, Button, IconLogOut } from '@supabase/ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
-import { CompanyList } from 'components/CompanyList';
+// import { CompanyList } from 'components/CompanyList';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { LayoutWrapper } from 'components/LayoutWrapper';
+import { CompanyList } from 'components/companyList';
 const getCompany = async () => {
   const { data, error } = await supabase
     .from('company')
