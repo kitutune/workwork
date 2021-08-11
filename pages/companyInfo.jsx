@@ -5,13 +5,13 @@ import Image from 'next/image';
 import router, { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState, VFC } from 'react';
 import { supabase } from 'utils/supabaseClient';
-import { LayoutWrapper } from '../components/layoutWrapper';
 import { EditCompany } from 'components/EditCompany';
 import { ToolModal } from 'components/ToolModal';
 import { BsCardList } from 'react-icons/bs';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { GrMapLocation, GrLike } from 'react-icons/gr';
 import cc from 'classcat';
+import { LayoutWrapper } from 'components/LayoutWrapper';
 
 const getCompanyDB = async (id) => {
   let { data, error } = await supabase
