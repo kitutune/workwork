@@ -103,7 +103,7 @@ export const Profile = () => {
               <div className="w-20 mx-auto mb-5">
                 <Avatar
                   url={avatar_url}
-                  size={80}
+                  // size={80}
                   onUpload={(url) => {
                     setAvatarUrl(url);
                     updateProfile({ username, avatar_url: url });

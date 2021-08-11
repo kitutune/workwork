@@ -35,7 +35,7 @@ export const CompanyList = (props) => {
               <div className="flex justify-center">
                 {company.URL ? (
                   <div>
-                    <img
+                    <Image
                       src={`http://capture.heartrails.com/126x200/cool?${company.URL}`}
                       width={126}
                       height={200}

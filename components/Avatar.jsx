@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { supabase } from '../utils/supabaseClient';
+import Image from 'next/image';
 import { supabase } from 'utils/supabaseClient';
 
 export default function Avatar({ url, size, onUpload }) {
@@ -11,6 +12,8 @@ export default function Avatar({ url, size, onUpload }) {
   }, [url]);
 
   async function downloadImage(path) {
+    console.log(path);
+    console.log('pathpath');
     try {
       const { data, error } = await supabase.storage
         .from('avatars')
@@ -18,12 +21,26 @@ export default function Avatar({ url, size, onUpload }) {
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
+      // const url = URL.createObjectURL(data);
+      // console.log(url);
+      // console.log('urlurl');
+
+      let reader = new FileReader();
+      reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
+
+      reader.onload = function () {
+        // link.href = reader.result; // data url
+        setAvatarUrl(reader.result);
+        // link.click();
+      };
+
+      // setAvatarUrl(url);
     } catch (error) {
       console.log('Error downloading image: ', error.message);
     }
   }
+  console.log(avatarUrl);
+  console.log('avatarUrl');
 
   async function uploadAvatar(event) {
     try {
@@ -57,9 +74,9 @@ export default function Avatar({ url, size, onUpload }) {
   return (
     <div>
       {avatarUrl ? (
-        <img src={avatarUrl} alt="Avatar" />
+        <Image src={avatarUrl} alt="Avatar" width={80} height={80} />
       ) : (
-        <img src="/human.png" />
+        <Image src="/human.png" width={80} height={80} />
       )}
       <div className="text-center">
         <label className="button primary block" htmlFor="single">

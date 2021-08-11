@@ -496,7 +496,7 @@ const companyInfo = () => {
 
               <div className="flex justify-center px-6 my-12　 lg:hidden">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  {/* <CommentBoard id={id} /> */}
+                  <CommentBoard id={id} />
                 </div>
               </div>
             </div>

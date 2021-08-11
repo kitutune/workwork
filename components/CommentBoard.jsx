@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Auth } from '@supabase/ui';
+import Image from 'next/image';
 
 export const CommentBoard = (props) => {
   const comment = useRef(null);
@@ -104,8 +105,20 @@ export const CommentBoard = (props) => {
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
+      // const url = URL.createObjectURL(data);
+      // console.log(url);
+      // console.log('urlurl');
+
+      let reader = new FileReader();
+      reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
+
+      reader.onload = function () {
+        // link.href = reader.result; // data url
+        setAvatarUrl(reader.result);
+        // link.click();
+      };
+
+      // setAvatarUrl(url);
     } catch (error) {
       console.log('Error downloading image: ', error.message);
     }
@@ -141,10 +154,12 @@ export const CommentBoard = (props) => {
                       <div className="flex items-center">
                         <div>
                           {avatarUrl ? (
-                            <img
+                            <Image
                               src={avatarUrl}
                               alt="Avatar"
                               className="w-12 min-w-3rem"
+                              width={80}
+                              height={80}
                             />
                           ) : (
                             <img
