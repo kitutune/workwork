@@ -4,12 +4,13 @@ import Image from 'next/image';
 export default function Custom404() {
   const router = useRouter();
   useEffect(() => {
-    setTimeout(() => {
-      router.push('/');
-    }, 1000);
-
+    if (router) {
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    }
     return () => {};
-  }, []);
+  }, [router]);
 
   return (
     <>

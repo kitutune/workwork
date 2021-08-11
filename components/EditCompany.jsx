@@ -27,6 +27,7 @@ export const EditCompany = (props) => {
     await supabase
       .from('company')
       .update({
+        company_id: companyId,
         company_name: companyName.current.value,
         phone_number: companyPhone.current.value,
         company_address: companyAddress.current.value,
@@ -38,10 +39,14 @@ export const EditCompany = (props) => {
       })
       .eq('company_id', companyId);
   }, []);
+  console.log(props.companySubInfo);
+  console.log('company_info');
+
   const companyInfoSubEditButton = useCallback(async () => {
     await supabase
       .from('company_info')
       .update({
+        company_id: companyId,
         nearest_station: companyNearestStation.current.value,
         access: companyAccess.current.value,
         work: companyWork.current.value,
@@ -49,6 +54,7 @@ export const EditCompany = (props) => {
         motorcycle_parking: companyMotorcycleParking.current.value,
         parking_area_for_bicycles: companyParkingBicycles.current.value,
         remarks: companyRemarks.current.value,
+        update_info: props.companySubInfo.update_info,
       })
       .eq('company_id', companyId);
   }, []);
@@ -269,6 +275,7 @@ export const EditCompany = (props) => {
             href="https://twitter.com/devgleb"
             className="text-blue-600 hover:underline"
             target="_blank"
+            rel="noreferrer"
           >
             @devgleb
           </a>

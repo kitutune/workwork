@@ -310,7 +310,11 @@ const companyInfo = () => {
                          "
                         type="button"
                       >
-                        <a href={companyInfo.URL} target="_blank">
+                        <a
+                          href={companyInfo.URL}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           HPへ
                         </a>
                       </button>
@@ -321,7 +325,11 @@ const companyInfo = () => {
                          "
                         type="button"
                       >
-                        <a href={companyInfo.job_url} target="_blank">
+                        <a
+                          href={companyInfo.job_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           求人サイトへ
                         </a>
                       </button>
