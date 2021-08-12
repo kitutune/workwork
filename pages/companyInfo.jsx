@@ -92,9 +92,10 @@ const companyInfo = () => {
     console.log('3');
 
     const getFlugDb = useCallback(async () => {
-      console.log(id);
-      console.log(user);
-      console.log('来てる');
+      if (id === undefined) {
+        return;
+      }
+
       if ((id, user)) {
         let { data, error } = await supabase
           .from('flug')

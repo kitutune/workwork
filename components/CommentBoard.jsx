@@ -14,39 +14,45 @@ export const CommentBoard = (props) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
   // const [uploading, setUploading] = useState(false);
   const [url, setUrl] = useState(null);
-  const loadDB = useCallback(() => {
-    return supabase
-      .from('company_comment')
-      .select('*')
-      .eq('company_id', props.id)
-      .order('time_stamp', { ascending: true })
-      .then((db) => {
-        if (db.data && !db.error) {
-          setIlogs(db.data);
-        } else {
-          setIlogs([]);
-        }
-      });
+  const loadDB = useCallback(async () => {
+    console.log(props.id);
+    if (props.id === undefined) {
+      return;
+    } else {
+      return await supabase
+        .from('company_comment')
+        .select('*')
+        .eq('company_id', props.id)
+        .order('time_stamp', { ascending: true })
+        .then((db) => {
+          if (db.data && !db.error) {
+            setIlogs(db.data);
+          } else {
+            setIlogs([]);
+          }
+        });
+    }
   }, [props.id]);
 
   const insertDB = useCallback(async () => {
-    if (!comment.current.value || !user) {
+    if (!comment.current.value) {
       alert('コメントを投稿するには値を入力して下さい！');
       return null;
     }
-
-    return (
-      await supabase
-        .from('company_comment')
-        .insert({
-          user_id: user.id,
-          company_id: props.id,
-          comment: comment.current.value,
-        })
-        .eq('company_id', props.id),
-      loadDB(),
-      alert('コメントを投稿しました！')
-    );
+    if (props.id && user) {
+      return (
+        await supabase
+          .from('company_comment')
+          .insert({
+            user_id: user.id,
+            company_id: props.id,
+            comment: comment.current.value,
+          })
+          .eq('company_id', props.id),
+        loadDB(),
+        alert('コメントを投稿しました！')
+      );
+    }
   }, [loadDB, props.id, user]);
 
   const deleteDB = useCallback(
@@ -67,19 +73,6 @@ export const CommentBoard = (props) => {
       return !prev;
     });
   }, []);
-  useEffect(() => {
-    loadDB(); //エラーはここで出ている
-    // let subscribe = supabase
-    //   .from('company_comment')
-    //   .on('*', () => {
-    //     loadDB();
-    //   })
-    //   .subscribe();
-
-    // return () => {
-    //   subscribe.unsubscribe();
-    // };
-  }, [loadDB]);
 
   const addMessage = useCallback(() => {
     insertDB();
@@ -126,17 +119,21 @@ export const CommentBoard = (props) => {
       console.log('Error downloading image: ', error.message);
     }
   }
+
+  useEffect(() => {
+    loadDB();
+  }, [loadDB]);
+
   useEffect(() => {
     getURL();
-
     if (url) downloadImage(url);
   }, [url]);
+
   useEffect(() => {
     let unmounted = false;
-
     // clean up関数（Unmount時の処理）
     return () => {
-      console.log('アンマウント');
+      // console.log('アンマウント');
       unmounted = true;
     };
   }, []);
