@@ -10,7 +10,6 @@ export const Addcompany = (props) => {
   const [companyName, setCompanyName] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
-
   // ダイアログを開く
   const openModal = useCallback(() => {
     setIsOpen(true);
@@ -42,7 +41,6 @@ export const Addcompany = (props) => {
         company_id: company_uuid,
       },
     ]));
-
     if (error) {
       alert(error);
     } else {
@@ -51,6 +49,10 @@ export const Addcompany = (props) => {
         closeModal();
       }
     }
+
+    // props.getCompanyList();
+    // console.log(data);
+    // closeModal();
   }, [companyName, companyUrl, companyAddress, props, closeModal]);
 
   return (
