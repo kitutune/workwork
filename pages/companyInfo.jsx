@@ -42,7 +42,7 @@ const companyInfo = () => {
     const router = useRouter();
     let { id } = router.query;
 
-    const isReady = router.isReady;
+    // const isReady = router.isReady;
     const address = companyInfo.company_address;
     const date = companyInfo.update;
     const date2 = companySubInfo.update_info;
@@ -73,25 +73,28 @@ const companyInfo = () => {
       }
     }, [id, router]);
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
-
+    console.log('00');
     const bookmarkButton = async () => {
-      console.log(likeCompany);
-      console.log('00');
+      // console.log(likeCompany);
+      // console.log('00');
       const { data, error } = await supabase
         .from('flug')
         .update({ bookmark: !likeCompany })
         .eq('company_id', id);
-      console.log(data);
-      console.log('変更');
-      console.log(likeCompany);
-      console.log(data[0].bookmark);
-      console.log('01');
+      // console.log(data);
+      // console.log('変更');
+      // console.log(likeCompany);
+      // console.log(data[0].bookmark);
+      // console.log('01');
       return setLikeCompany(data[0].bookmark);
     };
-    console.log(likeCompany);
-    console.log('3');
+    // console.log(likeCompany);
+    // console.log('3');
 
     const getFlugDb = useCallback(async () => {
+      // console.log(id);
+      // console.log(user);
+      // console.log('来てる');
       if (id === undefined) {
         return;
       }
@@ -102,68 +105,68 @@ const companyInfo = () => {
           .select('*')
           .eq('company_id', id)
           .eq('user_id', user.id);
-        console.log(data);
-        console.log('いらっしゃい');
+        // console.log(data);
+        // console.log('いらっしゃい');
         if (data && data.length) {
           const likeCompany = data[0].bookmark;
-          console.log(data[0].bookmark);
-          console.log('入れる');
+          // console.log(data[0].bookmark);
+          // console.log('入れる');
           return setLikeCompany(likeCompany);
         } else {
           ({ data, error } = await supabase
             .from('flug')
             .insert([{ company_id: id, user_id: user.id }]));
 
-          console.log('作る');
+          // console.log('作る');
           return setLikeCompany(likeCompany);
         }
       }
-      console.log('idまたはuserが不在のため帰りました');
+      // console.log('idまたはuserが不在のため帰りました');
     }, [id, likeCompany, user]);
-    console.log(likeCompany);
-    console.log('2');
+    // console.log(likeCompany);
+    // console.log('2');
 
     useEffect(() => {
       let unmounted = false;
 
       // clean up関数（Unmount時の処理）
       return () => {
-        console.log('アンマウント');
+        // console.log('アンマウント');
         unmounted = true;
       };
     }, []);
-    useEffect(() => {
-      console.log(id);
-      console.log('idは有るのか？');
-      if (!id && isReady) {
-        console.log('idがいません');
-        router.push('/');
-      }
-      if (!user) {
-        console.log('userがいません');
-        // router.reload();
-      }
-      getCompanyDBsData();
-      console.log('マウント');
-      getFlugDb();
-    }, [user, router, getCompanyDBsData, getFlugDb, id, isReady]);
+    // useEffect(() => {
+    //   // console.log(id);
+    //   // console.log('idは有るのか？');
+    //   if (!id && isReady) {
+    //     // console.log('idがいません');
+    //     router.push('/');
+    //   }
+    //   if (!user) {
+    //     // console.log('userがいません');
+    //     // router.reload();
+    //   }
+    //   getCompanyDBsData();
+    //   console.log('マウント2');
+    //   getFlugDb();
+    // }, [user, router, getCompanyDBsData, getFlugDb, id, isReady]);
 
     useEffect(() => {
-      console.log(id);
-      console.log('idは有るのか？');
+      // console.log(id);
+      // console.log('idは有るのか？');
 
       getCompanyDBsData();
       console.log('マウント');
       getFlugDb();
     }, [user, router, getCompanyDBsData, getFlugDb, id]);
 
-    console.log(likeCompany);
-    console.log('1');
+    // console.log(likeCompany);
+    // console.log('1');
     if (user) {
       return (
         <div>
-          {console.log(likeCompany)}
-          {console.log('0')}
+          {/* {console.log(likeCompany)}
+          {console.log('0')} */}
 
           <div className="flex justify-end gap-2 my-2 mr-2">
             <div className="w-24">
@@ -199,7 +202,7 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    {/* <CommentBoard id={id} /> */}
+                    <CommentBoard id={id} />
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
@@ -449,22 +452,20 @@ const companyInfo = () => {
                         <div></div>
                       )}
                       <div className="flex">
-                        <div className="w-24 pr-3">
-                          <Button
-                            block
-                            size="medium"
-                            onClick={companyOptionButton}
-                          >
-                            <BsCardList />
-                            option
-                          </Button>
-                        </div>
-                        <div className="w-24">
-                          <Button block size="medium" onClick={toggle}>
-                            <GrMapLocation />
-                            Map
-                          </Button>
-                        </div>
+                        <Image
+                          src="/listicon.png"
+                          width={40}
+                          height={40}
+                          alt="listicon"
+                          onClick={companyOptionButton}
+                        />
+                        <Image
+                          src="/mapicon.png"
+                          width={40}
+                          height={40}
+                          alt="mapicon"
+                          onClick={toggle}
+                        />
                       </div>
                     </form>
                   </div>
@@ -481,12 +482,13 @@ const companyInfo = () => {
                 <div></div>
               ) : (
                 <div className="flex justify-center px-6 my-12">
-                  <div
+                  {/* <div
                     className="  w-full  
                   object-contain
                   justify-center
                 flex"
-                  >
+                  > */}
+                  <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                     <iframe
                       src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
                       width="1100"
