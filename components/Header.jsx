@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import cc from 'classcat';
 import { Back } from './back';
+import { UserMemo } from './userMemo';
 export const Header = () => {
   const { user } = Auth.useUser();
 
@@ -64,31 +65,19 @@ export const Header = () => {
                     },
                   ])}
                 >
-                  <a
-                    href="#responsive-header"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
+                  <ToolModal
+                    style="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
+                    name="memo"
                   >
-                    Docs
-                  </a>
+                    <UserMemo />
+                  </ToolModal>
 
-                  <a
-                    href="#responsive-header"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
-                  >
-                    Examples
-                  </a>
                   <ToolModal
                     style="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
                     name="Profile"
                   >
                     <Profile />
                   </ToolModal>
-                  <a
-                    href="#responsive-header"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white"
-                  >
-                    Blog
-                  </a>
                 </div>
               </div>
             </>
