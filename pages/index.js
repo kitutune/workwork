@@ -5,36 +5,37 @@ import { supabase } from 'utils/supabaseClient';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { LayoutWrapper } from 'components/LayoutWrapper';
 import { CompanyList } from 'components/companyList';
-const getCompany = async () => {
-  const { data, error } = await supabase
-    .from('company')
-    .select('*')
-    .order('company_name');
-  if (!error && data) {
-    return data;
-  }
-  return [];
-};
+import { Addcompany } from 'components/addCompany';
+// const getCompany = async () => {
+//   const { data, error } = await supabase
+//     .from('company')
+//     .select('*')
+//     .order('company_name');
+//   if (!error && data) {
+//     return data;
+//   }
+//   return [];
+// };
 
 const Container = (props) => {
   const { user } = Auth.useUser();
   const [allData, setAllData] = useState({});
   const [bookmark, setBookmark] = useState(false);
   const [text, setText] = useState('');
-  const [companyNames, setCompanyNames] = useState([]);
+  // const [companyNames, setCompanyNames] = useState([]);
 
-  const getCompanyList = useCallback(async () => {
-    const data = await getCompany();
-    setCompanyNames(data);
-  }, []);
+  // const getCompanyList = useCallback(async () => {
+  //   const data = await getCompany();
+  //   setCompanyNames(data);
+  // }, []);
   const bookmarkButton = useCallback(async () => {
     setBookmark((bookmark) => !bookmark);
   }, []);
-  useEffect(() => {
-    getCompanyList();
-  }, [user, getCompanyList]);
+  // useEffect(() => {
+  //   getCompanyList();
+  // }, [user, getCompanyList]);
 
-  useEffect(() => {
+  const getCompanyList = useCallback(() => {
     if (user) {
       if (bookmark) {
         supabase
@@ -44,6 +45,7 @@ const Container = (props) => {
           .eq('bookmark', true)
           .then((db) => {
             setAllData(db.data);
+            console.log('読み込みましたtrue');
           });
       } else {
         supabase
@@ -51,12 +53,21 @@ const Container = (props) => {
           .select('*')
           .then((db) => {
             setAllData(db.data);
+            console.log('読み込みましたfalse');
           });
       }
     }
   }, [user, bookmark]);
+  useEffect(() => {
+    if (user) {
+      getCompanyList(user, bookmark);
+      console.log(bookmark);
+      console.log(allData);
+      console.log('ここには来てる');
+    }
+  }, [user, bookmark]);
 
-  if (user) {
+  if (user && allData) {
     return (
       <div>
         <div className="flex justify-center gap-2 p-4">
@@ -72,11 +83,11 @@ const Container = (props) => {
           </button>
         </div>
         {allData.length === undefined ? (
-          <div></div>
+          <div>loading...</div>
         ) : (
           <CompanyList
             allData={allData}
-            companyNames={companyNames}
+            // companyNames={companyNames}
             uuid={user.id}
             getCompanyList={getCompanyList}
             filterText={text}
