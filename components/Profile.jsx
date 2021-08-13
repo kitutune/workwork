@@ -79,7 +79,7 @@ export const Profile = () => {
           throw error;
         }
       } catch (error) {
-        alert(error.message);
+        alert('年齢は数字で入力してください');
       } finally {
         setLoading(false);
       }
