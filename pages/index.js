@@ -79,7 +79,7 @@ const Container = (props) => {
           />
 
           <button onClick={bookmarkButton}>
-            <FcLike />
+            {bookmark ? <FcLike /> : <FcLikePlaceholder />}
           </button>
         </div>
         {allData.length === undefined ? (
