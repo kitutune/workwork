@@ -39,7 +39,7 @@ export const EditCompany = (props) => {
           job_url: companyJobSite.current.value,
         })
         .eq('company_id', companyId);
-    }, [companyId]);
+    }, []);
 
     const companyInfoSubEditButton = useCallback(async () => {
       await supabase
@@ -56,7 +56,7 @@ export const EditCompany = (props) => {
           update_info: props.companySubInfo.update_info,
         })
         .eq('company_id', companyId);
-    }, [companyId, props.companySubInfo.update_info]);
+    }, []);
 
     const editButton = () => {
       const edit = async () => {

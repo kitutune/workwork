@@ -61,11 +61,11 @@ const Container = (props) => {
   useEffect(() => {
     if (user) {
       getCompanyList(user, bookmark);
-      console.log(bookmark);
-      console.log(allData);
-      console.log('ここには来てる');
+      // console.log(bookmark);
+      // console.log(allData);
+      // console.log('ここには来てる');
     }
-  }, [user, bookmark]);
+  }, [user, bookmark, getCompanyList, allData]);
 
   if (user && allData) {
     return (

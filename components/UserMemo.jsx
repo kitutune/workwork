@@ -14,17 +14,17 @@ export const UserMemo = () => {
       .single();
     setMemoValue(data.user_memo);
     console.log(data.user_memo);
-  }, []);
+  }, [user.id]);
 
   const saveButton = useCallback(async () => {
     await supabase
       .from('user')
       .update({ user_memo: memoValue })
       .eq('user_id', user.id);
-  }, [memoValue]);
+  }, [memoValue, user.id]);
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [getProfile]);
   return (
     <div>
       <div as="div">
