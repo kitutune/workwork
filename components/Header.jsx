@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import cc from 'classcat';
 import { Back } from './back';
-import { UserMemo } from './userMemo';
+import { UserMemo } from './UserMemo';
 export const Header = () => {
   const { user } = Auth.useUser();
 
