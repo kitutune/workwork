@@ -53,11 +53,7 @@ export const Profile = () => {
         setLoading(false);
       }
     }
-    console.log(username);
-    console.log(age);
-    console.log(remarks);
-    console.log(avatar_url);
-    console.log('更新できているか？');
+
     async function updateProfile({ username, age, remarks, avatar_url }) {
       try {
         setLoading(true);
