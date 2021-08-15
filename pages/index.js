@@ -6,8 +6,11 @@ import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { LayoutWrapper } from 'components/LayoutWrapper';
 import { CompanyList } from 'components/companyList';
 
-const getBookmarkWithDb = async () => {
-  console.log('22');
+const getBookmarkWithDb = async (user, bookmark) => {
+  console.log('indexのbookmarkある方');
+  console.log(bookmark);
+  console.log(user);
+  console.log('indexのbookmarkある方2');
   const { data, error } = await supabase
     .from('company_info_flug')
     .select('*')
@@ -17,7 +20,7 @@ const getBookmarkWithDb = async () => {
 };
 
 const getDb = async () => {
-  console.log('44');
+  console.log('indexのbookmarkないほう');
   const { data, error } = await supabase.from('company_info_flug').select('*');
   return data;
 };
@@ -33,21 +36,22 @@ const Container = (props) => {
     setBookmark((bookmark) => !bookmark);
   };
   console.log(bookmark);
+
   const getCompanyList = useCallback(async () => {
-    console.log('getCompanyList2');
+    console.log('indexのgetCompanyList2');
     console.log(user);
     console.log(bookmark);
-    console.log('getCompanyList1');
+    console.log('indexのgetCompanyList1');
     if (user) {
       if (bookmark) {
-        const data = await getBookmarkWithDb();
+        const data = await getBookmarkWithDb(user, bookmark);
         setAllData(data);
       } else {
         const data = await getDb();
         setAllData(data);
       }
     }
-  }, [user]);
+  }, [user, bookmark]);
 
   useEffect(async () => {
     await getCompanyList();
