@@ -9,13 +9,13 @@ export const Profile = () => {
   const { user } = Auth.useUser();
 
   const uuid = user.id;
-  const [avatar_url, setAvatarUrl] = useState(null);
+  const [avatar_url, setAvatarUrl] = useState('');
   const Container = () => {
     const [loading, setLoading] = useState(true);
-    const [username, setUserName] = useState(null);
-    const [age, setAge] = useState(null);
+    const [username, setUserName] = useState('');
+    const [age, setAge] = useState(0);
 
-    const [remarks, setRemarks] = useState(null);
+    const [remarks, setRemarks] = useState('');
 
     useEffect(() => {
       let unmounted = false;

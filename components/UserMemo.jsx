@@ -3,7 +3,7 @@ import { Auth } from '@supabase/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@supabase/ui';
 export const UserMemo = () => {
-  const [memoValue, setMemoValue] = useState();
+  const [memoValue, setMemoValue] = useState('');
   const { user } = Auth.useUser();
 
   const getProfile = useCallback(async () => {

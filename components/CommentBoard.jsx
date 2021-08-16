@@ -14,10 +14,10 @@ export const CommentBoard = (props) => {
   const [logs, setIlogs] = useState([]);
   const [edit, setEdit] = useState(false);
   const { user } = Auth.useUser();
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   // const [uploading, setUploading] = useState(false);
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState('');
 
   const profButton = () => {
     setIsOpen((prev) => {

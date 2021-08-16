@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { supabase } from 'utils/supabaseClient';
 
 export default function Avatar({ url, size, onUpload }) {
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
