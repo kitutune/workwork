@@ -1,21 +1,31 @@
-import cc from 'classcat';
+//ここからスタート
+
+// import cc from 'classcat';
 import { supabase } from 'utils/supabaseClient';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Auth } from '@supabase/ui';
 import Image from 'next/image';
-
+import { ProfCard } from './ProfCard';
+import Link from 'next/link';
 export const CommentBoard = (props) => {
   const comment = useRef(null);
   const [logs, setIlogs] = useState([]);
   const [edit, setEdit] = useState(false);
   const { user } = Auth.useUser();
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   // const [uploading, setUploading] = useState(false);
   const [url, setUrl] = useState(null);
+
+  const profButton = () => {
+    setIsOpen((prev) => {
+      !prev;
+    });
+  };
+  console.log(isOpen);
   const loadDB = useCallback(async () => {
-    console.log(props.id);
     if (props.id === undefined) {
       return;
     } else {
@@ -79,25 +89,25 @@ export const CommentBoard = (props) => {
     comment.current.value = '';
   }, [insertDB]);
 
-  async function getURL() {
-    const user = supabase.auth.user();
-
-    let { data, error } = await supabase
-      .from('user')
-      .select(`*`)
-      .eq('user_id', user.id)
-      .single();
-
-    if (data) {
-      setUrl(data.avatar_url);
-    }
-  }
+  // const getURL = useCallback(async () => {
+  //   let { data, error } = await supabase
+  //     .from('user')
+  //     .select(`*`)
+  //     .eq('user_id', val.user_id)
+  //     .single();
+  //   console.log(data);
+  //   console.log('datadata');
+  //   if (data) {
+  //     setUrl(data.avatar_url);
+  //   }
+  // }, [val.user_id]);
 
   async function downloadImage(path) {
     try {
       const { data, error } = await supabase.storage
         .from('avatars')
         .download(path);
+
       if (error) {
         throw error;
       }
@@ -120,14 +130,14 @@ export const CommentBoard = (props) => {
     }
   }
 
+  // useEffect(() => {
+  //   getURL();
+  //   if (url) downloadImage(url);
+  // }, [url, getURL]);
+
   useEffect(() => {
     loadDB();
   }, [loadDB]);
-
-  useEffect(() => {
-    getURL();
-    if (url) downloadImage(url);
-  }, [url]);
 
   useEffect(() => {
     let unmounted = false;
@@ -137,6 +147,9 @@ export const CommentBoard = (props) => {
       unmounted = true;
     };
   }, []);
+
+  // console.log(avatarUrl);
+  console.log('12');
   return (
     <>
       <div className="flex flex-col w-full pt-4">
@@ -144,33 +157,63 @@ export const CommentBoard = (props) => {
           {logs &&
             logs.map((val, index) => {
               const day = new Date(val.time_stamp).toLocaleString('ja-JP');
+              // ---------------------------------------------
+              const getURL = async () => {
+                let { data, error } = await supabase
+                  .from('user')
+                  .select(`*`)
+                  .eq('user_id', val.user_id)
+                  .single();
+                console.log(data);
+                console.log('datadata');
+                if (data) {
+                  setUrl(data.avatar_url);
+                }
+              };
+              getURL(val.user_id);
+              if (url) {
+                downloadImage(url);
+              }
+              // ------------------------------------------------
               return (
                 <div key={val.comment_id}>
+                  {/* {isOpen ? (
+                    <ProfCard profButton={profButton} avatarUrl={avatarUrl} />
+                  ) : (
+                    <></>
+                  )} */}
                   <div className="text-xs">
                     <div className=" ">{day}</div>
                   </div>
                   <div className="max-w-3xl w-full mx-auto  z-10">
                     <div>
                       <div className="flex items-center">
-                        <div>
-                          {avatarUrl ? (
-                            <Image
-                              src={avatarUrl}
-                              alt="Avatar"
-                              className="w-12 min-w-3rem"
-                              width={80}
-                              height={80}
-                            />
-                          ) : (
-                            <Image
-                              className="w-12 min-w-3rem "
-                              src="/human.png"
-                              alt="NoAvatar"
-                              width={80}
-                              height={80}
-                            />
-                          )}
-                        </div>
+                        <Link
+                          //  key={title.id}
+                          href={`/account?id=${val.user_id}`}
+                          // as={`/account?id=${val.user_name}`}
+                          passHref
+                        >
+                          <div onClick={profButton}>
+                            {avatarUrl ? (
+                              <Image
+                                src={avatarUrl}
+                                alt="Avatar"
+                                // className="w-12 min-w-3rem"
+                                width={80}
+                                height={80}
+                              />
+                            ) : (
+                              <Image
+                                // className="w-12 min-w-3rem "
+                                src="/human.png"
+                                alt="NoAvatar"
+                                width={80}
+                                height={80}
+                              />
+                            )}
+                          </div>
+                        </Link>
                         <div className=" flex-auto bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4">
                           <div className="relative ml-0 mr-auto  p-1 rounded-xl">
                             <div className="text-right">
