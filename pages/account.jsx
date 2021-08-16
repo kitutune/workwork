@@ -53,8 +53,8 @@ const Account = () => {
     }
   }
 
-  useEffect(async () => {
-    const data = await getProf(id);
+  useEffect(() => {
+    const data = getProf(id);
   }, [id]);
 
   useEffect(() => {
