@@ -74,6 +74,24 @@ const companyInfo = () => {
     }, [id, router]);
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
     console.log('00');
+    const jobLink = () => {
+      console.log(companyInfo.job_url);
+      console.log('jobbutton');
+      if (companyInfo.job_url === null) {
+        alert('URLが登録されていません');
+      } else {
+        alert('求人サイトに移動します');
+      }
+    };
+    const hpLink = () => {
+      console.log(companyInfo.job_url);
+      console.log('jobbutton');
+      if (companyInfo.URL === null) {
+        alert('URLが登録されていません');
+      } else {
+        alert('ホームページに移動します');
+      }
+    };
     const bookmarkButton = async () => {
       // console.log(likeCompany);
       // console.log('00');
@@ -316,6 +334,7 @@ const companyInfo = () => {
                         type="button"
                       >
                         <a
+                          onClick={hpLink}
                           href={companyInfo.URL}
                           target="_blank"
                           rel="noreferrer"
@@ -331,6 +350,7 @@ const companyInfo = () => {
                         type="button"
                       >
                         <a
+                          onClick={jobLink}
                           href={companyInfo.job_url}
                           target="_blank"
                           rel="noreferrer"
