@@ -67,48 +67,48 @@ const Account = () => {
   console.log('prof.avatar_url');
   if (prof && avatarUrl) {
     return (
-      // <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <div>
-        {avatarUrl ? (
-          <Image
-            src={avatarUrl}
-            alt="Avatar"
-            // className="w-12 min-w-3rem"
-            width={80}
-            height={80}
-          />
-        ) : (
-          <Image
-            // className="w-12 min-w-3rem "
-            src="/human.png"
-            alt="NoAvatar"
-            width={80}
-            height={80}
-          />
-        )}
-        <div className="absolute　w- p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all transform duration-500">
-          {/* <img
-                className="w-64 object-cover rounded-t-md"
-                src="https://images.unsplash.com/photo-1509223197845-458d87318791"
-                alt=""
-              /> */}
-          {/* <Image
-              src={props.avatar_url}
-              alt="Avatar"
-              //   className="w-12 min-w-3rem"
-              width={80}
-              height={80}
-            /> */}
-          <div className="mt-4">
-            <h1 className="text-2xl font-bold text-gray-700">
-              {prof.user_name}
-            </h1>
-            <p className="text-sm mt-2 text-gray-700">{prof.age}</p>
-            <div className="mt-3 space-x-4 flex p-1">{prof.remarks}</div>
-            <div className="mt-4 mb-2 flex justify-between pl-4 pr-2">
+      <div className="min-h-screen bg-gray-100 pt-20">
+        <div className=" bg-white  mx-auto shadow-lg rounded-lg hover:shadow-xl transition duration-200 max-w-sm">
+          <div className="w-full text-left mb-3 flex items-center">
+            {/* <img
+              className="w-24 h-24 inline-block object-cover rounded-full"
+              alt="CompanyIcon"
+              src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200"
+            ></img> */}
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="Avatar"
+                className="w-24 h-24 inline-block object-cover rounded-full"
+                // className="w-12 min-w-3rem"
+                width={80}
+                height={80}
+              />
+            ) : (
+              <Image
+                // className="w-12 min-w-3rem "
+                src="/human.png"
+                alt="NoAvatar"
+                width={80}
+                height={80}
+              />
+            )}
+            <div className="font-bold text-4xl"> {prof.user_name}</div>
+          </div>
+          <div className="py-4 px-8">
+            <p className="hover:cursor-pointer py-3 text-gray-600 leading-6">
+              Age {prof.age}
+            </p>
+            <div className="hover:cursor-pointer mt-2 text-gray-900 font-bold text-2xl tracking-tight">
+              {prof.remarks} Lorem ipsum dolor sit amet consectetur adipisicing
+              elit.{' '}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="text-right">
               <button
                 onClick={back}
-                className="text-lg block font-semibold py-2 px-6 text-white hover:text-green-100 bg-green-400 rounded-lg shadow hover:shadow-md transition duration-300"
+                className="text-lg block font-semibold py-2 px-6 text-white hover:text-green-100 bg-green-400 rounded-lg shadow hover:shadow-md "
               >
                 閉じる
               </button>
