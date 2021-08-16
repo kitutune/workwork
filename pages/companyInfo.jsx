@@ -1,3 +1,4 @@
+// 一時完成
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { CommentBoard } from 'components/CommentBoard';
 import Image from 'next/image';
