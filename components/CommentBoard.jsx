@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Auth } from '@supabase/ui';
 import Image from 'next/image';
-import { ProfCard } from './ProfCard';
+// import { ProfCard } from './ProfCard';
 import Link from 'next/link';
 export const CommentBoard = (props) => {
   const comment = useRef(null);
