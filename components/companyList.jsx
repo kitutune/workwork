@@ -62,8 +62,8 @@ export const CompanyList = (props) => {
     return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
   });
 
-  console.log(props.allData);
-  console.log('props.allData');
+  // console.log(props.allData);
+  // console.log('props.allData');
 
   console.log(searchCompany.length);
   console.log('searchCompany');
@@ -78,6 +78,7 @@ export const CompanyList = (props) => {
             <Link
               key={company.company_id}
               href={`/companyInfo?id=${company.company_id}`}
+              as={`/companyInfo?id=${company.company_name}`}
               passHref
               userId={props.uuid}
             >
@@ -86,7 +87,7 @@ export const CompanyList = (props) => {
                   {company.URL ? (
                     <div>
                       <Image
-                        src={`http://capture.heartrails.com/126x200/cool?${company.URL}`}
+                        src={`http://capture.heartrails.com/126x200/cool/delay=10?${company.URL}`}
                         width={126}
                         height={200}
                         alt="CompanyThumbnail"
