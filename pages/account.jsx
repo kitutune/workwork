@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
 import Image from 'next/image';
-const account = () => {
+const Account = () => {
   const router = useRouter();
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [prof, setProf] = useState({});
@@ -55,8 +55,6 @@ const account = () => {
 
   useEffect(async () => {
     const data = await getProf(id);
-
-    return () => {};
   }, [id]);
 
   useEffect(() => {
@@ -122,4 +120,4 @@ const account = () => {
   }
   return <></>;
 };
-export default account;
+export default Account;
