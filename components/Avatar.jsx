@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-// import { supabase } from '../utils/supabaseClient';
 import Image from 'next/image';
 import { supabase } from 'utils/supabaseClient';
 
@@ -12,8 +11,6 @@ export const Avatar = ({ url, onUpload }) => {
   }, [url]);
 
   const downloadImage = async (path) => {
-    // console.log(path);
-    console.log('pathpath');
     try {
       const { data, error } = await supabase.storage
         .from('avatars')
@@ -21,26 +18,17 @@ export const Avatar = ({ url, onUpload }) => {
       if (error) {
         throw error;
       }
-      // const url = URL.createObjectURL(data);
-      // console.log(url);
-      // console.log('urlurl');
 
       let reader = new FileReader();
       reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
 
       reader.onload = () => {
-        // link.href = reader.result; // data url
         setAvatarUrl(reader.result);
-        // link.click();
       };
-
-      // setAvatarUrl(url);
     } catch (error) {
       console.log('Error downloading image: ', error.message);
     }
   };
-  // console.log(avatarUrl);
-  // console.log('avatarUrl');
 
   const uploadAvatar = async (event) => {
     try {
@@ -55,7 +43,7 @@ export const Avatar = ({ url, onUpload }) => {
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
-      let { error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
@@ -72,15 +60,14 @@ export const Avatar = ({ url, onUpload }) => {
   };
 
   return (
-    <div>
-      {avatarUrl ? (
-        <Image src={avatarUrl} alt="Avatar" width={80} height={80} />
-      ) : (
-        <Image src="/human.png" alt="NoAvatar" width={80} height={80} />
-      )}
-      <div className="text-center">
-        <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'upload'}
+    <div className="hover:opacity-50">
+      <div className="text-center　">
+        <label className="button primary block 　" htmlFor="single">
+          {avatarUrl ? (
+            <Image src={avatarUrl} alt="Avatar" width={80} height={80} />
+          ) : (
+            <Image src="/human.png" alt="NoAvatar" width={80} height={80} />
+          )}
         </label>
         <input
           className="hidden"
