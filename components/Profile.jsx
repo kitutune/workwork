@@ -1,32 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { Auth } from '@supabase/ui';
-import Avatar from './Avatar';
+import { Avatar } from './avatar';
 
 export const Profile = () => {
   const { user } = Auth.useUser();
-
   const uuid = user.id;
   const [avatar_url, setAvatarUrl] = useState('');
+
   const Container = () => {
     const [loading, setLoading] = useState(true);
     const [username, setUserName] = useState('');
-    const [age, setAge] = useState(0);
-
+    const [age, setAge] = useState('');
     const [remarks, setRemarks] = useState('');
 
-    useEffect(() => {
-      let unmounted = false;
-      // clean up関数（Unmount時の処理）
-      return () => {
-        console.log('アンマウント');
-        unmounted = true;
-      };
-    }, []);
-
-    async function getProfile() {
+    const getProfile = async () => {
       try {
         setLoading(true);
         const user = supabase.auth.user();
@@ -52,41 +41,72 @@ export const Profile = () => {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    async function updateProfile({ username, age, remarks, avatar_url }) {
+    const updateProfile = async ({ username, age, remarks, avatar_url }) => {
       try {
-        setLoading(true);
-        const user = supabase.auth.user();
-
-        const updates = {
-          user_id: user.id,
-          user_name: username,
-          age,
-          remarks,
-          avatar_url,
-        };
-
-        let { error } = await supabase.from('user').upsert(updates, {
-          returning: 'minimal', // Don't return the value after inserting
-        });
-
-        if (error) {
+        const { error, status } = await supabase
+          .from('user')
+          .update({
+            user_name: username,
+            age: age,
+            remarks: remarks,
+            avatar_url: avatar_url,
+          })
+          .eq('user_id', user.id);
+        if (error || status !== 200) {
           throw error;
+        } else {
+          alert('プロフィールを更新しました！');
         }
       } catch (error) {
-        alert('年齢は数字で入力してください');
-      } finally {
-        setLoading(false);
+        alert('プロフィールの更新に失敗しました');
       }
-    }
+    };
 
     useEffect(() => {
       getProfile();
     }, []);
 
+    useEffect(() => {
+      // eslint-disable-next-line no-unused-vars
+      let unmounted = false;
+      return () => {
+        unmounted = true;
+      };
+    }, []);
+    console.log(age);
+    console.log('profuser');
+
+    const nameSet = (e) => {
+      return setUserName(e.target.value);
+    };
+    const ageSet = (e) => {
+      return setAge(e.target.value);
+    };
+    const remarkSet = (e) => {
+      return setRemarks(e.target.value);
+    };
+    const lists = ['名前', '年齢', '自己紹介'];
+    const method = [username, age, remarks];
+    const setMethod = [nameSet, ageSet, remarkSet];
+
     return (
       <div>
+        {/* {lists.map((list, i) => (
+          <div className="grid grid-cols-4 gap-2 mt-4" key={list}>
+            <div className="col-span-1 text-xl text-center">{list}</div>
+            {console.log(method)}
+            {console.log({ methods: method[i] })}
+            {console.log(username)}
+            <input
+              className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
+              // defaultValue={age}
+              defaultValue={`${method[i]}`}
+              onChange={setMethod[i]}
+            />
+          </div>
+        ))} */}
         <div as="div">
           <div className="min-h-screen px-4 text-center border-2">
             <span
@@ -106,7 +126,23 @@ export const Profile = () => {
                   }}
                 />
               </div>
-              <div className="grid grid-cols-4 gap-2 mt-4">
+              {/* ------------------------------------ */}
+              {lists.map((list, i) => (
+                <div className="grid grid-cols-4 gap-2 mt-4" key={list}>
+                  <div className="col-span-1 text-xl text-center">{list}</div>
+                  {console.log(method)}
+                  {console.log({ methods: method[i] })}
+                  {console.log(username)}
+                  <input
+                    className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
+                    // defaultValue={age}
+                    defaultValue={`${method[i]}`}
+                    onChange={setMethod[i]}
+                  />
+                </div>
+              ))}
+              {/* ------------------------------------ */}
+              {/* <div className="grid grid-cols-4 gap-2 mt-4">
                 <div className="col-span-1 text-xl text-center">名前</div>
                 <input
                   className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
@@ -128,7 +164,7 @@ export const Profile = () => {
                 />
               </div>
               <div className="grid grid-cols-4 gap-2 mt-4">
-                <div className="col-span-1 text-xl text-center">備考欄</div>
+                <div className="col-span-1 text-xl text-center">自己紹介</div>
                 <textarea
                   className="w-full h-60 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
                   // ref={memo}
@@ -137,7 +173,7 @@ export const Profile = () => {
                     return setRemarks(e.target.value);
                   }}
                 />
-              </div>
+              </div> */}
               <div className="w-20 p-2 mx-auto mb-5">
                 <Button
                   size="large"
@@ -152,7 +188,7 @@ export const Profile = () => {
                   }
                   disabled={loading}
                 >
-                  {loading ? 'Loading ...' : 'Update'}
+                  Update
                 </Button>
               </div>
             </div>
@@ -163,7 +199,7 @@ export const Profile = () => {
   };
   return (
     <div>
-      <div>{uuid ? <Container /> : <></>}</div>
+      <div>{uuid ? <Container /> : <>loading・・・</>}</div>
     </div>
   );
 };

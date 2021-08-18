@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { supabase } from 'utils/supabaseClient';
 
-export default function Avatar({ url, size, onUpload }) {
+export const Avatar = ({ url, onUpload }) => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [uploading, setUploading] = useState(false);
 
@@ -11,7 +11,7 @@ export default function Avatar({ url, size, onUpload }) {
     if (url) downloadImage(url);
   }, [url]);
 
-  async function downloadImage(path) {
+  const downloadImage = async (path) => {
     // console.log(path);
     console.log('pathpath');
     try {
@@ -28,7 +28,7 @@ export default function Avatar({ url, size, onUpload }) {
       let reader = new FileReader();
       reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
 
-      reader.onload = function () {
+      reader.onload = () => {
         // link.href = reader.result; // data url
         setAvatarUrl(reader.result);
         // link.click();
@@ -38,11 +38,11 @@ export default function Avatar({ url, size, onUpload }) {
     } catch (error) {
       console.log('Error downloading image: ', error.message);
     }
-  }
+  };
   // console.log(avatarUrl);
   // console.log('avatarUrl');
 
-  async function uploadAvatar(event) {
+  const uploadAvatar = async (event) => {
     try {
       setUploading(true);
 
@@ -69,7 +69,7 @@ export default function Avatar({ url, size, onUpload }) {
     } finally {
       setUploading(false);
     }
-  }
+  };
 
   return (
     <div>
@@ -93,4 +93,4 @@ export default function Avatar({ url, size, onUpload }) {
       </div>
     </div>
   );
-}
+};
