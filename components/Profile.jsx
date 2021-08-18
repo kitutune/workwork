@@ -10,17 +10,15 @@ export const Profile = () => {
   const [avatar_url, setAvatarUrl] = useState('');
 
   const Container = () => {
-    const [loading, setLoading] = useState(true);
     const [username, setUserName] = useState('');
     const [age, setAge] = useState('');
     const [remarks, setRemarks] = useState('');
 
     const getProfile = async () => {
       try {
-        setLoading(true);
         const user = supabase.auth.user();
 
-        let { data, error, status } = await supabase
+        const { data, error, status } = await supabase
           .from('user')
           .select(`*`)
           .eq('user_id', user.id)
@@ -38,8 +36,6 @@ export const Profile = () => {
         }
       } catch (error) {
         alert(error.message);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -75,8 +71,6 @@ export const Profile = () => {
         unmounted = true;
       };
     }, []);
-    console.log(age);
-    console.log('profuser');
 
     const nameSet = (e) => {
       return setUserName(e.target.value);
@@ -93,20 +87,6 @@ export const Profile = () => {
 
     return (
       <div>
-        {/* {lists.map((list, i) => (
-          <div className="grid grid-cols-4 gap-2 mt-4" key={list}>
-            <div className="col-span-1 text-xl text-center">{list}</div>
-            {console.log(method)}
-            {console.log({ methods: method[i] })}
-            {console.log(username)}
-            <input
-              className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-              // defaultValue={age}
-              defaultValue={`${method[i]}`}
-              onChange={setMethod[i]}
-            />
-          </div>
-        ))} */}
         <div as="div">
           <div className="min-h-screen px-4 text-center border-2">
             <span
@@ -119,61 +99,22 @@ export const Profile = () => {
               <div className="w-20 mx-auto mb-5">
                 <Avatar
                   url={avatar_url}
-                  // size={80}
                   onUpload={(url) => {
                     setAvatarUrl(url);
                     updateProfile({ username, avatar_url: url });
                   }}
                 />
               </div>
-              {/* ------------------------------------ */}
               {lists.map((list, i) => (
                 <div className="grid grid-cols-4 gap-2 mt-4" key={list}>
                   <div className="col-span-1 text-xl text-center">{list}</div>
-                  {console.log(method)}
-                  {console.log({ methods: method[i] })}
-                  {console.log(username)}
                   <input
                     className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                    // defaultValue={age}
                     defaultValue={`${method[i]}`}
                     onChange={setMethod[i]}
                   />
                 </div>
               ))}
-              {/* ------------------------------------ */}
-              {/* <div className="grid grid-cols-4 gap-2 mt-4">
-                <div className="col-span-1 text-xl text-center">名前</div>
-                <input
-                  className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                  defaultValue={username}
-                  onChange={(e) => {
-                    return setUserName(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 mt-4">
-                <div className="col-span-1 text-xl text-center">年齢</div>
-                <input
-                  className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                  defaultValue={age}
-                  onChange={(e) => {
-                    return setAge(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="grid grid-cols-4 gap-2 mt-4">
-                <div className="col-span-1 text-xl text-center">自己紹介</div>
-                <textarea
-                  className="w-full h-60 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                  // ref={memo}
-                  defaultValue={remarks}
-                  onChange={(e) => {
-                    return setRemarks(e.target.value);
-                  }}
-                />
-              </div> */}
               <div className="w-20 p-2 mx-auto mb-5">
                 <Button
                   size="large"
@@ -186,7 +127,6 @@ export const Profile = () => {
                       avatar_url,
                     })
                   }
-                  disabled={loading}
                 >
                   Update
                 </Button>
