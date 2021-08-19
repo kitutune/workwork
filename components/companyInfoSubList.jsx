@@ -1,110 +1,40 @@
 export const CompanyInfoSubList = (props) => {
+  const lists = [
+    '最寄駅',
+    'アクセス',
+    'WORK',
+    '駐輪場',
+    'バイク置き場',
+    '駐車場',
+    '備考欄',
+  ];
+  const types = ['station', 'accses', 'text', 'text', 'text', 'text', 'text'];
+  const infos = {
+    最寄駅: props.companySubInfo.nearest_station,
+    アクセス: props.companySubInfo.access,
+    WORK: props.companySubInfo.capital_stock,
+    駐輪場: props.companySubInfo.parking_area_for_bicycles,
+    バイク置き場: props.companySubInfo.motorcycle_parking,
+    駐車場: props.companySubInfo.parking,
+    備考欄: props.companySubInfo.remarks,
+  };
   return (
     <>
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            最寄駅
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="station"
-            type="station"
-          >
-            {props.companySubInfo.nearest_station}
+      {lists.map((list, i) => (
+        <div className="mb-4" key={[i]}>
+          <div className="text-center">
+            <label className="block mb-2 text-sm　 font-bold text-gray-700">
+              {lists[i]}
+            </label>
+            <div
+              className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              type={types[i]}
+            >
+              {infos[list]}
+            </div>
           </div>
         </div>
-      </div>
-      {/* 　項目ここまで */} {/* 　項目ここから */}
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            アクセス
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="access"
-            type="accses"
-          >
-            {props.companySubInfo.access}
-          </div>
-        </div>
-      </div>
-      {/* 　項目ここまで */} {/* 　項目ここから */}
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            WORK
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="address"
-            type="address"
-          >
-            {props.companySubInfo.work}
-          </div>
-        </div>
-      </div>
-      {/* 　項目ここまで */} {/* 　項目ここから */}
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            駐輪場
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="address"
-            type="address"
-          >
-            {props.companySubInfo.parking_area_for_bicycles}
-          </div>
-        </div>
-      </div>
-      {/* 　項目ここまで */} {/* 　項目ここから */}
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            バイク置き場
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="address"
-            type="address"
-          >
-            {props.companySubInfo.motorcycle_parking}
-          </div>
-        </div>
-      </div>
-      {/* 　項目ここまで */} {/* 　項目ここから */}
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            駐車場
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="address"
-            type="address"
-          >
-            {props.companySubInfo.parking}
-          </div>
-        </div>
-      </div>
-      {/* 　項目ここまで */} {/* 　項目ここから */}
-      <div className="mb-4　">
-        <div className="text-center">
-          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-            備考欄
-          </label>
-          <div
-            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="address"
-            type="address"
-          >
-            {props.companySubInfo.remarks}
-          </div>
-        </div>
-      </div>
+      ))}
     </>
   );
 };
