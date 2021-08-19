@@ -21,18 +21,24 @@ export const CompanyInfoSubList = (props) => {
   return (
     <>
       {lists.map((list, i) => (
-        <div className="mb-4" key={[i]}>
-          <div className="text-center">
-            <label className="block mb-2 text-sm　 font-bold text-gray-700">
-              {lists[i]}
-            </label>
-            <div
-              className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              type={types[i]}
-            >
-              {infos[list]}
+        <div key={[i]}>
+          {!infos[list] ? (
+            <></>
+          ) : (
+            <div className="mb-4" key={[i]}>
+              <div className="text-center">
+                <label className="block mb-2 text-sm　 font-bold text-gray-700">
+                  {lists[i]}
+                </label>
+                <div
+                  className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  type={types[i]}
+                >
+                  {infos[list]}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </>
