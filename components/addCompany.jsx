@@ -6,10 +6,13 @@ import { Fragment, useCallback, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
 
 export const Addcompany = (props) => {
+  console.log(companyName);
   const [isOpen, setIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
+  const getCompanyList = props.getCompanyList;
+
   // ダイアログを開く
   const openModal = useCallback(() => {
     setIsOpen(true);
@@ -21,12 +24,8 @@ export const Addcompany = (props) => {
     setCompanyAddress('');
     setIsOpen(false);
   }, []);
-  // 企業名の追加
-  const handleAdd = useCallback(async () => {
-    if (companyName == '') {
-      alert('Input companyName.');
-      return;
-    }
+  // 会社データの登録
+  const addCompanyData = useCallback(async () => {
     let { data, error } = await supabase.from('company').insert([
       {
         company_name: companyName,
@@ -39,30 +38,67 @@ export const Addcompany = (props) => {
     ({ data, error } = await supabase.from('company_info').insert([
       {
         company_id: company_uuid,
+        company_name: companyName,
       },
     ]));
     if (error) {
-      alert(error);
-    } else {
-      if (data) {
-        props.getCompanyList();
+      alert('新しい会社データの追加に失敗しました！');
+    }
+  }, [companyName, companyUrl, companyAddress]);
+  // 会社データを追加する際に重複のチェック
+  const handleAdd = useCallback(async () => {
+    try {
+      if (companyName == '') {
+        alert('会社名を記入してください！');
+        return;
+      }
+      // primarykeyを２つ登録する（user_name）ことができなかったので重複阻止のために追加
+      const { data, error, status } = await supabase
+        .from('company')
+        .select('*')
+        .eq('company_name', companyName);
+      if (data.length === 1) {
+        return alert('既に登録されている会社名です！');
+      } else {
+        await addCompanyData();
+      }
+
+      if (error || status !== 200) {
+        throw error;
+      } else {
+        alert('会社データを追加しました！');
+
+        getCompanyList();
         closeModal();
       }
+    } catch (error) {
+      alert('会社データの追加に失敗しました');
     }
+  }, [companyName, closeModal, getCompanyList, addCompanyData]);
 
-    // props.getCompanyList();
-    // console.log(data);
-    // closeModal();
-  }, [companyName, companyUrl, companyAddress, props, closeModal]);
+  // map関数の値
+  const lists = ['企業名', '企業URL', '所在地'];
+  const value = [companyName, companyUrl, companyAddress];
+
+  const targetName = (e) => {
+    return setCompanyName(e.target.value);
+  };
+  const targetUrl = (e) => {
+    return setCompanyUrl(e.target.value);
+  };
+  const targetAddress = (e) => {
+    return setCompanyAddress(e.target.value);
+  };
+  const setMethod = [targetName, targetUrl, targetAddress];
 
   return (
     <>
-      <div className="p-2 border cursor-pointer" onClick={openModal}>
+      <button className="p-2 border cursor-pointer" onClick={openModal}>
         <div className="flex justify-center">
           <Image src={add} alt="thumbnail" width={126} height={200} />
         </div>
         <div className="mt-2 text-center">企業追加</div>
-      </div>
+      </button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
@@ -93,36 +129,18 @@ export const Addcompany = (props) => {
                 >
                   企業名を追加してください
                 </Dialog.Title>
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  <div className="col-span-1 text-xl text-center">企業名</div>
-                  <input
-                    className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                    value={companyName}
-                    onChange={(e) => {
-                      return setCompanyName(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  <div className="col-span-1 text-xl text-center">企業URL</div>
-                  <input
-                    className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                    value={companyUrl}
-                    onChange={(e) => {
-                      return setCompanyUrl(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-4">
-                  <div className="col-span-1 text-xl text-center">所在地</div>
-                  <input
-                    className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                    value={companyAddress}
-                    onChange={(e) => {
-                      return setCompanyAddress(e.target.value);
-                    }}
-                  />
-                </div>
+
+                {lists.map((list, i) => (
+                  <div className="grid grid-cols-4 gap-2 mt-4" key={[i]}>
+                    <div className="col-span-1 text-xl text-center">{list}</div>
+                    <input
+                      className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
+                      value={value[i]}
+                      onChange={setMethod[i]}
+                    />
+                  </div>
+                ))}
+
                 <div className="flex justify-center mt-4">
                   <div className="w-32 p-2">
                     <Button
