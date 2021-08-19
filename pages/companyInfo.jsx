@@ -1,14 +1,15 @@
 // 一時完成
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
-import { CommentBoard } from 'components/CommentBoard';
+import { CommentBoard } from 'components/commentBoard';
 import Image from 'next/image';
-import router, { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState, VFC } from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
-import { EditCompany } from 'components/EditCompany';
-import { ToolModal } from 'components/ToolModal';
-import { BsCardList } from 'react-icons/bs';
+import { EditCompany } from 'components/editCompany';
+import { ToolModal } from 'components/atoms/toolModal';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
+import { LayoutWrapper } from 'components/LayoutWrapper/layoutWrapper';
+import { Back } from 'components/atoms/back';
 import { CompanyInfoList } from 'components/companyInfoList';
 import { CompanyInfoSubList } from 'components/companyInfoSubList';
 
@@ -39,7 +40,7 @@ const companyInfo = () => {
     const { user } = Auth.useUser();
     const router = useRouter();
     let { id } = router.query;
-
+    console.log(router);
     // const isReady = router.isReady;
     const address = companyInfo.company_address;
     const date = companyInfo.update;
@@ -54,9 +55,12 @@ const companyInfo = () => {
     const [companyOption, setCompanyOption] = useState(false);
     const companyOptionButton = () => {
       setCompanyOption((companyOption) => !companyOption);
+      !companyOption
+        ? alert('オプション情報を開きます!')
+        : alert('オプション情報を閉じます!');
     };
     // companyOption画面のオンオフ
-    // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここからーーーーーーーーーーーーー
+    // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納するここからーーーーーーーーーーーーー
     const getCompanyDBsData = useCallback(async () => {
       if (id) {
         const { companyInfo, companySubInfo } = await getCompanyDB(id);
@@ -70,11 +74,9 @@ const companyInfo = () => {
         }
       }
     }, [id, router]);
-    // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納する　ここまでーーーーーーーーーーーーー
-    console.log('00');
+    // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納するここまでーーーーーーーーーーーーー
+    // console.log('00');
     const jobLink = () => {
-      console.log(companyInfo.job_url);
-      console.log('jobbutton');
       if (companyInfo.job_url === null) {
         alert('URLが登録されていません');
       } else {
@@ -82,8 +84,6 @@ const companyInfo = () => {
       }
     };
     const hpLink = () => {
-      console.log(companyInfo.job_url);
-      console.log('jobbutton');
       if (companyInfo.URL === null) {
         alert('URLが登録されていません');
       } else {
@@ -91,58 +91,100 @@ const companyInfo = () => {
       }
     };
     const bookmarkButton = async () => {
-      // console.log(likeCompany);
-      // console.log('00');
       const { data, error } = await supabase
         .from('flug')
         .update({ bookmark: !likeCompany })
-        .eq('company_id', id);
-      // console.log(data);
-      // console.log('変更');
-      // console.log(likeCompany);
-      // console.log(data[0].bookmark);
-      // console.log('01');
+        .eq('company_id', id)
+        .eq('user_id', user.id);
+
+      // return setLikeCompany(data[0].bookmark);
+
+      // const { data, error } = await supabase
+      //   .from('flug')
+      //   .insert([{ user_id: user.id, company_id: id, bookmark: !likeCompany }]);
+
+      if (error) {
+        alert('bookmarkの変更に失敗しました！');
+      }
       return setLikeCompany(data[0].bookmark);
     };
-    // console.log(likeCompany);
+
     // console.log('3');
 
-    const getFlugDb = useCallback(async () => {
-      // console.log(id);
-      // console.log(user);
-      // console.log('来てる');
-      if (id === undefined) {
-        return;
-      }
+    const getFlugDb = useCallback(
+      async (user) => {
+        try {
+          if (!user || !id) {
+            return;
+          }
 
-      if ((id, user)) {
-        let { data, error } = await supabase
-          .from('flug')
-          .select('*')
-          .eq('company_id', id)
-          .eq('user_id', user.id);
-        // console.log(data);
-        // console.log('いらっしゃい');
-        if (data && data.length) {
-          const likeCompany = data[0].bookmark;
-          // console.log(data[0].bookmark);
-          // console.log('入れる');
-          return setLikeCompany(likeCompany);
-        } else {
-          ({ data, error } = await supabase
+          console.log('flug');
+          let { data, error, status } = await supabase
             .from('flug')
-            .insert([{ company_id: id, user_id: user.id }]));
 
-          // console.log('作る');
-          return setLikeCompany(likeCompany);
+            .select('*')
+            .eq('company_id', id)
+            .eq('user_id', user.id);
+          // console.log(id);
+          // console.log(user);
+          // console.log(data);
+          // console.log(error);
+          // console.log(status);
+          // console.log('getflug');
+          if (data.length === 0) {
+            console.log('着てないか？');
+            ({ data, error } = await supabase
+              .from('flug')
+              .insert([{ user_id: user.id, company_id: id }]));
+          }
+
+          if (error || status !== 200) {
+            throw error;
+          } else {
+            return setLikeCompany(data[0].bookmark);
+          }
+        } catch (error) {
+          alert('bookmarkの読み込みに失敗しました！');
         }
-      }
-      // console.log('idまたはuserが不在のため帰りました');
-    }, [id, likeCompany, user]);
+
+        // console.log(id);
+        // console.log(user);
+        // console.log('来てる');
+        // if (id === undefined) {
+        //   return;
+        // }
+
+        // if ((id, user)) {
+        //   let { data, error } = await supabase
+        //     .from('flug')
+        //     .select('*')
+        //     .eq('company_id', id)
+        //     .eq('user_id', user.id);
+        //   // console.log(data);
+        //   // console.log('いらっしゃい');
+        //   if (data && data.length) {
+        //     const likeCompany = data[0].bookmark;
+        //     // console.log(data[0].bookmark);
+        //     // console.log('入れる');
+        //     return setLikeCompany(likeCompany);
+        //   } else {
+        //     ({ data, error } = await supabase
+        //       .from('flug')
+        //       .insert([{ company_id: id, user_id: user.id }]));
+
+        //     // console.log('作る');
+        //     return setLikeCompany(likeCompany);
+        //   }
+        // }
+        // console.log('idまたはuserが不在のため帰りました');
+      },
+      [id, likeCompany, user]
+    );
     // console.log(likeCompany);
     // console.log('2');
 
     useEffect(() => {
+      // eslint-disable-next-line no-unused-vars
       let unmounted = false;
 
       // clean up関数（Unmount時の処理）
@@ -151,39 +193,16 @@ const companyInfo = () => {
         unmounted = true;
       };
     }, []);
-    // useEffect(() => {
-    //   // console.log(id);
-    //   // console.log('idは有るのか？');
-    //   if (!id && isReady) {
-    //     // console.log('idがいません');
-    //     router.push('/');
-    //   }
-    //   if (!user) {
-    //     // console.log('userがいません');
-    //     // router.reload();
-    //   }
-    //   getCompanyDBsData();
-    //   console.log('マウント2');
-    //   getFlugDb();
-    // }, [user, router, getCompanyDBsData, getFlugDb, id, isReady]);
 
     useEffect(() => {
-      // console.log(id);
-      // console.log('idは有るのか？');
-
       getCompanyDBsData();
       console.log('マウント');
-      getFlugDb();
-    }, [user, router, getCompanyDBsData, getFlugDb, id]);
+      getFlugDb(user);
+    }, [user]);
 
-    // console.log(likeCompany);
-    // console.log('1');
     if (user) {
       return (
         <div>
-          {/* {console.log(likeCompany)}
-          {console.log('0')} */}
-
           <div className="flex justify-end gap-2 my-2 mr-2">
             <div className="w-24">
               <Button block size="medium" icon={<IconCornerDownLeft />}>
@@ -218,7 +237,7 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    <CommentBoard id={id} />
+                    {/* <CommentBoard id={id} /> */}
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
@@ -241,44 +260,7 @@ const companyInfo = () => {
                       {companyInfo.company_name}
                     </h3>
                     <form className="px-8 pt-6 pb-8 mb-4　 bg-white rounded">
-                      {/* 　項目ここから */}
-                      <div className="mb-4　">
-                        <div className="text-center">
-                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                            住所
-                          </label>
-                          <div
-                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="address"
-                            type="address"
-                          >
-                            {companyInfo.company_address}
-                          </div>
-                        </div>
-                      </div>
-                      {/* 　項目ここまで */}
-                      {/* 　項目ここから */}
-                      <div className="mb-4　">
-                        <div className="text-center">
-                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                            電話番号
-                          </label>
-                          <div
-                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="email"
-                            type="tel"
-                          >
-                            {companyInfo.phone_number}
-                          </div>
-                        </div>
-                      </div>
-                      {/* 　項目ここまで */}
-                      {/* 　項目ここから */}
-                      <div className="mb-4　">
-                        <div className="text-center">
-                          <label className="block mb-2 text-sm　 font-bold text-gray-700">
-                            資本金
-                          </label>
+                      {/* 項目ここから---------------- */}
 
                       <CompanyInfoList
                         hpLink={hpLink}
@@ -286,54 +268,10 @@ const companyInfo = () => {
                         companyInfo={companyInfo}
                       />
 
-                          <div
-                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="date"
-                            type="date"
-                          >
-                            {companyInfo.establishment_date}
-                          </div>
-                        </div>
-                      </div>
-                      {/* 　項目ここまで */}
-                      <button
-                        className="w-full mb-4 px-4 py-2 font-bold text-white
-                         bg-blue-500 rounded-full hover:bg-blue-700 
-                         focus:outline-none focus:shadow-outline
-                         "
-                        type="button"
-                      >
-                        <a
-                          onClick={hpLink}
-                          href={companyInfo.URL}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          HPへ
-                        </a>
-                      </button>
-                      <button
-                        className="w-full px-4 py-2 font-bold text-white
-                         bg-blue-500 rounded-full hover:bg-blue-700 
-                         focus:outline-none focus:shadow-outline
-                         "
-                        type="button"
-                      >
-                        <a
-                          onClick={jobLink}
-                          href={companyInfo.job_url}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          求人サイトへ
-                        </a>
-                      </button>
                       <hr className="mb-6 border-t" />
                       {companyOption === true ? (
                         <div>
-                          {/* 　項目ここから */}
                           <CompanyInfoSubList companySubInfo={companySubInfo} />
-                          {/* 　項目ここまで */}
                         </div>
                       ) : (
                         <div></div>
@@ -380,6 +318,7 @@ const companyInfo = () => {
                       src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
                       width="1100"
                       height="1100"
+                      title="map"
                     ></iframe>
                   </div>
                 </div>
@@ -387,7 +326,7 @@ const companyInfo = () => {
 
               <div className="flex justify-center px-6 my-12　 lg:hidden">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  <CommentBoard id={id} />
+                  {/* <CommentBoard id={id} /> */}
                 </div>
               </div>
             </div>
