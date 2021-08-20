@@ -92,13 +92,13 @@ export const EditCompany = (props) => {
         .update({
           company_id: companyId,
           company_name: form.company_name,
-          phone_number: form.phone,
-          company_address: form.address,
-          capital_stock: form.capital,
+          phone_number: form.phone_number,
+          company_address: form.company_address,
+          capital_stock: form.capital_stock,
           employees: form.employees,
-          establishment_date: form.date,
-          URL: form.website,
-          job_url: form.jobSite,
+          establishment_date: form.establishment_date,
+          URL: form.URL,
+          job_url: form.job_url,
         })
         .eq('company_id', companyId);
       if (!data || error || status !== 200) {
