@@ -1,12 +1,12 @@
 // import { Back } from './Back';
-import { Profile } from '../Profile';
-import { ToolModal } from '../ToolModal';
+import { Profile } from '../profile';
+import { ToolModal } from '../atoms/toolModal';
 import { Auth } from '@supabase/ui';
 import { useState } from 'react';
 import Image from 'next/image';
 import cc from 'classcat';
-import { Back } from '../back';
-import { UserMemo } from '../UserMemo';
+import { Back } from '../atoms/back';
+import { UserMemo } from '../userMemo';
 export const Header = () => {
   const { user } = Auth.useUser();
 
@@ -67,7 +67,7 @@ export const Header = () => {
                 >
                   <ToolModal
                     style="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4"
-                    name="memo"
+                    name="Memo"
                   >
                     <UserMemo />
                   </ToolModal>

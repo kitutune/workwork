@@ -62,9 +62,9 @@ const Account = () => {
       downloadImage(prof.avatar_url);
     }
   }, [prof.avatar_url]);
-  console.log(prof);
-  console.log(prof.avatar_url);
-  console.log('prof.avatar_url');
+  // console.log(prof);
+  // console.log(prof.avatar_url);
+  // console.log('prof.avatar_url');
   if (prof && avatarUrl) {
     return (
       <div className="min-h-screen bg-gray-100 pt-20">

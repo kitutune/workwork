@@ -2,50 +2,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import companyIcon from 'public/company.png';
-import { useEffect, useState } from 'react';
 import { Addcompany } from './addCompany';
-// import { Addcompany } from './AddCompany';
 
 export const CompanyList = (props) => {
-  // const [searchCompany, setSearchCompany] = useState({});
-  // const [loading, setLoading] = useState(true);
-  // console.log(props);
-  // console.log('11');
-  // useEffect(() => {
-  //   async () => {
-  //     if (props.allData !== undefined) {
-  //       const searchCompany = await props.allData.filter((company) => {
-  //         let searchContent =
-  //           company['company_name'] +
-  //           ' ' +
-  //           company['URL'] +
-  //           ' ' +
-  //           company['access'] +
-  //           ' ' +
-  //           company['capital_stock'] +
-  //           ' ' +
-  //           company['company_address'] +
-  //           ' ' +
-  //           company['work'];
-  //         return setSearchCompany(
-  //           searchContent.toLowerCase().includes(props.filterText.toLowerCase())
-  //         );
-  //       });
-  //       // if (searchCompany) {
-  //       //   setLoading(false);
-  //       //   console.log('setLoading(false);');
-  //       // }
-  //     } else {
-  //       props.getCompanyList();
-  //       console.log(' props.getCompanyList();');
-  //     }
-  //   };
-
-  //   return () => {
-  //     // cleanup;
-  //   };
-  // }, []);
-
   const searchCompany = props.allData.filter((company) => {
     let searchContent =
       company['company_name'] +
@@ -78,7 +37,7 @@ export const CompanyList = (props) => {
             <Link
               key={company.company_id}
               href={`/companyInfo?id=${company.company_id}`}
-              as={`/companyInfo?id=${company.company_name}`}
+              // as={`/companyInfo?id=${company.company_name}`}
               passHref
               userId={props.uuid}
             >
