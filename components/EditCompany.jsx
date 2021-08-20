@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { useRouter } from 'next/router';
@@ -154,9 +154,7 @@ export const EditCompany = (props) => {
       console.log('33333333');
       const { data, error } = await supabase
         .from('company_info_flug')
-        .select(
-          'company_name,company_address,phone_number,capital_stock,employees,establishment_date,nearest_station,access,work,parking,motorcycle_parking,parking_area_for_bicycles,remarks,URL,job_url'
-        )
+        .select(lists.join(','))
         .eq('company_id', info.company_id)
         .single();
       if (error) {
