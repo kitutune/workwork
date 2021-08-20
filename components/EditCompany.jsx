@@ -1,72 +1,143 @@
-import React, { useCallback, useRef } from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { useRouter } from 'next/router';
 
 export const EditCompany = (props) => {
+  const info = props.companyInfo;
+  const subInfos = props.companySubInfo;
+  const items = [
+    '名前',
+    '住所',
+    '電話番号',
+    '資本金',
+    '社員数',
+    '設立日',
+    '最寄駅',
+    'アクセス',
+    'WORK',
+    '駐輪場',
+    'バイク置き場',
+    '駐車場',
+    '備考欄',
+    'webUrl',
+    'jobUrl',
+  ];
+  const types = {
+    名前: 'text',
+    住所: 'address',
+    電話番号: 'tel',
+    資本金: 'capital',
+    社員数: 'text',
+    設立日: 'date',
+    最寄駅: 'station',
+    アクセス: 'accses',
+    WORK: 'text',
+    駐輪場: 'text',
+    バイク置き場: 'text',
+    駐車場: 'text',
+    備考欄: 'text',
+    webUrl: 'text',
+    jobUrl: 'text',
+  };
+
   const companyId = props.id;
   const router = useRouter();
   const Container = () => {
-    const companyName = useRef(null);
-    const companyUrl = useRef(null);
-    const companyAddress = useRef(null);
-    const companyPhone = useRef(null);
-    const companyCapital = useRef(null);
-    const companyEmployees = useRef(null);
-    const companyDate = useRef(null);
-    const companyJobSite = useRef(null);
+    const [form, setForm] = useState({
+      company_name: '',
+      company_address: '',
+      phone_number: '',
+      capital_stock: '',
+      employees: '',
+      establishment_date: '',
+      nearest_station: '',
+      access: '',
+      work: '',
+      parking: '',
+      motorcycle_parking: '',
+      parking_area_for_bicycles: '',
+      remarks: '',
+      URL: '',
+      job_url: '',
+    });
+    const lists = [
+      'company_name',
+      'company_address',
+      'phone_number',
+      'capital_stock',
+      'employees',
+      'establishment_date',
+      'nearest_station',
+      'access',
+      'work',
+      'parking',
+      'motorcycle_parking',
+      'parking_area_for_bicycles',
+      'remarks',
+      'URL',
+      'job_url',
+    ];
 
-    const companyNearestStation = useRef(null);
-    const companyAccess = useRef(null);
-    const companyWork = useRef(null);
-    const companyParking = useRef(null);
-    const companyMotorcycleParking = useRef(null);
-    const companyParkingBicycles = useRef(null);
-    const companyRemarks = useRef(null);
+    const handleChange = (input) => (e) => {
+      setForm({ ...form, [input]: e.target.value });
+    };
 
-    const companyInfoEditButton = useCallback(async () => {
-      const { data, error } = await supabase
+    const companyInfoEditButton = async () => {
+      console.log(form);
+      console.log('companyInfoEditButton');
+      const { data, error, status } = await supabase
         .from('company')
         .update({
           company_id: companyId,
-          company_name: companyName.current.value,
-          phone_number: companyPhone.current.value,
-          company_address: companyAddress.current.value,
-          capital_stock: companyCapital.current.value,
-          employees: companyEmployees.current.value,
-          establishment_date: companyDate.current.value,
-          URL: companyUrl.current.value,
-          job_url: companyJobSite.current.value,
+          company_name: form.company_name,
+          phone_number: form.phone,
+          company_address: form.address,
+          capital_stock: form.capital,
+          employees: form.employees,
+          establishment_date: form.date,
+          URL: form.website,
+          job_url: form.jobSite,
         })
         .eq('company_id', companyId);
-    }, []);
+      if (!data || error || status !== 200) {
+        alert('データの更新に失敗しました！');
+      }
+    };
 
     const companyInfoSubEditButton = useCallback(async () => {
-      await supabase
+      console.log(form);
+      console.log('companySubButton');
+      const { data, error, status } = await supabase
         .from('company_info')
         .update({
           company_id: companyId,
-          nearest_station: companyNearestStation.current.value,
-          access: companyAccess.current.value,
-          work: companyWork.current.value,
-          parking: companyParking.current.value,
-          motorcycle_parking: companyMotorcycleParking.current.value,
-          parking_area_for_bicycles: companyParkingBicycles.current.value,
-          remarks: companyRemarks.current.value,
-          update_info: props.companySubInfo.update_info,
+          nearest_station: form.nearest_station,
+          access: form.access,
+          work: form.work,
+          parking: form.parking,
+          motorcycle_parking: form.motorcycle_parking,
+          parking_area_for_bicycles: form.parking_area_for_bicycles,
+          remarks: form.remarks,
+          update_info: subInfos.update_info,
         })
         .eq('company_id', companyId);
-    }, []);
+      if (!data || error || status !== 200) {
+        alert('データの更新に失敗しました！');
+      } else {
+        alert('データを更新しました！');
+        router.reload();
+      }
+    }, [form]);
 
-    const editButton = () => {
-      const edit = async () => {
-        await companyInfoEditButton();
-        await companyInfoSubEditButton();
-      };
-      edit().then(() => {
-        router.push(`/companyInfo?id=${companyId}`);
-      });
-    };
+    const editButton = useCallback(
+      (form) => {
+        companyInfoEditButton(form);
+        companyInfoSubEditButton(form);
+      },
+      [form]
+    );
 
     const deleteButton = async () => {
       await supabase.from('company_info').delete().eq('company_id', companyId);
@@ -78,211 +149,61 @@ export const EditCompany = (props) => {
       await supabase.from('flug').delete().eq('company_id', companyId);
       router.push('/');
     };
-
+    const getData = async () => {
+      console.log(lists);
+      console.log('33333333');
+      const { data, error } = await supabase
+        .from('company_info_flug')
+        .select(
+          'company_name,company_address,phone_number,capital_stock,employees,establishment_date,nearest_station,access,work,parking,motorcycle_parking,parking_area_for_bicycles,remarks,URL,job_url'
+        )
+        .eq('company_id', info.company_id)
+        .single();
+      if (error) {
+        alert('dataの読み込みに失敗しました！');
+      } else {
+        console.log(data);
+        console.log('読み込み成功');
+        return setForm(data);
+      }
+    };
+    useEffect(() => {
+      if (info) getData();
+    }, [info]);
+    useEffect(() => {
+      // eslint-disable-next-line no-unused-vars
+      let unmounted = false;
+      // clean up関数（Unmount時の処理）
+      return () => {
+        // console.log('アンマウント');
+        unmounted = true;
+      };
+    }, []);
     return (
-      <div>
-        <div className="min-w-screen min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-          <div className="w-5/6 lg:w-3/6 rounded-xl bg-gradient-to-b from-blue-600 to-blue-400 mr-3">
-            <div className="flex flex-col">
-              <div className="flex flex-col items-center justify-center  py-4 bg-blue-800">
-                <div className="text-center uppercase text-2xl">会社名</div>
-                <input
-                  type="text"
-                  className="text-center  text-xl"
-                  defaultValue={props.companyInfo.company_name}
-                  ref={companyName}
-                />
-              </div>
-
-              <div className="px-4 py-5">
-                <div className="flex flex-col text-black">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">住所</label>
-                      <input
-                        type="text"
-                        placeholder="住所を入力してください"
-                        defaultValue={props.companyInfo.company_address}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyAddress}
-                      />
-                    </div>
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">電話番号</label>
-                      <input
-                        type="tel"
-                        placeholder="電話番号を入力してください"
-                        maxLength="11"
-                        className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                        defaultValue={props.companyInfo.phone_number}
-                        ref={companyPhone}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">資本金</label>
-                      <input
-                        type="number"
-                        placeholder="数字を入力してください"
-                        defaultValue={props.companyInfo.capital_stock}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyCapital}
-                      />
-                    </div>
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">社員数</label>
-                      <input
-                        type="number"
-                        placeholder="数字を入力してください"
-                        className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                        defaultValue={props.companyInfo.employees}
-                        ref={companyEmployees}
-                      />
-                    </div>
-                  </div>{' '}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">設立日</label>
-                      <input
-                        type="datetime-local"
-                        placeholder="数字を入力してください"
-                        defaultValue={props.companyInfo.establishment_date}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyDate}
-                      />
-                    </div>
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">求人ページ</label>
-                      <input
-                        type="url"
-                        placeholder="URLを入力してください"
-                        className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                        defaultValue={props.companyInfo.job_url}
-                        ref={companyJobSite}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">企業URL</label>
-                      <input
-                        type="url"
-                        placeholder="URLを入力してください"
-                        defaultValue={props.companyInfo.URL}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyUrl}
-                      />
-                    </div>
-                  </div>
-                  <div className="border-pink-50 border-2"></div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">最寄駅</label>
-                      <input
-                        type="text"
-                        placeholder="最寄駅を入力してください"
-                        defaultValue={props.companySubInfo.nearest_station}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyNearestStation}
-                      />
-                    </div>
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">アクセス</label>
-                      <input
-                        type="text"
-                        placeholder="テキストを入力してください"
-                        className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                        defaultValue={props.companySubInfo.access}
-                        ref={companyAccess}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">ワーク</label>
-                      <input
-                        type="text"
-                        placeholder="アプリ名や事業を入力してください"
-                        defaultValue={props.companySubInfo.work}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyWork}
-                      />
-                    </div>
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">駐車場</label>
-                      <input
-                        type="text"
-                        placeholder="駐車場は有る場合は「有」、無い場合は「無」を入力してください"
-                        className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                        defaultValue={props.companySubInfo.parking}
-                        ref={companyParking}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">バイク置き場</label>
-                      <input
-                        type="text"
-                        placeholder="駐車場は有る場合は「有」、無い場合は「無」を入力してください"
-                        defaultValue={props.companySubInfo.motorcycle_parking}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyMotorcycleParking}
-                      />
-                    </div>
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">駐輪場</label>
-                      <input
-                        type="text"
-                        placeholder="駐車場は有る場合は「有」、無い場合は「無」を入力してください"
-                        className="py-3 px-5 rounded focus:outline-none text-gray-600 focus:text-gray-600"
-                        defaultValue={
-                          props.companySubInfo.parking_area_for_bicycles
-                        }
-                        ref={companyParkingBicycles}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex flex-col text-center w-3/6 px-2">
-                      <label className="mb-1">備考欄</label>
-                      <textarea
-                        type="text"
-                        placeholder="テキストを入力してください"
-                        defaultValue={props.companySubInfo.remarks}
-                        className="py-3 px-5 rounded focus:outline-none  text-gray-600 focus:text-gray-600"
-                        ref={companyRemarks}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-evenly mb-5　">
-                    <Button>
-                      <div
-                        className="py-4 px-8 text-lg rounded "
-                        onClick={editButton}
-                      >
-                        変更
-                      </div>
-                    </Button>
-                    <Button onClick={deleteButton}>
-                      <div className="py-4 px-8 text-lg rounded ">削除</div>
-                    </Button>
-                  </div>
+      <div className="translate-y-1/4">
+        <div className="h-screen flex justify-center items-center ">
+          <div className="p-5 bg-gray-400 w-3/4 rounded-lg">
+            <form className="p-3 flex flex-col space-y-5">
+              {Object.entries(form).map(([key, value], i) => (
+                <div key={key} className="contents">
+                  <p>{items[i]}</p>
+                  <input
+                    type={types[i]}
+                    placeholder={value}
+                    onChange={handleChange(key)}
+                    className="p-2 w-3/4bg-gray-100"
+                  />
                 </div>
-              </div>
+              ))}
+            </form>
+            <div className="flex items-center justify-evenly mb-5">
+              <Button onClick={editButton}>
+                <div className="py-4 px-8 text-lg rounded ">変更</div>
+              </Button>
+              <Button onClick={deleteButton}>
+                <div className="py-4 px-8 text-lg rounded ">削除</div>
+              </Button>
             </div>
-          </div>
-          <div className="text-sm mt-3">
-            Follow me on twitter{' '}
-            <a
-              href="https://twitter.com/devgleb"
-              className="text-blue-600 hover:underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              @devgleb
-            </a>
           </div>
         </div>
       </div>
