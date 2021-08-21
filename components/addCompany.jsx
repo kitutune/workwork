@@ -67,7 +67,6 @@ export const Addcompany = (props) => {
         throw error;
       } else {
         alert('会社データを追加しました！');
-
         getCompanyList();
         closeModal();
       }
