@@ -1,4 +1,6 @@
-export const CompanyInfoList = (props) => {
+import React from 'react';
+// eslint-disable-next-line react/display-name
+export const CompanyInfoList = React.memo((props) => {
   const lists = ['住所', '電話番号', '資本金', '社員数', '設立日'];
   const types = ['address', 'tel', 'capital', 'text', 'date'];
   const infos = {
@@ -8,7 +10,7 @@ export const CompanyInfoList = (props) => {
     社員数: props.companyInfo.employees,
     設立日: props.companyInfo.establishment_date,
   };
-
+  console.log('companyinfolist');
   return (
     <>
       {lists.map((list, i) => (
@@ -17,7 +19,6 @@ export const CompanyInfoList = (props) => {
             <></>
           ) : (
             <div className="mb-4" key={[i]}>
-              {console.log(infos)}
               <div className="text-center">
                 <label className="block mb-2 text-sm　 font-bold text-gray-700">
                   {lists[i]}
@@ -67,4 +68,4 @@ export const CompanyInfoList = (props) => {
       </button>
     </>
   );
-};
+});

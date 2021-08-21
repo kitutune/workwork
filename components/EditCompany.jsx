@@ -4,7 +4,8 @@ import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { useRouter } from 'next/router';
 
-export const EditCompany = (props) => {
+// eslint-disable-next-line react/display-name
+export const EditCompany = React.memo((props) => {
   const info = props.companyInfo;
   const subInfos = props.companySubInfo;
   const items = [
@@ -85,8 +86,6 @@ export const EditCompany = (props) => {
     };
 
     const companyInfoEditButton = async () => {
-      console.log(form);
-      console.log('companyInfoEditButton');
       const { data, error, status } = await supabase
         .from('company')
         .update({
@@ -107,8 +106,8 @@ export const EditCompany = (props) => {
     };
 
     const companyInfoSubEditButton = useCallback(async () => {
-      console.log(form);
-      console.log('companySubButton');
+      // console.log(form);
+      // console.log('companySubButton');
       const { data, error, status } = await supabase
         .from('company_info')
         .update({
@@ -150,8 +149,6 @@ export const EditCompany = (props) => {
       router.push('/');
     };
     const getData = async () => {
-      console.log(lists);
-      console.log('33333333');
       const { data, error } = await supabase
         .from('company_info_flug')
         .select(lists.join(','))
@@ -177,6 +174,7 @@ export const EditCompany = (props) => {
         unmounted = true;
       };
     }, []);
+    console.log('editCompany');
     return (
       <div className="translate-y-1/4">
         <div className="h-screen flex justify-center items-center ">
@@ -219,4 +217,4 @@ export const EditCompany = (props) => {
       )}
     </div>
   );
-};
+});

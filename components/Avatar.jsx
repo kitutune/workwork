@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { supabase } from 'utils/supabaseClient';
 
 export const Avatar = ({ url, onUpload }) => {
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarImage, setAvatarImage] = useState('');
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const Avatar = ({ url, onUpload }) => {
       reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
 
       reader.onload = () => {
-        setAvatarUrl(reader.result);
+        setAvatarImage(reader.result);
       };
     } catch (error) {
       console.log('Error downloading image: ', error.message);
@@ -59,12 +59,22 @@ export const Avatar = ({ url, onUpload }) => {
     }
   };
 
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
+    let unmounted = false;
+
+    // clean up関数（Unmount時の処理）
+    return () => {
+      // console.log('アンマウント');
+      unmounted = true;
+    };
+  }, []);
   return (
     <div className="hover:opacity-50">
       <div className="text-center　">
         <label className="button primary block 　" htmlFor="single">
-          {avatarUrl ? (
-            <Image src={avatarUrl} alt="Avatar" width={80} height={80} />
+          {avatarImage ? (
+            <Image src={avatarImage} alt="Avatar" width={80} height={80} />
           ) : (
             <Image src="/human.png" alt="NoAvatar" width={80} height={80} />
           )}
