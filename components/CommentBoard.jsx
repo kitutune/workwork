@@ -1,187 +1,133 @@
 //ここからスタート
 
-// import cc from 'classcat';
 import { supabase } from 'utils/supabaseClient';
-import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Auth } from '@supabase/ui';
-import Image from 'next/image';
-// import { ProfCard } from './ProfCard';
 import Link from 'next/link';
-export const CommentBoard = (props) => {
+import { AvatarImage } from './avatarImage';
+// eslint-disable-next-line react/display-name
+export const CommentBoard = React.memo((props) => {
   const comment = useRef(null);
-  const [logs, setIlogs] = useState([]);
+  const [commentLogs, setCommentLogs] = useState([]);
   const [edit, setEdit] = useState(false);
   const { user } = Auth.useUser();
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-  // const [uploading, setUploading] = useState(false);
-  const [url, setUrl] = useState('');
 
-  const profButton = () => {
-    setIsOpen((prev) => {
-      !prev;
-    });
-  };
-  console.log(isOpen);
-  const loadDB = useCallback(async () => {
+  const loadCommentLog = useCallback(async () => {
     if (props.id === undefined) {
       return;
-    } else {
-      return await supabase
+    }
+    try {
+      const { data, error, status } = await supabase
         .from('company_comment')
         .select('*')
         .eq('company_id', props.id)
-        .order('time_stamp', { ascending: true })
-        .then((db) => {
-          if (db.data && !db.error) {
-            setIlogs(db.data);
-          } else {
-            setIlogs([]);
-          }
-        });
+        .order('time_stamp', { ascending: true });
+      // console.log(status);
+      // console.log(error);
+      // console.log('ロード');
+      if (error || status !== 200) {
+        throw error;
+      }
+      if (data) {
+        return setCommentLogs(data);
+      }
+    } catch (error) {
+      alert('コメントログの読み込みに失敗しました！');
     }
   }, [props.id]);
 
-  const insertDB = useCallback(async () => {
+  const insertComment = async () => {
     if (!comment.current.value) {
-      alert('コメントを投稿するには値を入力して下さい！');
-      return null;
+      return alert('コメントを投稿するには値を入力して下さい！');
     }
     if (props.id && user) {
-      return (
-        await supabase
+      try {
+        const { data, error, status } = await supabase
           .from('company_comment')
           .insert({
             user_id: user.id,
             company_id: props.id,
             comment: comment.current.value,
           })
-          .eq('company_id', props.id),
-        loadDB(),
-        alert('コメントを投稿しました！')
-      );
-    }
-  }, [loadDB, props.id, user]);
+          .eq('company_id', props.id);
+        // console.log(status);
+        // console.log(error);
+        // console.log('エラー');
+        if (!data || error || status !== 201) {
+          throw error;
+        } else {
+          console.log('コメントを投稿しました！');
+        }
+      } catch (error) {
+        alert('コメントの投稿に失敗しました！');
+      }
 
-  const deleteDB = useCallback(
-    (comment_id) => {
-      if (!comment_id) return null;
-      return supabase
+      loadCommentLog();
+    }
+  };
+
+  const deleteCommentLog = async (comment_id) => {
+    if (!comment_id) return null;
+    try {
+      const { data, error, status } = await supabase
         .from('company_comment')
         .delete()
-        .eq('comment_id', comment_id)
-        .then(() => {
-          loadDB();
-        });
-    },
-    [loadDB]
-  );
+        .eq('comment_id', comment_id);
+      // console.log(status);
+      // console.log(error);
+      // console.log('エラー');
+      if (!data || error || status !== 200) {
+        throw error;
+      } else {
+        console.log('コメントの削除に成功しました！');
+      }
+    } catch (error) {
+      alert('コメントの削除に失敗しました！');
+    }
+
+    loadCommentLog();
+  };
+
   const handleEditChange = useCallback(() => {
     setEdit((prev) => {
       return !prev;
     });
   }, []);
 
-  const addMessage = useCallback(() => {
-    insertDB();
+  const addMessage = () => {
+    insertComment();
     comment.current.value = '';
-  }, [insertDB]);
-
-  // const getURL = useCallback(async () => {
-  //   let { data, error } = await supabase
-  //     .from('user')
-  //     .select(`*`)
-  //     .eq('user_id', val.user_id)
-  //     .single();
-  //   console.log(data);
-  //   console.log('datadata');
-  //   if (data) {
-  //     setUrl(data.avatar_url);
-  //   }
-  // }, [val.user_id]);
-
-  async function downloadImage(path) {
-    try {
-      const { data, error } = await supabase.storage
-        .from('avatars')
-        .download(path);
-
-      if (error) {
-        throw error;
-      }
-      // const url = URL.createObjectURL(data);
-      // console.log(url);
-      // console.log('urlurl');
-
-      let reader = new FileReader();
-      reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
-
-      reader.onload = function () {
-        // link.href = reader.result; // data url
-        setAvatarUrl(reader.result);
-        // link.click();
-      };
-
-      // setAvatarUrl(url);
-    } catch (error) {
-      console.log('Error downloading image: ', error.message);
-    }
-  }
-
-  // useEffect(() => {
-  //   getURL();
-  //   if (url) downloadImage(url);
-  // }, [url, getURL]);
+  };
 
   useEffect(() => {
-    loadDB();
-  }, [loadDB]);
+    loadCommentLog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
     let unmounted = false;
     // clean up関数（Unmount時の処理）
     return () => {
-      // console.log('アンマウント');
       unmounted = true;
     };
   }, []);
 
-  // console.log(avatarUrl);
-  console.log('12');
+  // console.log(commentLogs);
+  console.log('CommentBoard');
   return (
     <>
       <div className="flex flex-col w-full pt-4">
         <div className="py-2">
-          {logs &&
-            logs.map((val, index) => {
+          {commentLogs &&
+            commentLogs.map((val) => {
               const day = new Date(val.time_stamp).toLocaleString('ja-JP');
-              // ---------------------------------------------
-              const getURL = async () => {
-                let { data, error } = await supabase
-                  .from('user')
-                  .select(`*`)
-                  .eq('user_id', val.user_id)
-                  .single();
-                console.log(data);
-                console.log('datadata');
-                if (data) {
-                  setUrl(data.avatar_url);
-                }
-              };
-              getURL(val.user_id);
-              if (url) {
-                downloadImage(url);
-              }
-              // ------------------------------------------------
+
               return (
                 <div key={val.comment_id}>
-                  {/* {isOpen ? (
-                    <ProfCard profButton={profButton} avatarUrl={avatarUrl} />
-                  ) : (
-                    <></>
-                  )} */}
+                  {(console.log(val), console.log('val'))}
                   <div className="text-xs">
                     <div className=" ">{day}</div>
                   </div>
@@ -189,29 +135,13 @@ export const CommentBoard = (props) => {
                     <div>
                       <div className="flex items-center">
                         <Link
-                          //  key={title.id}
                           href={`/account?id=${val.user_id}`}
                           // as={`/account?id=${val.user_name}`}
                           passHref
                         >
-                          <div onClick={profButton}>
-                            {avatarUrl ? (
-                              <Image
-                                src={avatarUrl}
-                                alt="Avatar"
-                                // className="w-12 min-w-3rem"
-                                width={80}
-                                height={80}
-                              />
-                            ) : (
-                              <Image
-                                // className="w-12 min-w-3rem "
-                                src="/human.png"
-                                alt="NoAvatar"
-                                width={80}
-                                height={80}
-                              />
-                            )}
+                          <div>
+                            <AvatarImage userId={val.user_id} />
+                            {(console.log(val), console.log('val'))}
                           </div>
                         </Link>
                         <div className=" flex-auto bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4">
@@ -222,7 +152,7 @@ export const CommentBoard = (props) => {
                                   <div className="text-xs text-gray-400 hover:text-pink-400 outline-none">
                                     <button
                                       onClick={() => {
-                                        deleteDB(val.comment_id);
+                                        deleteCommentLog(val.comment_id);
                                       }}
                                     >
                                       <FontAwesomeIcon icon={faTrash} />
@@ -285,4 +215,4 @@ export const CommentBoard = (props) => {
       </div>
     </>
   );
-};
+});

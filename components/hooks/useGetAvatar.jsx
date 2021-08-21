@@ -1,21 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
 // import Image from 'next/image';
-export const useGetAvatar = (user) => {
+export const useGetAvatar = (id) => {
   const [avatar_url, setAvatarUrl] = useState('');
   const [avatarImage, setAvatarImage] = useState('');
 
-  // const userId = user.id;
+  // console.log(id);
+  // console.log('useGet');
+  const userId = id;
 
   const getProfile = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       return;
     }
     try {
       const { data, error, status } = await supabase
         .from('user')
         .select(`*`)
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .single();
 
       if (error && status !== 406) {
@@ -61,21 +63,11 @@ export const useGetAvatar = (user) => {
   }, []);
 
   useEffect(() => {
-    getProfile(user);
+    getProfile(userId);
     if (avatar_url) {
       downloadImage(avatar_url);
     }
-  }, [user, avatar_url]);
-  console.log('sample');
+  }, [userId, avatar_url]);
+  console.log('useGetAvatar');
   return avatarImage;
-  //    (
-  //     <div>
-  //       {console.log('sample:jsx')}
-  //       {avatarImage ? (
-  //         <Image src={avatarImage} alt="Avatar" width={80} height={80} />
-  //       ) : (
-  //         <Image src="/human.png" alt="NoAvatar" width={80} height={80} />
-  //       )}
-  //     </div>
-  //   );
 };
