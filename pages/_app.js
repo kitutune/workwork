@@ -2,12 +2,15 @@ import 'tailwindcss/tailwind.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Auth } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
+import { LayoutWrapper } from 'components/LayoutWrapper/layoutWrapper';
 function MyApp({ Component, pageProps }) {
   console.log('-------------------');
   return (
     <ChakraProvider>
       <Auth.UserContextProvider supabaseClient={supabase}>
-        <Component {...pageProps} />
+        <LayoutWrapper>
+          <Component {...pageProps} />
+        </LayoutWrapper>
       </Auth.UserContextProvider>
     </ChakraProvider>
   );

@@ -8,7 +8,6 @@ import { supabase } from 'utils/supabaseClient';
 import { EditCompany } from 'components/editCompany';
 import { ToolModal } from 'components/atoms/toolModal';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
-import { LayoutWrapper } from 'components/LayoutWrapper/layoutWrapper';
 import { Back } from 'components/atoms/back';
 import { CompanyInfoList } from 'components/companyInfoList';
 import { CompanyInfoSubList } from 'components/companyInfoSubList';
@@ -40,8 +39,6 @@ const companyInfo = () => {
     const { user } = Auth.useUser();
     const router = useRouter();
     let { id } = router.query;
-    console.log(router);
-    // const isReady = router.isReady;
     const address = companyInfo.company_address;
     const date = companyInfo.update;
     const date2 = companySubInfo.update_info;
@@ -97,19 +94,11 @@ const companyInfo = () => {
         .eq('company_id', id)
         .eq('user_id', user.id);
 
-      // return setLikeCompany(data[0].bookmark);
-
-      // const { data, error } = await supabase
-      //   .from('flug')
-      //   .insert([{ user_id: user.id, company_id: id, bookmark: !likeCompany }]);
-
       if (error) {
         alert('bookmarkの変更に失敗しました！');
       }
       return setLikeCompany(data[0].bookmark);
     };
-
-    // console.log('3');
 
     const getFlugDb = useCallback(
       async (user) => {
@@ -118,19 +107,13 @@ const companyInfo = () => {
             return;
           }
 
-          console.log('flug');
+          // console.log('flug');
           let { data, error, status } = await supabase
             .from('flug')
-
             .select('*')
             .eq('company_id', id)
             .eq('user_id', user.id);
-          // console.log(id);
-          // console.log(user);
-          // console.log(data);
-          // console.log(error);
-          // console.log(status);
-          // console.log('getflug');
+
           if (data.length === 0) {
             console.log('着てないか？');
             ({ data, error } = await supabase
@@ -146,42 +129,9 @@ const companyInfo = () => {
         } catch (error) {
           alert('bookmarkの読み込みに失敗しました！');
         }
-
-        // console.log(id);
-        // console.log(user);
-        // console.log('来てる');
-        // if (id === undefined) {
-        //   return;
-        // }
-
-        // if ((id, user)) {
-        //   let { data, error } = await supabase
-        //     .from('flug')
-        //     .select('*')
-        //     .eq('company_id', id)
-        //     .eq('user_id', user.id);
-        //   // console.log(data);
-        //   // console.log('いらっしゃい');
-        //   if (data && data.length) {
-        //     const likeCompany = data[0].bookmark;
-        //     // console.log(data[0].bookmark);
-        //     // console.log('入れる');
-        //     return setLikeCompany(likeCompany);
-        //   } else {
-        //     ({ data, error } = await supabase
-        //       .from('flug')
-        //       .insert([{ company_id: id, user_id: user.id }]));
-
-        //     // console.log('作る');
-        //     return setLikeCompany(likeCompany);
-        //   }
-        // }
-        // console.log('idまたはuserが不在のため帰りました');
       },
-      [id, likeCompany, user]
+      [id, user]
     );
-    // console.log(likeCompany);
-    // console.log('2');
 
     useEffect(() => {
       // eslint-disable-next-line no-unused-vars
@@ -196,10 +146,9 @@ const companyInfo = () => {
 
     useEffect(() => {
       getCompanyDBsData();
-      console.log('マウント');
       getFlugDb(user);
     }, [user]);
-
+    console.log('companyinfo');
     if (user) {
       return (
         <div>
@@ -296,24 +245,17 @@ const companyInfo = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center px-6 my-12">
-                <div
-                  className="
-                
-                "
-                ></div>
-              </div>
               {isOpen === false ? (
                 <div></div>
               ) : (
-                <div className="flex justify-center px-6 my-12">
+                <div className="flex justify-center px-6 my-12 w-full xl:w-3/4 lg:w-11/12">
                   {/* <div
                     className="  w-full  
                   object-contain
                   justify-center
                 flex"
                   > */}
-                  <div className="w-full xl:w-3/4 lg:w-11/12 flex">
+                  <div className="w-full xl:w-3/4 lg:w-11/12 smw:w-2/1  flex">
                     <iframe
                       src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
                       width="1100"
@@ -323,10 +265,9 @@ const companyInfo = () => {
                   </div>
                 </div>
               )}
-
               <div className="flex justify-center px-6 my-12　 lg:hidden">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
-                  {/* <CommentBoard id={id} /> */}
+                  <CommentBoard id={id} />
                 </div>
               </div>
             </div>
@@ -338,11 +279,9 @@ const companyInfo = () => {
   };
 
   return (
-    <LayoutWrapper>
-      <Auth.UserContextProvider supabaseClient={supabase}>
-        <Container />
-      </Auth.UserContextProvider>
-    </LayoutWrapper>
+    <Auth.UserContextProvider supabaseClient={supabase}>
+      <Container />
+    </Auth.UserContextProvider>
   );
 };
 
