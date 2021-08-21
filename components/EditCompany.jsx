@@ -176,7 +176,7 @@ export const EditCompany = React.memo((props) => {
     }, []);
     console.log('editCompany');
     return (
-      <div className="translate-y-1/4">
+      <div className="translate-y-1/3">
         <div className="h-screen flex justify-center items-center ">
           <div className="p-5 bg-gray-400 w-3/4 rounded-lg">
             <form className="p-3 flex flex-col space-y-5">

@@ -13,9 +13,9 @@ export const ToolModal = (props) => {
   return (
     <div className={props.style}>
       <div>
-        <div type="button" onClick={openModal}>
+        <button type="button" onClick={openModal}>
           {props.name}
-        </div>
+        </button>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>

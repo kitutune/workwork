@@ -17,8 +17,12 @@ const Account = () => {
         .select('*')
         .eq('user_id', id)
         .single();
-
-      setProf(data);
+      if (!data || error) {
+        alert('データの読み込みに失敗しました！');
+      }
+      {
+        setProf(data);
+      }
     }
   };
   const back = useCallback(() => {
@@ -54,7 +58,7 @@ const Account = () => {
   }
 
   useEffect(() => {
-    const data = getProf(id);
+    getProf(id);
   }, [id]);
 
   useEffect(() => {
@@ -62,36 +66,21 @@ const Account = () => {
       downloadImage(prof.avatar_url);
     }
   }, [prof.avatar_url]);
-  // console.log(prof);
-  // console.log(prof.avatar_url);
-  // console.log('prof.avatar_url');
   if (prof && avatarUrl) {
     return (
       <div className="min-h-screen bg-gray-100 pt-20">
         <div className=" bg-white  mx-auto shadow-lg rounded-lg hover:shadow-xl transition duration-200 max-w-sm">
           <div className="w-full text-left mb-3 flex items-center">
-            {/* <img
-              className="w-24 h-24 inline-block object-cover rounded-full"
-              alt="CompanyIcon"
-              src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200"
-            ></img> */}
             {avatarUrl ? (
               <Image
                 src={avatarUrl}
                 alt="Avatar"
                 className="w-24 h-24 inline-block object-cover rounded-full"
-                // className="w-12 min-w-3rem"
                 width={80}
                 height={80}
               />
             ) : (
-              <Image
-                // className="w-12 min-w-3rem "
-                src="/human.png"
-                alt="NoAvatar"
-                width={80}
-                height={80}
-              />
+              <Image src="/human.png" alt="NoAvatar" width={80} height={80} />
             )}
             <div className="font-bold text-4xl"> {prof.user_name}</div>
           </div>
@@ -100,8 +89,7 @@ const Account = () => {
               Age {prof.age}
             </p>
             <div className="hover:cursor-pointer mt-2 text-gray-900 font-bold text-2xl tracking-tight">
-              {prof.remarks} Lorem ipsum dolor sit amet consectetur adipisicing
-              elit.{' '}
+              {prof.remarks}
             </div>
           </div>
           <div className="flex">
