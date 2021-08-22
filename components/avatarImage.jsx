@@ -1,9 +1,7 @@
 import { useGetAvatar } from './hooks/useGetAvatar';
 import Image from 'next/image';
-import React from 'react';
 
-// eslint-disable-next-line react/display-name
-export const AvatarImage = React.memo((props) => {
+export const AvatarImage = (props) => {
   const Container = () => {
     const avatarImage = useGetAvatar(props.userId);
 
@@ -22,4 +20,4 @@ export const AvatarImage = React.memo((props) => {
   };
 
   return <div>{props.userId ? <Container /> : <></>}</div>;
-});
+};

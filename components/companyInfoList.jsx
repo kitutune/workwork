@@ -1,6 +1,4 @@
-import React from 'react';
-// eslint-disable-next-line react/display-name
-export const CompanyInfoList = React.memo((props) => {
+export const CompanyInfoList = (props) => {
   const lists = ['住所', '電話番号', '資本金', '社員数', '設立日'];
   const types = ['address', 'tel', 'capital', 'text', 'date'];
   const infos = {
@@ -68,4 +66,4 @@ export const CompanyInfoList = React.memo((props) => {
       </button>
     </>
   );
-});
+};

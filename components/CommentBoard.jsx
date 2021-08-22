@@ -1,14 +1,13 @@
 //ここからスタート
 
 import { supabase } from 'utils/supabaseClient';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Auth } from '@supabase/ui';
 import Link from 'next/link';
 import { AvatarImage } from './avatarImage';
-// eslint-disable-next-line react/display-name
-export const CommentBoard = React.memo((props) => {
+export const CommentBoard = (props) => {
   const comment = useRef(null);
   const [commentLogs, setCommentLogs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -202,4 +201,4 @@ export const CommentBoard = React.memo((props) => {
       </div>
     </>
   );
-});
+};

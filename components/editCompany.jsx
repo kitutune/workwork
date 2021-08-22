@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { useRouter } from 'next/router';
 
-// eslint-disable-next-line react/display-name
-export const EditCompany = React.memo((props) => {
+export const EditCompany = (props) => {
   const info = props.companyInfo;
   const subInfos = props.companySubInfo;
   const items = [
@@ -213,4 +212,4 @@ export const EditCompany = React.memo((props) => {
       )}
     </div>
   );
-});
+};

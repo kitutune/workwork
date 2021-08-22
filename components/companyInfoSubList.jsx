@@ -1,6 +1,4 @@
-import React from 'react';
-// eslint-disable-next-line react/display-name
-export const CompanyInfoSubList = React.memo((props) => {
+export const CompanyInfoSubList = (props) => {
   const lists = [
     '最寄駅',
     'アクセス',
@@ -45,4 +43,4 @@ export const CompanyInfoSubList = React.memo((props) => {
       ))}
     </>
   );
-});
+};
