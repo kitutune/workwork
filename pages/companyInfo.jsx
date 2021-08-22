@@ -248,21 +248,23 @@ const companyInfo = () => {
               {isOpen === false ? (
                 <div></div>
               ) : (
-                <div className="flex justify-center px-6 my-12 w-full xl:w-3/4 lg:w-11/12">
-                  {/* <div
-                    className="  w-full  
-                  object-contain
-                  justify-center
-                flex"
-                  > */}
-                  <div className="w-full xl:w-3/4 lg:w-11/12 smw:w-2/1  flex">
-                    <iframe
-                      src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
-                      width="1100"
-                      height="1100"
-                      title="map"
-                    ></iframe>
-                  </div>
+                // <div className="flex justify-center px-6 my-12 w-full xl:w-3/4 lg:w-11/12">
+                //   <div className="w-full xl:w-3/4 lg:w-11/12 smw:w-2/1  flex">
+                //     <iframe
+                //       src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
+                //       width="1100"
+                //       height="1100"
+                //       title="map"
+                //     ></iframe>
+                //   </div>
+                // </div>
+                <div className="relative" style="padding-top: 56.25%">
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    frameBorder="0"
+                    src={`http://maps.google.co.jp/maps?q=${address}&output=embed`}
+                    title="map"
+                  ></iframe>
                 </div>
               )}
               <div className="flex justify-center px-6 my-12　 lg:hidden">
