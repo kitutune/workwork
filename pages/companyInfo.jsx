@@ -259,17 +259,36 @@ const companyInfo = () => {
                 //   </div>
                 // </div>
                 <div
-                  className="relative pt-56.25%"
+                  className="relative pt-56.25% w-10/12"
                   // style={{ paddingTop: '56.25%' }}
                 >
                   <iframe
-                    className="absolute inset-0 w-11/12 h-11/12"
+                    className="absolute inset-y-0  w-full h-full"
                     frameBorder="0"
                     src={`https://maps.google.co.jp/maps?q=${address}&output=embed`}
                     title="map"
                   ></iframe>
                 </div>
-              )}
+              )}{' '}
+              <div
+                className="bg-yellow-100"
+                style={{ textAlign: '-webkit-center' }}
+              >
+                <div className="bg-pink-400">
+                  <div
+                    className="relative pt-56.25% w-10/12"
+
+                    // style={{ paddingTop: '56.25%' }}
+                  >
+                    <iframe
+                      className="absolute inset-y-0  w-full h-full"
+                      frameBorder="0"
+                      src={`https://maps.google.co.jp/maps?q=${address}&output=embed`}
+                      title="map"
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
               <div className="flex justify-center px-6 my-12　 lg:hidden">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                   <CommentBoard id={id} />
