@@ -186,7 +186,7 @@ const companyInfo = () => {
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
                     }}
                   >
-                    {/* <CommentBoard id={id} /> */}
+                    <CommentBoard id={id} />
                   </div>
                   {/* <!-- Col --> */}
                   <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
