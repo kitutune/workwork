@@ -6,7 +6,7 @@ import { Avatar } from './avatar';
 
 export const Profile = () => {
   const { user } = Auth.useUser();
-  const uuid = user.id;
+  const user_id = user.id;
   const [avatar_url, setAvatarUrl] = useState('');
 
   const Container = () => {
@@ -139,7 +139,7 @@ export const Profile = () => {
   };
   return (
     <div>
-      <div>{uuid ? <Container /> : <>loading・・・</>}</div>
+      <div>{user_id ? <Container /> : <>loading・・・</>}</div>
     </div>
   );
 };

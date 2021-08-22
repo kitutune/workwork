@@ -32,11 +32,11 @@ export const Addcompany = (props) => {
         company_address: companyAddress,
       },
     ]);
-    const company_uuid = data[0].company_id;
+    const company_id = data[0].company_id;
 
     ({ data, error } = await supabase.from('company_info').insert([
       {
-        company_id: company_uuid,
+        company_id: company_id,
         company_name: companyName,
       },
     ]));

@@ -165,7 +165,7 @@ const Container = (props) => {
         <CompanyList
           allData={allData}
           // companyNames={companyNames}
-          uuid={user.id}
+          user_id={user.id}
           getCompanyList={getCompanyList}
           filterText={text}
         />

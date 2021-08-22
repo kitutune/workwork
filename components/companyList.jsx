@@ -25,7 +25,10 @@ export const CompanyList = (props) => {
   if (searchCompany.length !== undefined) {
     return (
       <div className="grid grid-cols-3 gap-2 m-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
-        <Addcompany uuid={props.uuid} getCompanyList={props.getCompanyList} />
+        <Addcompany
+          user_id={props.user_id}
+          getCompanyList={props.getCompanyList}
+        />
         {searchCompany.map((company) => {
           return (
             <Link
@@ -33,7 +36,7 @@ export const CompanyList = (props) => {
               href={`/companyInfo?id=${company.company_id}`}
               // as={`/companyInfo?id=${company.company_name}`}
               passHref
-              userId={props.uuid}
+              userId={props.user_id}
             >
               <div className="p-2 border cursor-pointer">
                 <div className="flex justify-center">
