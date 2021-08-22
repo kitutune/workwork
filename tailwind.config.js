@@ -16,6 +16,10 @@ module.exports = {
       minWidth: {
         '3rem': '3rem',
       },
+      spacing: {
+        '56.25%': '56.25%',
+        // ...
+      },
       zIndex: {
         '-10': '-10',
         negative: '- 1',
