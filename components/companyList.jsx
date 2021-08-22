@@ -38,14 +38,12 @@ export const CompanyList = (props) => {
               <div className="p-2 border cursor-pointer">
                 <div className="flex justify-center">
                   {company.URL ? (
-                    <div>
-                      <Image
-                        src={`http://capture.heartrails.com/126x200/cool/delay=10?${company.URL}`}
-                        width={126}
-                        height={200}
-                        alt="CompanyThumbnail"
-                      />
-                    </div>
+                    <Image
+                      src={`http://capture.heartrails.com/126x200/cool/delay=10?${company.URL}`}
+                      width={126}
+                      height={200}
+                      alt="CompanyThumbnail"
+                    />
                   ) : (
                     <Image
                       src={companyIcon}
@@ -66,5 +64,5 @@ export const CompanyList = (props) => {
     );
   }
 
-  return <>{props.children}</>;
+  return <div>{props.children}</div>;
 };

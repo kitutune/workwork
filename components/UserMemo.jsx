@@ -7,20 +7,29 @@ export const UserMemo = () => {
   const { user } = Auth.useUser();
 
   const getProfile = useCallback(async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user')
       .select('*')
       .eq('user_id', user.id)
       .single();
-    setMemoValue(data.user_memo);
-    console.log(data.user_memo);
+    if ((!data, error)) {
+      return alert('ユーザーデータの読み込みに失敗しました！');
+    } else {
+      setMemoValue(data.user_memo);
+      return console.log('ユーザーデータの読み込みに成功しました！');
+    }
   }, [user.id]);
 
   const saveButton = useCallback(async () => {
-    await supabase
+    const { data, error } = await supabase
       .from('user')
       .update({ user_memo: memoValue })
       .eq('user_id', user.id);
+    if (!data || error) {
+      return alert('メモの保存に失敗しました！');
+    } else {
+      return alert('保存しました！');
+    }
   }, [memoValue, user.id]);
   useEffect(() => {
     getProfile();
@@ -29,12 +38,6 @@ export const UserMemo = () => {
     <div>
       <div as="div">
         <div className="min-h-screen px-4 text-center border-2">
-          {/* <span
-            className="inline-block h-screen align-middle"
-            aria-hidden="true"
-          >
-            &#8203;
-          </span> */}
           <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform border border-gray-300 shadow-xl bg-gray-50 rounded-xl">
             <div className="w-20 mx-auto mb-5">memo</div>
             <div className=" mx-auto mb-5">

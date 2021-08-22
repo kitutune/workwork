@@ -245,10 +245,12 @@ const companyInfo = () => {
                   </div>
                 </div>
               </div>
+              {(console.log(address === undefined), console.log('address'))}
               {isOpen === false ? (
                 <div></div>
               ) : (
                 <div style={{ textAlign: '-webkit-center' }}>
+                  <p>所在地:{address ? address : '登録されいていません'}</p>
                   <div className="relative pt-56.25% w-10/12">
                     <iframe
                       className="absolute inset-y-0  w-full h-full"
