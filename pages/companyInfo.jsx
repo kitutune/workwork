@@ -107,7 +107,6 @@ const companyInfo = () => {
             return;
           }
 
-          // console.log('flug');
           let { data, error, status } = await supabase
             .from('flug')
             .select('*')
@@ -115,7 +114,6 @@ const companyInfo = () => {
             .eq('user_id', user.id);
 
           if (data.length === 0) {
-            console.log('着てないか？');
             ({ data, error } = await supabase
               .from('flug')
               .insert([{ user_id: user.id, company_id: id }]));

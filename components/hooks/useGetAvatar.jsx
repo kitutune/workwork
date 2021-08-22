@@ -9,7 +9,7 @@ export const useGetAvatar = (id) => {
   // console.log('useGet');
   const userId = id;
 
-  const getProfile = useCallback(async () => {
+  const getUserDb = useCallback(async () => {
     if (!userId) {
       return;
     }
@@ -63,7 +63,7 @@ export const useGetAvatar = (id) => {
   }, []);
 
   useEffect(() => {
-    getProfile(userId);
+    getUserDb(userId);
     if (avatar_url) {
       downloadImage(avatar_url);
     }

@@ -4,7 +4,7 @@ import { supabase } from 'utils/supabaseClient';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { CompanyList } from 'components/companyList';
 
-const getBookmark = async (user) => {
+const getFlugDb = async (user) => {
   if (!user) {
     return;
   }
@@ -17,16 +17,16 @@ const getBookmark = async (user) => {
     alert('ユーザーのお気に入りの読み込みに失敗しました！');
   }
   {
-    const result = data.map((com) => {
-      return com.company_id;
+    const result = data.map((company) => {
+      return company.company_id;
     });
     console.log('ユーザーのお気に入りの読み込みに成功しました！');
     if (result) return result;
   }
 };
 
-const getBookmarkWithDb = async (user) => {
-  const bookMarks = await getBookmark(user);
+const getFlugDbWithCompanyDb = async (user) => {
+  const bookMarks = await getFlugDb(user);
 
   if (!bookMarks) {
     return;
@@ -47,7 +47,7 @@ const getBookmarkWithDb = async (user) => {
   }
 };
 
-const getDb = async () => {
+const getCompanyDb = async () => {
   try {
     const { data, error, status } = await supabase
       .from('company_data')
@@ -74,7 +74,7 @@ const getuser = async (user) => {
       .select('*')
       .eq('user_id', user.id);
     if (data.length === 0) {
-      setuser(user);
+      getUserDB(user);
       console.log('userをDBに登録します');
     }
     if (error) {
@@ -85,7 +85,7 @@ const getuser = async (user) => {
   }
 };
 
-const setuser = async (user) => {
+const getUserDB = async (user) => {
   if (!user) {
     return;
   }
@@ -125,11 +125,11 @@ const Container = (props) => {
       console.log('1');
       if (bookmark) {
         console.log('2');
-        const data = await getBookmarkWithDb(user, bookmark);
+        const data = await getFlugDbWithCompanyDb(user, bookmark);
         setAllData(data);
       } else {
         console.log('3');
-        const data = await getDb(user);
+        const data = await getCompanyDb(user);
         setAllData(data);
       }
     }

@@ -9,7 +9,7 @@ const Account = () => {
   const [prof, setProf] = useState({});
   let { id } = router.query;
 
-  const getProf = async (id) => {
+  const getUserDb = async (id) => {
     console.log(id);
     if (id) {
       const { data, error } = await supabase
@@ -58,7 +58,7 @@ const Account = () => {
   }
 
   useEffect(() => {
-    getProf(id);
+    getUserDb(id);
   }, [id]);
 
   useEffect(() => {

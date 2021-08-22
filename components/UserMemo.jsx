@@ -6,7 +6,7 @@ export const UserMemo = () => {
   const [memoValue, setMemoValue] = useState('');
   const { user } = Auth.useUser();
 
-  const getProfile = useCallback(async () => {
+  const getUserDb = useCallback(async () => {
     const { data, error } = await supabase
       .from('user')
       .select('*')
@@ -32,8 +32,8 @@ export const UserMemo = () => {
     }
   }, [memoValue, user.id]);
   useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+    getUserDb();
+  }, []);
   return (
     <div>
       <div as="div">

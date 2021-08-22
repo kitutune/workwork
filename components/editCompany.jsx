@@ -148,7 +148,7 @@ export const EditCompany = React.memo((props) => {
       await supabase.from('flug').delete().eq('company_id', companyId);
       router.push('/');
     };
-    const getData = async () => {
+    const getCompanyDb = async () => {
       const { data, error } = await supabase
         .from('company_data')
         .select(lists.join(','))
@@ -163,7 +163,7 @@ export const EditCompany = React.memo((props) => {
       }
     };
     useEffect(() => {
-      if (info) getData();
+      if (info) getCompanyDb();
     }, [info]);
     useEffect(() => {
       // eslint-disable-next-line no-unused-vars

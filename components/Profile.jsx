@@ -14,7 +14,7 @@ export const Profile = () => {
     const [age, setAge] = useState('');
     const [remarks, setRemarks] = useState('');
 
-    const getProfile = async () => {
+    const getUserDb = async () => {
       try {
         const user = supabase.auth.user();
 
@@ -61,7 +61,7 @@ export const Profile = () => {
     };
 
     useEffect(() => {
-      getProfile();
+      getUserDb();
     }, []);
 
     useEffect(() => {

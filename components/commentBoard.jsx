@@ -14,7 +14,7 @@ export const CommentBoard = React.memo((props) => {
   const [edit, setEdit] = useState(false);
   const { user } = Auth.useUser();
 
-  const loadCommentLog = useCallback(async () => {
+  const getCommentDb = useCallback(async () => {
     if (props.id === undefined) {
       return;
     }
@@ -38,7 +38,7 @@ export const CommentBoard = React.memo((props) => {
     }
   }, [props.id]);
 
-  const insertComment = async () => {
+  const addComment = async () => {
     if (!comment.current.value) {
       return alert('コメントを投稿するには値を入力して下さい！');
     }
@@ -63,7 +63,7 @@ export const CommentBoard = React.memo((props) => {
       } catch (error) {
         alert('コメントの投稿に失敗しました！');
       }
-      loadCommentLog();
+      getCommentDb();
     }
   };
 
@@ -86,7 +86,7 @@ export const CommentBoard = React.memo((props) => {
       alert('コメントの削除に失敗しました！');
     }
 
-    loadCommentLog();
+    getCommentDb();
   };
 
   const handleEditChange = useCallback(() => {
@@ -96,12 +96,12 @@ export const CommentBoard = React.memo((props) => {
   }, []);
 
   const addMessage = () => {
-    insertComment();
+    addComment();
     comment.current.value = '';
   };
 
   useEffect(() => {
-    loadCommentLog();
+    getCommentDb();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -46,7 +46,7 @@ export const Addcompany = (props) => {
     }
   }, [companyName, companyUrl, companyAddress]);
   // 会社データを追加する際に重複のチェック
-  const handleAdd = useCallback(async () => {
+  const getCompanyDB = useCallback(async () => {
     try {
       if (companyName == '') {
         alert('会社名を記入してください！');
@@ -157,7 +157,7 @@ export const Addcompany = (props) => {
                       block
                       size="large"
                       icon={<IconPlus />}
-                      onClick={() => handleAdd()}
+                      onClick={() => getCompanyDB()}
                     >
                       追加
                     </Button>
