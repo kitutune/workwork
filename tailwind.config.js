@@ -7,11 +7,6 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    screens: {
-      smw: { max: '640px' },
-      // => @media (max-width: 639px) { ... }
-    },
-
     extend: {
       minWidth: {
         '3rem': '3rem',
