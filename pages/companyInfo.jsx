@@ -258,7 +258,7 @@ const companyInfo = () => {
                 //     ></iframe>
                 //   </div>
                 // </div>
-                <div className="relative" style="padding-top: 56.25%">
+                <div className="relative" style={{ paddingTop: '56.25%' }}>
                   <iframe
                     className="absolute inset-0 w-full h-full"
                     frameBorder="0"
