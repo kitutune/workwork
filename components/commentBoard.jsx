@@ -24,9 +24,6 @@ export const CommentBoard = React.memo((props) => {
         .select('*')
         .eq('company_id', props.id)
         .order('time_stamp', { ascending: true });
-      // console.log(status);
-      // console.log(error);
-      // console.log('ロード');
       if (error || status !== 200) {
         throw error;
       }
@@ -52,9 +49,6 @@ export const CommentBoard = React.memo((props) => {
             comment: comment.current.value,
           })
           .eq('company_id', props.id);
-        // console.log(status);
-        // console.log(error);
-        // console.log('エラー');
         if (!data || error || status !== 201) {
           throw error;
         } else {
@@ -74,9 +68,6 @@ export const CommentBoard = React.memo((props) => {
         .from('company_comment')
         .delete()
         .eq('comment_id', comment_id);
-      // console.log(status);
-      // console.log(error);
-      // console.log('エラー');
       if (!data || error || status !== 200) {
         throw error;
       } else {
@@ -114,7 +105,6 @@ export const CommentBoard = React.memo((props) => {
     };
   }, []);
 
-  // console.log(commentLogs);
   console.log('CommentBoard');
   return (
     <>
@@ -126,7 +116,6 @@ export const CommentBoard = React.memo((props) => {
 
               return (
                 <div key={val.comment_id}>
-                  {(console.log(val), console.log('val'))}
                   <div className="text-xs">
                     <div className=" ">{day}</div>
                   </div>
@@ -140,7 +129,6 @@ export const CommentBoard = React.memo((props) => {
                         >
                           <div>
                             <AvatarImage userId={val.user_id} />
-                            {(console.log(val), console.log('val'))}
                           </div>
                         </Link>
                         <div className=" flex-auto bg-white border  border-white shadow-lg  rounded-3xl p-4 m-4">

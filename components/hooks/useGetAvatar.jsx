@@ -5,8 +5,6 @@ export const useGetAvatar = (id) => {
   const [avatar_url, setAvatarUrl] = useState('');
   const [avatarImage, setAvatarImage] = useState('');
 
-  // console.log(id);
-  // console.log('useGet');
   const userId = id;
 
   const getUserDb = useCallback(async () => {

@@ -20,7 +20,7 @@ export const CompanyList = (props) => {
       company['work'];
     return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
   });
-  console.log('companyList');
+  console.log('CompanyList');
 
   if (searchCompany.length !== undefined) {
     return (

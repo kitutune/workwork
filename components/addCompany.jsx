@@ -6,7 +6,6 @@ import { Fragment, useCallback, useState } from 'react';
 import { supabase } from 'utils/supabaseClient';
 
 export const Addcompany = (props) => {
-  console.log(companyName);
   const [isOpen, setIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
@@ -89,7 +88,7 @@ export const Addcompany = (props) => {
     return setCompanyAddress(e.target.value);
   };
   const setMethod = [targetName, targetUrl, targetAddress];
-
+  console.log('Addcompany');
   return (
     <>
       <button className="p-2 border cursor-pointer" onClick={openModal}>

@@ -43,7 +43,7 @@ const getFlugDbWithCompanyDb = async (user) => {
       return data;
     }
   } catch (error) {
-    console.log(error);
+    alert('ブックマークした会社データの読み込みに失敗しました！');
   }
 };
 
@@ -81,7 +81,7 @@ const getuser = async (user) => {
       throw error;
     }
   } catch (error) {
-    console.log('userの読み込みに失敗しました！');
+    alert('userの読み込みに失敗しました！');
   }
 };
 
@@ -104,7 +104,7 @@ const getUserDB = async (user) => {
       return data;
     }
   } catch (error) {
-    console.log('userの読み込みに失敗しました！');
+    alert('userの読み込みに失敗しました！');
   }
 };
 
@@ -120,15 +120,11 @@ const Container = (props) => {
   };
 
   const getCompanyList = useCallback(async () => {
-    // console.log('indexのgetCompanyList');
     if (user) {
-      console.log('1');
       if (bookmark) {
-        console.log('2');
         const data = await getFlugDbWithCompanyDb(user, bookmark);
         setAllData(data);
       } else {
-        console.log('3');
         const data = await getCompanyDb(user);
         setAllData(data);
       }
@@ -153,8 +149,6 @@ const Container = (props) => {
   if (user && allData.length !== undefined) {
     return (
       <div>
-        {/* {console.log(allData.length)} */}
-        {console.log('indexのallData')}
         <div className="flex justify-center gap-2 p-4">
           <input
             className="w-full h-12 px-4 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"

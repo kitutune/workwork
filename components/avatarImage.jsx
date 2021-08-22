@@ -6,8 +6,6 @@ import React from 'react';
 export const AvatarImage = React.memo((props) => {
   const Container = () => {
     const avatarImage = useGetAvatar(props.userId);
-    // console.log(avatarImage);
-    // console.log(user);
 
     console.log('AvatarImage');
     return (

@@ -72,7 +72,6 @@ const companyInfo = () => {
       }
     }, [id, router]);
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納するここまでーーーーーーーーーーーーー
-    // console.log('00');
     const jobLink = () => {
       if (companyInfo.job_url === null) {
         alert('URLが登録されていません');
@@ -137,7 +136,6 @@ const companyInfo = () => {
 
       // clean up関数（Unmount時の処理）
       return () => {
-        // console.log('アンマウント');
         unmounted = true;
       };
     }, []);
@@ -243,7 +241,6 @@ const companyInfo = () => {
                   </div>
                 </div>
               </div>
-              {(console.log(address === undefined), console.log('address'))}
               {isOpen === false ? (
                 <div></div>
               ) : (

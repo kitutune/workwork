@@ -106,8 +106,6 @@ export const EditCompany = React.memo((props) => {
     };
 
     const companyInfoSubEditButton = useCallback(async () => {
-      // console.log(form);
-      // console.log('companySubButton');
       const { data, error, status } = await supabase
         .from('company_info')
         .update({
@@ -157,7 +155,6 @@ export const EditCompany = React.memo((props) => {
       if (error) {
         alert('dataの読み込みに失敗しました！');
       } else {
-        console.log(data);
         console.log('読み込み成功');
         return setForm(data);
       }
@@ -170,11 +167,10 @@ export const EditCompany = React.memo((props) => {
       let unmounted = false;
       // clean up関数（Unmount時の処理）
       return () => {
-        // console.log('アンマウント');
         unmounted = true;
       };
     }, []);
-    console.log('editCompany');
+    console.log('EditCompany');
     return (
       <div className="translate-y-1/3">
         <div className="h-screen flex justify-center items-center ">

@@ -65,10 +65,10 @@ export const Avatar = ({ url, onUpload }) => {
 
     // clean up関数（Unmount時の処理）
     return () => {
-      // console.log('アンマウント');
       unmounted = true;
     };
   }, []);
+  console.log('Avatar');
   return (
     <div className="hover:opacity-50">
       <div className="text-center　">

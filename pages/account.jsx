@@ -10,7 +10,6 @@ const Account = () => {
   let { id } = router.query;
 
   const getUserDb = async (id) => {
-    console.log(id);
     if (id) {
       const { data, error } = await supabase
         .from('user')
@@ -38,17 +37,12 @@ const Account = () => {
       if (error) {
         throw error;
       }
-      // const url = URL.createObjectURL(data);
-      // console.log(url);
-      // console.log('urlurl');
 
       let reader = new FileReader();
       reader.readAsDataURL(data); // blob を base64 へ変換し onload を呼び出します
 
       reader.onload = function () {
-        // link.href = reader.result; // data url
         setAvatarUrl(reader.result);
-        // link.click();
       };
 
       // setAvatarUrl(url);
@@ -66,6 +60,8 @@ const Account = () => {
       downloadImage(prof.avatar_url);
     }
   }, [prof.avatar_url]);
+
+  console.log('Account');
   if (prof && avatarUrl) {
     return (
       <div className="min-h-screen bg-gray-100 pt-20">

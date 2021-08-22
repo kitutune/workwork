@@ -10,7 +10,7 @@ export const CompanyInfoList = React.memo((props) => {
     社員数: props.companyInfo.employees,
     設立日: props.companyInfo.establishment_date,
   };
-  console.log('companyinfolist');
+  console.log('CompanyInfoList');
   return (
     <>
       {lists.map((list, i) => (
