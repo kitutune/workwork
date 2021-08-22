@@ -4,17 +4,38 @@ import { supabase } from 'utils/supabaseClient';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { CompanyList } from 'components/companyList';
 
+const getBookmark = async (user) => {
+  if (!user) {
+    return;
+  }
+  const { data, error } = await supabase
+    .from('flug')
+    .select('company_id')
+    .eq('user_id', user.id)
+    .eq('bookmark', true);
+  if (!data || error) {
+    alert('ユーザーのお気に入りの読み込みに失敗しました！');
+  }
+  {
+    const result = data.map((com) => {
+      return com.company_id;
+    });
+    console.log('ユーザーのお気に入りの読み込みに成功しました！');
+    if (result) return result;
+  }
+};
+
 const getBookmarkWithDb = async (user) => {
-  // console.log('indexのbookmarkある方');
-  // console.log(bookmark);
-  // console.log(user);
-  // console.log('indexのbookmarkある方2');
+  const bookMarks = await getBookmark(user);
+
+  if (!bookMarks) {
+    return;
+  }
   try {
     const { data, error, status } = await supabase
-      .from('company_info_flug')
+      .from('company_data')
       .select('*')
-      .eq('user_id', user.id)
-      .eq('bookmark', true);
+      .in('company_id', bookMarks);
     if (error && status !== 406) {
       throw error;
     }
@@ -28,9 +49,8 @@ const getBookmarkWithDb = async (user) => {
 
 const getDb = async () => {
   try {
-    // console.log('indexのbookmarkないほう');
     const { data, error, status } = await supabase
-      .from('company_info_flug')
+      .from('company_data')
       .select('*');
 
     if (error && status !== 406) {
@@ -118,6 +138,7 @@ const Container = (props) => {
   useEffect(() => {
     getuser(user);
     getCompanyList();
+    // get(user);
   }, [user, getCompanyList, bookmark]);
 
   useEffect(() => {

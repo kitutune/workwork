@@ -150,7 +150,7 @@ export const EditCompany = React.memo((props) => {
     };
     const getData = async () => {
       const { data, error } = await supabase
-        .from('company_info_flug')
+        .from('company_data')
         .select(lists.join(','))
         .eq('company_id', info.company_id)
         .single();
