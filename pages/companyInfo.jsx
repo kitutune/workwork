@@ -263,7 +263,7 @@ const companyInfo = () => {
                   // style={{ paddingTop: '56.25%' }}
                 >
                   <iframe
-                    className="absolute inset-0 w-full h-full"
+                    className="absolute inset-0 w-11/12 h-11/12"
                     frameBorder="0"
                     src={`https://maps.google.co.jp/maps?q=${address}&output=embed`}
                     title="map"
