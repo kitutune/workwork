@@ -9,7 +9,7 @@ export const Addcompany = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyUrl, setCompanyUrl] = useState('');
-  const [companyAddress, setCompanyAddress] = useState('');
+  const [companyJobUrl, setCompanyJobUrl] = useState('');
   const getCompanyList = props.getCompanyList;
 
   // ダイアログを開く
@@ -20,7 +20,7 @@ export const Addcompany = (props) => {
   const closeModal = useCallback(() => {
     setCompanyName('');
     setCompanyUrl('');
-    setCompanyAddress('');
+    setCompanyJobUrl('');
     setIsOpen(false);
   }, []);
   // 会社データの登録
@@ -29,7 +29,7 @@ export const Addcompany = (props) => {
       {
         company_name: companyName,
         URL: companyUrl,
-        company_address: companyAddress,
+        job_url: companyJobUrl,
       },
     ]);
     const company_id = data[0].company_id;
@@ -43,7 +43,7 @@ export const Addcompany = (props) => {
     if (error) {
       alert('新しい会社データの追加に失敗しました！');
     }
-  }, [companyName, companyUrl, companyAddress]);
+  }, [companyName, companyUrl, companyJobUrl]);
   // 会社データを追加する際に重複のチェック
   const getCompanyDB = useCallback(async () => {
     try {
@@ -75,8 +75,8 @@ export const Addcompany = (props) => {
   }, [companyName, closeModal, getCompanyList, addCompanyData]);
 
   // map関数の値
-  const lists = ['企業名', '企業URL', '所在地'];
-  const value = [companyName, companyUrl, companyAddress];
+  const lists = ['企業名', '企業URL', '求人URL'];
+  const value = [companyName, companyUrl, companyJobUrl];
 
   const targetName = (e) => {
     return setCompanyName(e.target.value);
@@ -84,10 +84,10 @@ export const Addcompany = (props) => {
   const targetUrl = (e) => {
     return setCompanyUrl(e.target.value);
   };
-  const targetAddress = (e) => {
-    return setCompanyAddress(e.target.value);
+  const targetJobUrl = (e) => {
+    return setCompanyJobUrl(e.target.value);
   };
-  const setMethod = [targetName, targetUrl, targetAddress];
+  const setMethod = [targetName, targetUrl, targetJobUrl];
   console.log('Addcompany');
   return (
     <>
