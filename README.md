@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# workwork
 
-## Getting Started
+プログラマー就職を考える人達向けの情報共有アプリです
 
-First, run the development server:
+ポートフォリオとして作成しました
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+作成途中で追加したい機能や削除した機能があり、まだまだ改善が必要な部分がありますが現状でも実用できる状態にあります
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# DemoImage
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+<img width="1264" alt="スクリーンショット 2021-08-23 15 07 37" src="https://user-images.githubusercontent.com/79749395/130398692-620aee09-d727-475a-8648-4b7cd7ba858e.png">
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+# Features
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+シンプルな作りで
+求人サイトや地域を固定せずに企業情報や求人ページを共有し情報交換でき、個人のメモ書きやコメントを投稿できるようになっています
+また登録されている企業の追加、追加された企業からの検索やブックマークなど直感で操作できることを意識した作りにしてあります
 
-## Learn More
+# Requirement
 
-To learn more about Next.js, take a look at the following resources:
+- next.js 　 11.0.1
+- tailwindcss 　 2.2.4
+- supabese
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+supabase の登録、データーベースとサインイン機能の作成を個人でしないと fork しても使えません
 
-## Deploy on Vercel
+## [supabase](https://supabase.io/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## [next.js](https://nextjs.org/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## [next.js 日本語サイト](https://nextjs-ja-translation-docs.vercel.app/)
+
+# Usage
+
+[当アプリはこちら](https://kiworkwork.vercel.app/)
+
+# Note
+
+- 企業名や詳細を１箇所ずつ入力する必要があります
+
+# Author
+
+- 作成者 kitutune
+- 所属 無
+- E-mail p.kitutune@gmail.com
+
+# License
+
+"workwork" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
