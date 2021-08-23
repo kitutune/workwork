@@ -169,7 +169,7 @@ export const EditCompany = (props) => {
         unmounted = true;
       };
     }, []);
-    console.log('EditCompany');
+    // console.log('EditCompany');
     return (
       <div className="translate-y-1/3">
         <div className="h-screen flex justify-center items-center ">

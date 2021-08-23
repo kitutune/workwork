@@ -5,7 +5,7 @@ export const AvatarImage = (props) => {
   const Container = () => {
     const avatarImage = useGetAvatar(props.userId);
 
-    console.log('AvatarImage');
+    // console.log('AvatarImage');
     return (
       <div>
         <div>

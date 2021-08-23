@@ -61,7 +61,7 @@ const Account = () => {
     }
   }, [prof.avatar_url]);
 
-  console.log('Account');
+  // console.log('Account');
   if (prof && avatarUrl) {
     return (
       <div className="min-h-screen bg-gray-100 pt-20">

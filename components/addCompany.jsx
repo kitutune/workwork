@@ -88,7 +88,7 @@ export const Addcompany = (props) => {
     return setCompanyJobUrl(e.target.value);
   };
   const setMethod = [targetName, targetUrl, targetJobUrl];
-  console.log('Addcompany');
+  // console.log('Addcompany');
   return (
     <>
       <button className="p-2 border cursor-pointer" onClick={openModal}>

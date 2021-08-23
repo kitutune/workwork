@@ -34,7 +34,7 @@ export const UserMemo = () => {
   useEffect(() => {
     getUserDb();
   }, []);
-  console.log('UserMemo');
+  // console.log('UserMemo');
   return (
     <div>
       <div as="div">

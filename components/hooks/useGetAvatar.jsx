@@ -66,6 +66,6 @@ export const useGetAvatar = (id) => {
       downloadImage(avatar_url);
     }
   }, [userId, avatar_url]);
-  console.log('useGetAvatar');
+  // console.log('useGetAvatar');
   return avatarImage;
 };

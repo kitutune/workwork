@@ -144,7 +144,7 @@ const companyInfo = () => {
       getCompanyDBsData();
       getFlugDb(user);
     }, [user]);
-    console.log('companyinfo');
+    // console.log('companyinfo');
     if (user) {
       return (
         <div>

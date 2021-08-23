@@ -84,7 +84,7 @@ export const Profile = () => {
     const lists = ['名前', '年齢', '自己紹介'];
     const method = [username, age, remarks];
     const setMethod = [nameSet, ageSet, remarkSet];
-    console.log('Profile');
+    // console.log('Profile');
     return (
       <div>
         <div as="div">

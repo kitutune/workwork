@@ -68,7 +68,7 @@ export const Avatar = ({ url, onUpload }) => {
       unmounted = true;
     };
   }, []);
-  console.log('Avatar');
+  // console.log('Avatar');
   return (
     <div className="hover:opacity-50">
       <div className="text-center　">

@@ -8,7 +8,7 @@ export const CompanyInfoList = (props) => {
     社員数: props.companyInfo.employees,
     設立日: props.companyInfo.establishment_date,
   };
-  console.log('CompanyInfoList');
+  // console.log('CompanyInfoList');
   return (
     <>
       {lists.map((list, i) => (

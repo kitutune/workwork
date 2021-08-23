@@ -104,7 +104,7 @@ export const CommentBoard = (props) => {
     };
   }, []);
 
-  console.log('CommentBoard');
+  // console.log('CommentBoard');
   return (
     <>
       <div className="flex flex-col w-full pt-4">

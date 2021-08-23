@@ -145,7 +145,7 @@ const Container = (props) => {
       unmounted = true;
     };
   });
-  console.log('index');
+  // console.log('index');
   if (user && allData.length !== undefined) {
     return (
       <div>
