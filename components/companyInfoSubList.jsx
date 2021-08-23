@@ -12,7 +12,7 @@ export const CompanyInfoSubList = (props) => {
   const infos = {
     最寄駅: props.companySubInfo.nearest_station,
     アクセス: props.companySubInfo.access,
-    WORK: props.companySubInfo.capital_stock,
+    WORK: props.companySubInfo.work,
     駐輪場: props.companySubInfo.parking_area_for_bicycles,
     バイク置き場: props.companySubInfo.motorcycle_parking,
     駐車場: props.companySubInfo.parking,
