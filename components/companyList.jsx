@@ -42,9 +42,9 @@ export const CompanyList = (props) => {
                 <div className="flex justify-center">
                   {company.URL ? (
                     <Image
-                      src={`http://capture.heartrails.com/126x200/cool/delay=10?${company.URL}`}
+                      src={`http://capture.heartrails.com/126x126/cool/delay=10?${company.URL}`}
                       width={126}
-                      height={200}
+                      height={126}
                       alt="CompanyThumbnail"
                     />
                   ) : (
@@ -52,7 +52,7 @@ export const CompanyList = (props) => {
                       src={companyIcon}
                       alt="NoThumbnail"
                       width={126}
-                      height={200}
+                      height={126}
                     />
                   )}
                 </div>
