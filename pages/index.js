@@ -90,6 +90,7 @@ const getUserDB = async (user) => {
     return;
   }
   try {
+    console.log(user);
     console.log(user.id);
     const { data, error, status } = await supabase
       .from('user')
