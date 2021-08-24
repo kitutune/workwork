@@ -42,17 +42,17 @@ export const CompanyList = (props) => {
                 <div className="flex justify-center">
                   {company.URL ? (
                     <Image
-                      src={`http://capture.heartrails.com/126x126/cool/delay=10?${company.URL}`}
-                      width={126}
-                      height={126}
+                      src={`http://capture.heartrails.com/200x200/cool/delay=10?${company.URL}`}
+                      width={200}
+                      height={200}
                       alt="CompanyThumbnail"
                     />
                   ) : (
                     <Image
                       src={companyIcon}
                       alt="NoThumbnail"
-                      width={126}
-                      height={126}
+                      width={200}
+                      height={200}
                     />
                   )}
                 </div>

@@ -93,7 +93,7 @@ export const Addcompany = (props) => {
     <>
       <button className="p-2 border cursor-pointer" onClick={openModal}>
         <div className="flex justify-center">
-          <Image src={add} alt="thumbnail" width={126} height={126} />
+          <Image src={add} alt="thumbnail" width={200} height={200} />
         </div>
         <div className="mt-2 text-center">企業追加</div>
       </button>
