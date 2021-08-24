@@ -176,7 +176,7 @@ const companyInfo = () => {
               <div className="flex justify-center px-6 my-12">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                   <div
-                    className="w-full h-auto bg-gray-400 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
+                    className="w-full h-auto px-4 bg-gray-400 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
                     style={{
                       backgroundImage:
                         'url(https://source.unsplash.com/Mv9hjnEUHR4/600x800)',
