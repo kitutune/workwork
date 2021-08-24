@@ -110,7 +110,8 @@ const getUserDB = async (user) => {
 
 const Container = (props) => {
   const { user } = Auth.useUser();
-
+  console.log(user);
+  console.log('user');
   const [allData, setAllData] = useState({});
   const [bookmark, setBookmark] = useState(false);
   const [text, setText] = useState('');
