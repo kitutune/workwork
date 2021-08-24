@@ -90,9 +90,12 @@ const getUserDB = async (user) => {
     return;
   }
   try {
+    console.log(user.id);
     const { data, error, status } = await supabase
       .from('user')
       .insert([{ user_id: user.id }]);
+    console.log(data);
+    console.log('現在値');
     if (status === 409) {
       console.log('既に登録されているuserです！');
       return;
