@@ -80,8 +80,14 @@ export const EditCompany = (props) => {
       'job_url',
     ];
 
+    // const handleChange = (input) => (e) => {
+    //   setForm({ ...form, [input]: e.target.value });
+    // };
+
     const handleChange = (input) => (e) => {
-      setForm({ ...form, [input]: e.target.value });
+      setForm((prevForm) => {
+        return { ...prevForm, [input]: e.target.value };
+      });
     };
 
     const companyInfoEditButton = async () => {
