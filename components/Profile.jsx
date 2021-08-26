@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@supabase/ui';
 import { supabase } from 'utils/supabaseClient';
 import { Auth } from '@supabase/ui';
@@ -14,7 +14,7 @@ export const Profile = () => {
     const [age, setAge] = useState('');
     const [remarks, setRemarks] = useState('');
 
-    const getUserDb = async () => {
+    const getUserDb = useCallback(async () => {
       try {
         const user = supabase.auth.user();
 
@@ -37,28 +37,31 @@ export const Profile = () => {
       } catch (error) {
         alert(error.message);
       }
-    };
+    }, []);
 
-    const updateProfile = async ({ username, age, remarks, avatar_url }) => {
-      try {
-        const { error, status } = await supabase
-          .from('user')
-          .update({
-            user_name: username,
-            age: age,
-            remarks: remarks,
-            avatar_url: avatar_url,
-          })
-          .eq('user_id', user.id);
-        if (error || status !== 200) {
-          throw error;
-        } else {
-          alert('プロフィールを更新しました！');
+    const updateProfile = useCallback(
+      async ({ username, age, remarks, avatar_url }) => {
+        try {
+          const { error, status } = await supabase
+            .from('user')
+            .update({
+              user_name: username,
+              age: age,
+              remarks: remarks,
+              avatar_url: avatar_url,
+            })
+            .eq('user_id', user.id);
+          if (error || status !== 200) {
+            throw error;
+          } else {
+            alert('プロフィールを更新しました！');
+          }
+        } catch (error) {
+          alert('プロフィールの更新に失敗しました');
         }
-      } catch (error) {
-        alert('プロフィールの更新に失敗しました');
-      }
-    };
+      },
+      []
+    );
 
     useEffect(() => {
       getUserDb();

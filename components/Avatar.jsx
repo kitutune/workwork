@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { supabase } from 'utils/supabaseClient';
 
@@ -10,7 +10,7 @@ export const Avatar = ({ url, onUpload }) => {
     if (url) downloadImage(url);
   }, [url]);
 
-  const downloadImage = async (path) => {
+  const downloadImage = useCallback(async (path) => {
     try {
       const { data, error } = await supabase.storage
         .from('avatars')
@@ -28,9 +28,9 @@ export const Avatar = ({ url, onUpload }) => {
     } catch (error) {
       console.log('Error downloading image: ', error.message);
     }
-  };
+  }, []);
 
-  const uploadAvatar = async (event) => {
+  const uploadAvatar = useCallback(async (event) => {
     try {
       setUploading(true);
 
@@ -57,7 +57,7 @@ export const Avatar = ({ url, onUpload }) => {
     } finally {
       setUploading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line no-unused-vars

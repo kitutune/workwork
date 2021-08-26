@@ -9,7 +9,7 @@ const Account = () => {
   const [prof, setProf] = useState({});
   let { id } = router.query;
 
-  const getUserDb = async (id) => {
+  const getUserDb = useCallback(async (id) => {
     if (id) {
       const { data, error } = await supabase
         .from('user')
@@ -23,7 +23,7 @@ const Account = () => {
         setProf(data);
       }
     }
-  };
+  }, []);
   const back = useCallback(() => {
     Router.back();
   }, []);

@@ -84,13 +84,16 @@ export const EditCompany = (props) => {
     //   setForm({ ...form, [input]: e.target.value });
     // };
 
-    const handleChange = (input) => (e) => {
-      setForm((prevForm) => {
-        return { ...prevForm, [input]: e.target.value };
-      });
-    };
+    const handleChange = useCallback(
+      (input) => (e) => {
+        setForm((prevForm) => {
+          return { ...prevForm, [input]: e.target.value };
+        });
+      },
+      []
+    );
 
-    const companyInfoEditButton = async () => {
+    const companyInfoEditButton = useCallback(async () => {
       const { data, error, status } = await supabase
         .from('company')
         .update({
@@ -108,7 +111,7 @@ export const EditCompany = (props) => {
       if (!data || error || status !== 200) {
         alert('データの更新に失敗しました！');
       }
-    };
+    }, [form]);
 
     const companyInfoSubEditButton = useCallback(async () => {
       const { data, error, status } = await supabase
@@ -141,7 +144,7 @@ export const EditCompany = (props) => {
       [form]
     );
 
-    const deleteButton = async () => {
+    const deleteButton = useCallback(async () => {
       await supabase.from('company_info').delete().eq('company_id', companyId);
       await supabase.from('company').delete().eq('company_id', companyId);
       await supabase
@@ -150,8 +153,8 @@ export const EditCompany = (props) => {
         .eq('company_id', companyId);
       await supabase.from('flug').delete().eq('company_id', companyId);
       router.push('/');
-    };
-    const getCompanyDb = async () => {
+    }, []);
+    const getCompanyDb = useCallback(async () => {
       const { data, error } = await supabase
         .from('company_data')
         .select(lists.join(','))
@@ -163,7 +166,7 @@ export const EditCompany = (props) => {
         console.log('読み込み成功');
         return setForm(data);
       }
-    };
+    }, []);
     useEffect(() => {
       if (info) getCompanyDb();
     }, [info]);

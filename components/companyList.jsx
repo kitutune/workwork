@@ -1,25 +1,30 @@
-//ここっから
 import Image from 'next/image';
 import Link from 'next/link';
 import companyIcon from 'public/company.png';
+import { useCallback } from 'react';
 import { Addcompany } from './addCompany';
 
 export const CompanyList = (props) => {
-  const searchCompany = props.allData.filter((company) => {
-    let searchContent =
-      company['company_name'] +
-      ' ' +
-      company['URL'] +
-      ' ' +
-      company['access'] +
-      ' ' +
-      company['capital_stock'] +
-      ' ' +
-      company['company_address'] +
-      ' ' +
-      company['work'];
-    return searchContent.toLowerCase().includes(props.filterText.toLowerCase());
-  });
+  const searchCompany = useCallback(
+    props.allData.filter((company) => {
+      let searchContent =
+        company['company_name'] +
+        ' ' +
+        company['URL'] +
+        ' ' +
+        company['access'] +
+        ' ' +
+        company['capital_stock'] +
+        ' ' +
+        company['company_address'] +
+        ' ' +
+        company['work'];
+      return searchContent
+        .toLowerCase()
+        .includes(props.filterText.toLowerCase());
+    }),
+    [props]
+  );
   // console.log('CompanyList');
 
   if (searchCompany.length !== undefined) {

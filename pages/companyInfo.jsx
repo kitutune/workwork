@@ -1,4 +1,3 @@
-// 一時完成
 import { Auth, Button, IconCornerDownLeft } from '@supabase/ui';
 import { CommentBoard } from 'components/commentBoard';
 import Image from 'next/image';
@@ -72,21 +71,21 @@ const companyInfo = () => {
       }
     }, [id, router]);
     // 取得したcompanyDBとcompany_infoDBのデータを利用しやすいように定数に格納するここまでーーーーーーーーーーーーー
-    const jobLink = () => {
+    const jobLink = useCallback(() => {
       if (companyInfo.job_url === null) {
         alert('URLが登録されていません');
       } else {
         alert('求人サイトに移動します');
       }
-    };
-    const hpLink = () => {
+    }, [companyInfo.job_url]);
+    const hpLink = useCallback(() => {
       if (companyInfo.URL === null) {
         alert('URLが登録されていません');
       } else {
         alert('ホームページに移動します');
       }
-    };
-    const bookmarkButton = async () => {
+    }, [companyInfo.URL]);
+    const bookmarkButton = useCallback(async () => {
       const { data, error } = await supabase
         .from('flug')
         .update({ bookmark: !likeCompany })
@@ -97,7 +96,7 @@ const companyInfo = () => {
         alert('bookmarkの変更に失敗しました！');
       }
       return setLikeCompany(data[0].bookmark);
-    };
+    }, [likeCompany]);
 
     const getFlugDb = useCallback(
       async (user) => {

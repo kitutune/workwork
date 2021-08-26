@@ -1,5 +1,3 @@
-//ここからスタート
-
 import { supabase } from 'utils/supabaseClient';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,7 +32,7 @@ export const CommentBoard = (props) => {
     }
   }, [props.id]);
 
-  const addComment = async () => {
+  const addComment = useCallback(async () => {
     if (!comment.current.value) {
       return alert('コメントを投稿するには値を入力して下さい！');
     }
@@ -58,9 +56,10 @@ export const CommentBoard = (props) => {
       }
       getCommentDb();
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const deleteCommentLog = async (comment_id) => {
+  const deleteCommentLog = useCallback(async (comment_id) => {
     if (!comment_id) return null;
     try {
       const { data, error, status } = await supabase
@@ -77,7 +76,8 @@ export const CommentBoard = (props) => {
     }
 
     getCommentDb();
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEditChange = useCallback(() => {
     setEdit((prev) => {
