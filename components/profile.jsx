@@ -110,7 +110,7 @@ export const Profile = () => {
                   <div className="col-span-1 text-xl text-center">{list}</div>
                   <input
                     className="w-full h-10 col-span-3 p-2 bg-white border border-gray-300 rounded shadow appearance-none hover:border-gray-700"
-                    defaultValue={`${method[i]}` == null ? ' ' : `${method[i]}`}
+                    defaultValue={`${method[i]}`}
                     onChange={setMethod[i]}
                   />
                 </div>

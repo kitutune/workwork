@@ -8,6 +8,7 @@ const getFlugDb = async (user) => {
   if (!user) {
     return;
   }
+
   const { data, error } = await supabase
     .from('flug')
     .select('company_id')
@@ -15,8 +16,7 @@ const getFlugDb = async (user) => {
     .eq('bookmark', true);
   if (!data || error) {
     alert('ユーザーのお気に入りの読み込みに失敗しました！');
-  }
-  {
+  } else {
     const result = data.map((company) => {
       return company.company_id;
     });
@@ -68,17 +68,22 @@ const getuser = async (user) => {
   if (!user) {
     return;
   }
+
   try {
     const { data, error } = await supabase
       .from('user')
       .select('*')
       .eq('user_id', user.id);
+
     if (data.length === 0) {
       getUserDB(user);
-      console.log('userをDBに登録します');
+      return console.log('userをDBに登録します');
     }
     if (error) {
       throw error;
+    }
+    if (data) {
+      console.log('userの読み込みに成功しました！');
     }
   } catch (error) {
     alert('userの読み込みに失敗しました！');
@@ -90,9 +95,9 @@ const getUserDB = async (user) => {
     return;
   }
   try {
-    const { data, error, status } = await supabase
-      .from('user')
-      .insert([{ user_id: user.id }]);
+    const { data, error, status } = await supabase.from('user').insert({
+      user_id: user.id,
+    });
 
     if (status === 409) {
       console.log('既に登録されているuserです！');
@@ -102,6 +107,7 @@ const getUserDB = async (user) => {
       throw error;
     }
     if (data) {
+      console.log('userの登録に成功しました！');
       return data;
     }
   } catch (error) {
@@ -135,7 +141,6 @@ const Container = (props) => {
   useEffect(() => {
     getuser(user);
     getCompanyList();
-    // get(user);
   }, [user, getCompanyList, bookmark]);
 
   useEffect(() => {
