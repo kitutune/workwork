@@ -103,7 +103,7 @@ export const Profile = () => {
                 <Avatar
                   url={avatar_url}
                   onUpload={(url) => {
-                    setAvatarUrl(url);
+                    // avatar_url(url);
                     updateProfile({ username, avatar_url: url });
                   }}
                 />
