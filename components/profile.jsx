@@ -23,7 +23,7 @@ export const Profile = () => {
           .select(`*`)
           .eq('user_id', user.id)
           .single();
-
+        console.log('bb');
         if (error && status !== 406) {
           throw error;
         }
@@ -51,6 +51,7 @@ export const Profile = () => {
               avatar_url: avatar_url,
             })
             .eq('user_id', user.id);
+          console.log('aa');
           if (error || status !== 200) {
             throw error;
           } else {
@@ -103,7 +104,6 @@ export const Profile = () => {
                 <Avatar
                   url={avatar_url}
                   onUpload={(url) => {
-                    // avatar_url(url);
                     updateProfile({ username, avatar_url: url });
                   }}
                 />
