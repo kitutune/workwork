@@ -23,7 +23,7 @@ export const Profile = () => {
           .select(`*`)
           .eq('user_id', user.id)
           .single();
-        console.log('bb');
+        // console.log('bb');
         if (error && status !== 406) {
           throw error;
         }
@@ -51,11 +51,12 @@ export const Profile = () => {
               avatar_url: avatar_url,
             })
             .eq('user_id', user.id);
-          console.log('aa');
+
           if (error || status !== 200) {
             throw error;
           } else {
             alert('プロフィールを更新しました！');
+            getUserDb();
           }
         } catch (error) {
           alert('プロフィールの更新に失敗しました');
